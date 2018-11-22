@@ -2,17 +2,20 @@
 name = "polyanalyst6api"
 version = "0.1.1"
 description = "polyanalyst6api is a PolyAnalyst API client for Python."
+authors = ["yatmanov <yatmanov@megaputer.ru>"]
+license = "MIT"
 
 homepage = "https://github.com/Megaputer/polyanalyst6api-python"
 
-license = "MIT"
-
-authors = ["yatmanov <yatmanov@megaputer.ru>"]
-
 keywords = ["megaputer", "polyanalyst", "polyanalyst6api", "api"]
 
+classifiers = [
+    "Topic :: Internet",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.4"
 requests = "^2.19"
 
 [tool.poetry.dev-dependencies]
