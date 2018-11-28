@@ -1,5 +1,5 @@
+import urllib.parse
 from typing import Dict, List, Tuple, Union
-from urllib import parse
 
 import requests
 
@@ -39,8 +39,8 @@ class ClientSession:
 
     def __init__(self, netloc: str, username: str, password: str) -> None:
         self.netloc = netloc
-        self.usr = username
-        self.pwd = password
+        self.username = username
+        self.password = password
 
         self._s = requests.Session()
         self.id = ''  # session identity
@@ -49,8 +49,9 @@ class ClientSession:
         self.certfile = False
 
     def login(self) -> None:
-        params = {'uname': self.usr, 'pwd': self.pwd}
-        resp, _ = self.request('POST', 'login', params=params)
+        resp, _ = self.request(
+            '/login', 'post', params={'uname': self.username, 'pwd': self.password}
+        )
         self.id = resp.cookies['sid']
 
     def logout(self) -> None:
@@ -64,12 +65,11 @@ class ClientSession:
             raise
         return prj
 
-    def request(self, method: str, *paths: str, **requests_kwargs) -> _Response:
-        method = method.upper()
-        url = self.construct_url(*paths)
-        requests_kwargs['verify'] = self.certfile
+    def request(self, path: str, method: str = 'get', **kwargs) -> _Response:
+        url = self.construct_url(path)
+        kwargs['verify'] = self.certfile
         try:
-            response = self._s.request(method, url, **requests_kwargs)
+            response = self._s.request(method, url, **kwargs)
         except requests.RequestException as e:
             raise ClientException(str(e))
 
@@ -110,11 +110,8 @@ class ClientSession:
 
         return msg
 
-    def construct_url(self, *paths: str) -> str:
-        url = parse.urljoin(self.netloc, API_PATH) + API_VERSION + '/'
-        for path in paths:
-            url = parse.urljoin(url, path)
-        return url
+    def construct_url(self, path: str) -> str:
+        return urllib.parse.urljoin(self.netloc, API_PATH) + API_VERSION + path
 
 
 class Project:
@@ -128,9 +125,7 @@ class Project:
     def nodes(self) -> _Nodes:
         json: Dict[str, _Json]
         _, json = self.client_session.request(
-            'get',
-            'project/',
-            'nodes',
+            '/project/nodes',
             params={'prjUUID': self.id},
             headers={'sid': self.client_session.id},
         )
@@ -142,21 +137,20 @@ class Project:
 
     def save(self) -> None:
         _, _ = self.client_session.request(
-            'post', 'project/', 'save', json={'prjUUID': self.id}
+            '/project/save', 'post', json={'prjUUID': self.id}
         )
 
     def abort(self) -> None:
         _, _ = self.client_session.request(
-            'post', 'project/', 'global-abort', json={'prjUUID': self.id}
+            '/project/global-abort', 'post', json={'prjUUID': self.id}
         )
 
     def execute(self, node: str) -> None:
         if node not in self.nodes:
             raise APIException(f"Node '{node}' is not found on the server")
         _, _ = self.client_session.request(
+            '/project/execute',
             'post',
-            'project/',
-            'execute',
             json={
                 'prjUUID': self.id,
                 'nodes': [{'type': self._nodes[node]['type'], 'name': node}],
@@ -168,9 +162,7 @@ class Project:
             raise APIException(f"Node '{node}' is not found on the server")
         json: _Json
         _, json = self.client_session.request(
-            'get',
-            'dataset/',
-            'preview',
+            '/dataset/preview',
             params={
                 'prjUUID': self.id,
                 'name': node,
