@@ -4,6 +4,7 @@ class PAException(Exception):
 
 class APIException(PAException):
     """Indicate exception that involve responses from PolyAnalyst's API."""
+
     def __init__(self, msg, endpoint=None, status_code=None):
         self._msg = msg
         self.endpoint = endpoint

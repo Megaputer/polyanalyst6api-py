@@ -6,8 +6,14 @@ import requests
 from . import __version__
 from .exceptions import *
 
-__all__ = ['ClientSession', 'Project', 'PAException', 'AuthException',
-           'ClientException', 'APIException']
+__all__ = [
+    'ClientSession',
+    'Project',
+    'PAException',
+    'AuthException',
+    'ClientException',
+    'APIException',
+]
 
 API_PATH = '/polyanalyst/api/'
 API_VERSION = 'v1.0'
@@ -81,8 +87,9 @@ class ClientSession:
         error_msg = self.get_error_details(data)
 
         if response.status_code == 403:
-            raise AuthException('Authorization Required. You are not logged in'
-                                ' to PolyAnalyst Server.')
+            raise AuthException(
+                'Authorization Required. You are not logged in to PolyAnalyst Server.'
+            )
 
         if 'Login failed' in error_msg:
             raise AuthException(error_msg)
@@ -122,9 +129,10 @@ class Project:
         json: Dict[str, _Json]
         _, json = self.client_session.request(
             'get',
-            'project/', 'nodes',
+            'project/',
+            'nodes',
             params={'prjUUID': self.id},
-            headers={'sid': self.client_session.id}
+            headers={'sid': self.client_session.id},
         )
         for node in json['nodes']:
             node_name = node.pop('name')
@@ -134,16 +142,12 @@ class Project:
 
     def save(self) -> None:
         _, _ = self.client_session.request(
-            'post',
-            'project/', 'save',
-            json={'prjUUID': self.id}
+            'post', 'project/', 'save', json={'prjUUID': self.id}
         )
 
     def abort(self) -> None:
         _, _ = self.client_session.request(
-            'post',
-            'project/', 'global-abort',
-            json={'prjUUID': self.id}
+            'post', 'project/', 'global-abort', json={'prjUUID': self.id}
         )
 
     def execute(self, node: str) -> None:
@@ -151,11 +155,12 @@ class Project:
             raise APIException(f"Node '{node}' is not found on the server")
         _, _ = self.client_session.request(
             'post',
-            'project/', 'execute',
+            'project/',
+            'execute',
             json={
                 'prjUUID': self.id,
-                'nodes': [{'type': self._nodes[node]['type'], 'name': node}]
-            }
+                'nodes': [{'type': self._nodes[node]['type'], 'name': node}],
+            },
         )
 
     def result(self, node: str) -> _Json:
@@ -164,7 +169,12 @@ class Project:
         json: _Json
         _, json = self.client_session.request(
             'get',
-            'dataset/', 'preview',
-            params={'prjUUID': self.id, 'name': node, 'type': self._nodes[node]['type']}
+            'dataset/',
+            'preview',
+            params={
+                'prjUUID': self.id,
+                'name': node,
+                'type': self._nodes[node]['type'],
+            },
         )
         return json
