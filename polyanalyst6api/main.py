@@ -32,10 +32,7 @@ class ClientSession:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        try:
-            self.logout()
-        except NotImplementedError:
-            return True
+        pass
 
     def __init__(self, netloc: str, username: str, password: str) -> None:
         self.netloc = netloc
@@ -53,9 +50,6 @@ class ClientSession:
             '/login', 'post', params={'uname': self.username, 'pwd': self.password}
         )
         self.id = resp.cookies['sid']
-
-    def logout(self) -> None:
-        raise NotImplementedError()
 
     def project(self, uuid: str) -> 'Project':
         try:
