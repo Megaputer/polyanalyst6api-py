@@ -164,3 +164,55 @@ class Project:
             },
         )
         return json
+
+    @property
+    def statistics(self) -> Dict[str, Union[List[Dict[str, any]], Dict[str, int]]]:
+        """ Retrieve the execution statistics for nodes in project.
+
+        A readonly property.
+        """
+        _, json = self.client_session.request(
+            '/project/execution-statistics',
+            params={'prjUUID': self.id},
+        )
+        return json
+
+    def unload(self) -> None:
+        """ Unload the project from the memory and free system resources.
+
+        This operation available only for project owner and administrators.
+        """
+        _, _ = self.client_session.request(
+            '/project/unload',
+            'post',
+            json={'prjUUID': self.id},
+        )
+
+    def repair(self) -> None:
+        """ Send 'repair the project' command to server.
+
+        This operation available only for project owner and administrators.
+        """
+        _, _ = self.client_session.request(
+            '/project/repair',
+            'post',
+            json={'prjUUID': self.id},
+        )
+
+    def delete(self, force_unload: bool = False) -> None:
+        """ Remove the project from server.
+
+        By default the project will be deleted only if it's not loaded to memory.
+        To delete the project that loaded to memory (there are users working on
+        this project right now) set force_unload to True.
+        This operation available only for project owner and administrators and
+        can not be undone.
+        """
+        _, _ = self.client_session.request(
+            '/project/delete',
+            'post',
+            json={
+                'prjUUID': self.id,
+                'forceUnload': force_unload,
+            },
+        )
