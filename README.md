@@ -1,4 +1,4 @@
-# polyanalyst6api-python
+# [WIP]polyanalyst6api-python
 
 `polyanalyst6api-python` is a python package for accessing Polyanalyst's APIs.
 
