@@ -21,6 +21,8 @@ poetry install
 
 ## Usage
 
+See [API Reference](https://megaputer.github.io/polyanalyst6api-python/) for more detailed information.
+
 ### Authentication
 
 Import client, initialize it and log in to PolyAnalyst's server:
