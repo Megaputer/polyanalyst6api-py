@@ -1,11 +1,24 @@
+"""
+polyanalyst6api.exceptions
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This module contains polyanlyst6api specific Exception classes.
+"""
+
+
 class PAException(Exception):
-    """The base PolyAnalyst Exception that all other exception classes extend."""
+    """Generic error class, catch-all for most polyanalyst6api issues."""
 
 
 class APIException(PAException):
-    """Indicate exception that involve responses from PolyAnalyst's API."""
+    """Indicate errors that involve responses from PolyAnalyst's API.
 
-    def __init__(self, msg, endpoint=None, status_code=None):
+    :param msg: The exception message
+    :param endpoint: The resource endpoint
+    :param status_code: The http status code
+    """
+
+    def __init__(self, msg: str, endpoint: str = None, status_code: int = None) -> None:
         self._msg = msg
         self.endpoint = endpoint
         self.status_code = status_code
@@ -15,8 +28,4 @@ class APIException(PAException):
 
 
 class ClientException(PAException):
-    """Indicate exceptions that don't involve interaction with PolyAnalyst's API."""
-
-
-class AuthException(PAException):
-    """Indicate authorization error."""
+    """Indicate errors that don't involve interaction with PolyAnalyst's API."""

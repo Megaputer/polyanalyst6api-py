@@ -1,6 +1,6 @@
-# [WIP]polyanalyst6api-python
+# polyanalyst6api
 
-`polyanalyst6api-python` is a python package for accessing Polyanalyst's APIs.
+`polyanalyst6api` is a python package for accessing PolyAnalyst's APIs.
 
 ## Installation
 
@@ -26,51 +26,51 @@ poetry install
 Import client, initialize it and log in to PolyAnalyst's server:
 
 ```python
-from polyanalyst6api import ClientSession
+import polyanalyst6api as polyanalyst
 
-client = ClientSession(NETLOC, USERNAME, PASSWORD)
-client.login()
+api = polyanalyst.API(POLYANALIST_URL, USERNAME, PASSWORD)
+api.login()
 ```
 
-`ClientSession` supports Context Manager protocol, so you could use it with `with` statement. In this case `ClientSession` will automatically log in with provided credentials.
+`API` supports Context Manager protocol, so you could use it with `with` statement. In this case `API` will automatically log in with provided credentials.
 
 ```python
-with pa.ClientSession(NETLOC, USERNAME, PASSWORD) as client:
+with polyanalyst.API(POLYANALIST_URL, USERNAME, PASSWORD) as api:
     pass
 ```
 
-### Examples
+### Working with project
 
 See [polyanalyst6api-python/examples](https://github.com/Megaputer/polyanalyst6api-python/tree/master/examples) for a more complex examples.
 
 At first you need to connect to existing project:
 ```python
-prj = client.project(PROJECT_ID)
+prj = api.project(PROJECT_UUID)
 ```
 
-Show list of nodes in the project:
+Print node names within project:
 ```python
 for node_name in prj.nodes:
     print(node_name)
 ```
 
-Execute node:
+Initiate node execution:
 ```python
 prj.execute(NODE_NAME)
 ```
 
-Display the truncated result of node execution:
+Display the preview of node results:
 ```python
 result = prj.preview(NODE_NAME)
 print(result)
 ```
 
-Save the project:
+Save project:
 ```python
 prj.save()
 ```
 
-
+## PolyAnalyst API
 Full API specification is stored in the **PolyAnalyst User Manual** under the url below:
 
 ```
