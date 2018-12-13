@@ -7,10 +7,11 @@ This module contains functionality for access to PolyAnalyst API.
 
 import contextlib
 import time
-from urllib.parse import urljoin
 from typing import Any, Dict, List, Tuple, Union
+from urllib.parse import urljoin
 
 import requests
+import urllib3
 
 from . import __version__
 from .exceptions import *
@@ -24,6 +25,8 @@ _VALID_API_VERSIONS = ['1.0']
 _Response = Tuple[requests.Response, Any]
 _Nodes = Dict[str, Dict[str, Union[int, str]]]
 _DataSet = List[Dict[str, Any]]
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class API:
