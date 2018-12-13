@@ -72,6 +72,7 @@ class API:
         self.password = password
 
         self._s = requests.Session()
+        self._s.headers.update({'User-Agent': self.user_agent})
         self.sid = ''  # session identity
         # path to certificate file. by default ignore insecure connection warnings
         self.certfile = False
