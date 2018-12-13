@@ -226,10 +226,11 @@ class Project:
         """Aborts the execution of all nodes in the project."""
         self.api.post('project/global-abort', json={'prjUUID': self.uuid})
 
-    def execute(self, *nodes: str) -> None:
+    def execute(self, *nodes: str, wait: bool = False) -> None:
         """Initiate execution of nodes and their children.
 
         :param nodes: The node names
+        :param wait: Wait for nodes to complete execution
 
         Usage::
 
@@ -247,6 +248,9 @@ class Project:
                 'nodes': [{'type': self._nodes[name]['type'], 'name': name} for name in nodes],
             },
         )
+        if wait:
+            for node in nodes:
+                self.wait_for_completion(node)
 
     def preview(self, node: str) -> _DataSet:
         """Returns first 1000 rows of data from ``node``, texts and strings are
