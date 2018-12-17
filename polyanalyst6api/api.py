@@ -80,6 +80,14 @@ class API:
         # path to certificate file. by default ignore insecure connection warnings
         self.certfile = False
 
+    def get_versions(self) -> List[str]:
+        """Returns api versions supported by PolyAnalyst server."""
+        # the 'versions' endpoint was added in the 2191 polyanalyst's version
+        try:
+            return self.request(urljoin(self.base_url, 'versions'), 'get')[1]
+        except APIException:
+            return ['1.0']
+
     def login(self) -> None:
         """Logs in to PolyAnalyst Server with user credentials."""
         resp, _ = self.request(
