@@ -86,6 +86,20 @@ Default: <code class="docutils literal notranslate"><span class="pre">1.0</span>
 </dd></dl>
 
 <dl class="method">
+<dt id="polyanalyst6api.api.API.get_versions">
+<code class="descname">get_versions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.get_versions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.get_versions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns api versions supported by PolyAnalyst server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="polyanalyst6api.api.API.login">
 <code class="descname">login</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.login" title="Permalink to this definition">¶</a></dt>
 <dd><p>Logs in to PolyAnalyst Server with user credentials.</p>
@@ -139,15 +153,15 @@ Default: <code class="docutils literal notranslate"><span class="pre">1.0</span>
 
 <dl class="method">
 <dt id="polyanalyst6api.api.API.request">
-<code class="descname">request</code><span class="sig-paren">(</span><em>endpoint</em>, <em>method</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.request" title="Permalink to this definition">¶</a></dt>
+<code class="descname">request</code><span class="sig-paren">(</span><em>url</em>, <em>method</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends <code class="docutils literal notranslate"><span class="pre">method</span></code> request to <code class="docutils literal notranslate"><span class="pre">endpoint</span></code> and returns tuple of
-<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Response</span></code> and json.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Response</span></code> and json-encoded content of a response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>endpoint</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – PolyAnalyst API endpoint</li>
+<li><strong>url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – url or PolyAnalyst API endpoint</li>
 <li><strong>method</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – request method (e.g. GET, POST)</li>
 <li><strong>kwargs</strong> – <code class="xref py py-func docutils literal notranslate"><span class="pre">requests.request()</span></code> keyword arguments</li>
 </ul>
@@ -256,7 +270,7 @@ cannot be undone.</p>
 </pre></div>
 </div>
 <p>Execute all nodes in project(assuming there’s no connection between them):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prj</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="o">*</span><span class="n">prj</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prj</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="o">*</span><span class="n">prj</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">())</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -269,12 +283,12 @@ cannot be undone.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="polyanalyst6api.api.Project.execution_statistics">
-<code class="descname">execution_statistics</code><a class="headerlink" href="#polyanalyst6api.api.Project.execution_statistics" title="Permalink to this definition">¶</a></dt>
+<dl class="method">
+<dt id="polyanalyst6api.api.Project.get_execution_statistics">
+<code class="descname">get_execution_statistics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#Project.get_execution_statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.Project.get_execution_statistics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the execution statistics for nodes in the project.</p>
 <dl class="docutils">
-<dt>Similar to <code class="xref py py-func docutils literal notranslate"><span class="pre">nodes()</span></code> but nodes contains extra</dt>
+<dt>Similar to <code class="xref py py-func docutils literal notranslate"><span class="pre">get_nodes()</span></code> but nodes contains extra</dt>
 <dd>information and the project statistics.</dd>
 </dl>
 <table class="docutils field-list" frame="void" rules="none">
@@ -287,9 +301,9 @@ cannot be undone.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="polyanalyst6api.api.Project.nodes">
-<code class="descname">nodes</code><a class="headerlink" href="#polyanalyst6api.api.Project.nodes" title="Permalink to this definition">¶</a></dt>
+<dl class="method">
+<dt id="polyanalyst6api.api.Project.get_nodes">
+<code class="descname">get_nodes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#Project.get_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.Project.get_nodes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a dictionary of project’s nodes information.</p>
 <p>The node value is a dict with a mandatory keys: id, type, status.
 It also may contain errMsg key if last node execution was failed.</p>

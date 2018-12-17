@@ -41,7 +41,7 @@
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="k">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="k">import</span> <span class="n">urljoin</span><span class="p">,</span> <span class="n">urlparse</span>
 
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">urllib3</span>
@@ -50,9 +50,6 @@
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="k">import</span> <span class="o">*</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;API&#39;</span><span class="p">,</span> <span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;PAException&#39;</span><span class="p">,</span> <span class="s1">&#39;ClientException&#39;</span><span class="p">,</span> <span class="s1">&#39;APIException&#39;</span><span class="p">]</span>
-
-<span class="n">_API_PATH</span> <span class="o">=</span> <span class="s1">&#39;/polyanalyst/api/&#39;</span>
-<span class="n">_VALID_API_VERSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1.0&#39;</span><span class="p">]</span>
 
 <span class="c1"># typing</span>
 <span class="n">_Response</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
@@ -84,6 +81,8 @@
 <span class="sd">      &gt;&gt;&gt;     pass</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">_api_path</span> <span class="o">=</span> <span class="s1">&#39;/polyanalyst/api/&#39;</span>
+    <span class="n">_valid_api_versions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1.0&#39;</span><span class="p">]</span>
     <span class="n">user_agent</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;PolyAnalyst6API python client v</span><span class="si">{__version__}</span><span class="s1">&#39;</span>
 
     <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;API&#39;</span><span class="p">:</span>
@@ -100,10 +99,11 @@
         <span class="n">password</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
         <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;1.0&#39;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">version</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_VALID_API_VERSIONS</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ClientException</span><span class="p">(</span><span class="s1">&#39;Valid api versions are &#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_VALID_API_VERSIONS</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">version</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valid_api_versions</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ClientException</span><span class="p">(</span><span class="s1">&#39;Valid api versions are &#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_valid_api_versions</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{urljoin(url, _API_PATH)}v</span><span class="si">{version}</span><span class="s1">/&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">,</span> <span class="n">f</span><span class="s1">&#39;v</span><span class="si">{version}</span><span class="s1">/&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
 
@@ -112,6 +112,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sid</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>  <span class="c1"># session identity</span>
         <span class="c1"># path to certificate file. by default ignore insecure connection warnings</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">certfile</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="API.get_versions"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.API.get_versions">[docs]</a>    <span class="k">def</span> <span class="nf">get_versions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Returns api versions supported by PolyAnalyst server.&quot;&quot;&quot;</span>
+        <span class="c1"># the &#39;versions&#39; endpoint was added in the 2191 polyanalyst&#39;s version</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">urljoin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">,</span> <span class="s1">&#39;versions&#39;</span><span class="p">),</span> <span class="s1">&#39;get&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">except</span> <span class="n">APIException</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;1.0&#39;</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="API.login"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.API.login">[docs]</a>    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Logs in to PolyAnalyst Server with user credentials.&quot;&quot;&quot;</span>
@@ -136,7 +144,7 @@
 <span class="sd">        :param uuid: The project uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">prj</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">)</span>
-        <span class="n">_</span> <span class="o">=</span> <span class="n">prj</span><span class="o">.</span><span class="n">nodes</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">prj</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">prj</span></div>
 
 <div class="viewcode-block" id="API.get"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.API.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
@@ -155,15 +163,16 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="API.request"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.API.request">[docs]</a>    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Response</span><span class="p">:</span>
+<div class="viewcode-block" id="API.request"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.API.request">[docs]</a>    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Response</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Sends ``method`` request to ``endpoint`` and returns tuple of</span>
-<span class="sd">        :class:`requests.Response` and json.</span>
+<span class="sd">        :class:`requests.Response` and json-encoded content of a response.</span>
 
-<span class="sd">        :param endpoint: PolyAnalyst API endpoint</span>
+<span class="sd">        :param url: url or PolyAnalyst API endpoint</span>
 <span class="sd">        :param method: request method (e.g. GET, POST)</span>
 <span class="sd">        :param kwargs: :func:`requests.request` keyword arguments</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">netloc</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;verify&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">certfile</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_s</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -222,8 +231,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_nodes</span><span class="p">:</span> <span class="n">_Nodes</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Nodes</span><span class="p">:</span>
+<div class="viewcode-block" id="Project.get_nodes"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.get_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">get_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Nodes</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns a dictionary of project&#39;s nodes information.</span>
 
 <span class="sd">        The node value is a dict with a mandatory keys: id, type, status.</span>
@@ -235,13 +243,12 @@
             <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sid&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">sid</span><span class="p">},</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_nodes</span> <span class="o">=</span> <span class="p">{</span><span class="n">node</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">):</span> <span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;nodes&#39;</span><span class="p">]}</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nodes</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nodes</span></div>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">execution_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">_Nodes</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+<div class="viewcode-block" id="Project.get_execution_statistics"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.get_execution_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">get_execution_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">_Nodes</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Returns the execution statistics for nodes in the project.</span>
 
-<span class="sd">        Similar to :func:`~api.Project.nodes` but nodes contains extra</span>
+<span class="sd">        Similar to :func:`~api.Project.get_nodes` but nodes contains extra</span>
 <span class="sd">            information and the project statistics.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
@@ -249,7 +256,7 @@
             <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;prjUUID&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">}</span>
         <span class="p">)</span>
         <span class="n">nodes</span> <span class="o">=</span> <span class="p">{</span><span class="n">node</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">):</span> <span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;nodes&#39;</span><span class="p">]}</span>
-        <span class="k">return</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;nodesStatistics&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;nodesStatistics&#39;</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Project.save"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Initiates saving of all changes that have been mode in the project.&quot;&quot;&quot;</span>
@@ -271,7 +278,7 @@
 
 <span class="sd">        Execute all nodes in project(assuming there&#39;s no connection between them)::</span>
 
-<span class="sd">          &gt;&gt;&gt; prj.execute(*prj.nodes)</span>
+<span class="sd">          &gt;&gt;&gt; prj.execute(*prj.get_nodes())</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
@@ -331,7 +338,7 @@
 <span class="sd">        :param node: The node name</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">stats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+            <span class="n">stats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">()[</span><span class="n">node</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;errMsg&#39;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="k">if</span> <span class="n">stats</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;synchronized&#39;</span><span class="p">:</span>
