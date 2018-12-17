@@ -212,8 +212,7 @@ class Project:
         self._nodes = {node.pop('name'): node for node in json['nodes']}
         return self._nodes
 
-    @property
-    def execution_statistics(self) -> Tuple[_Nodes, Dict[str, int]]:
+    def get_execution_statistics(self) -> Tuple[_Nodes, Dict[str, int]]:
         """Returns the execution statistics for nodes in the project.
 
         Similar to :func:`~api.Project.get_nodes` but nodes contains extra
