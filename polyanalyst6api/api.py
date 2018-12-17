@@ -111,7 +111,7 @@ class API:
         :param uuid: The project uuid
         """
         prj = Project(self, uuid)
-        _ = prj.nodes
+        _ = prj.get_nodes()
         return prj
 
     def get(self, endpoint: str, **kwargs) -> Any:
@@ -198,8 +198,7 @@ class Project:
         self.uuid = uuid
         self._nodes: _Nodes = {}
 
-    @property
-    def nodes(self) -> _Nodes:
+    def get_nodes(self) -> _Nodes:
         """Returns a dictionary of project's nodes information.
 
         The node value is a dict with a mandatory keys: id, type, status.
@@ -217,7 +216,7 @@ class Project:
     def execution_statistics(self) -> Tuple[_Nodes, Dict[str, int]]:
         """Returns the execution statistics for nodes in the project.
 
-        Similar to :func:`~api.Project.nodes` but nodes contains extra
+        Similar to :func:`~api.Project.get_nodes` but nodes contains extra
             information and the project statistics.
         """
         json = self.api.get(
@@ -247,7 +246,7 @@ class Project:
 
         Execute all nodes in project(assuming there's no connection between them)::
 
-          >>> prj.execute(*prj.nodes)
+          >>> prj.execute(*prj.get_nodes())
 
         """
         self.api.post(
@@ -307,7 +306,7 @@ class Project:
         :param node: The node name
         """
         while True:
-            stats = self.nodes[node]
+            stats = self.get_nodes()[node]
             if stats.get('errMsg'):
                 return False
             if stats['status'] == 'synchronized':

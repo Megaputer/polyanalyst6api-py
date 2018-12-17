@@ -52,7 +52,7 @@ prj = api.project(PROJECT_UUID)
 
 Print node names within project:
 ```python
-for node_name in prj.nodes:
+for node_name in prj.get_nodes():
     print(node_name)
 ```
 
