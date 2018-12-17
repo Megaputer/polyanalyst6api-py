@@ -8,7 +8,7 @@ This module contains functionality for access to PolyAnalyst API.
 import contextlib
 import time
 from typing import Any, Dict, List, Tuple, Union
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
 import requests
 import urllib3
@@ -69,7 +69,8 @@ class API:
         if version not in self._valid_api_versions:
             raise ClientException('Valid api versions are ' + ', '.join(self._valid_api_versions))
 
-        self.base_url = f'{urljoin(url, self._api_path)}v{version}/'
+        self.base_url = urljoin(url, self._api_path)
+        self.url = urljoin(self.base_url, f'v{version}/')
         self.username = username
         self.password = password
 
@@ -121,15 +122,16 @@ class API:
         """
         return self.request(endpoint, method='post', **kwargs)[1]
 
-    def request(self, endpoint: str, method: str, **kwargs) -> _Response:
+    def request(self, url: str, method: str, **kwargs) -> _Response:
         """Sends ``method`` request to ``endpoint`` and returns tuple of
-        :class:`requests.Response` and json.
+        :class:`requests.Response` and json-encoded content of a response.
 
-        :param endpoint: PolyAnalyst API endpoint
+        :param url: url or PolyAnalyst API endpoint
         :param method: request method (e.g. GET, POST)
         :param kwargs: :func:`requests.request` keyword arguments
         """
-        url = urljoin(self.base_url, endpoint)
+        if not urlparse(url).netloc:
+            url = urljoin(self.url, url)
         kwargs['verify'] = self.certfile
         try:
             resp = self._s.request(method, url, **kwargs)
