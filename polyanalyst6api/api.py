@@ -18,9 +18,6 @@ from .exceptions import *
 
 __all__ = ['API', 'Project', 'PAException', 'ClientException', 'APIException']
 
-_API_PATH = '/polyanalyst/api/'
-_VALID_API_VERSIONS = ['1.0']
-
 # typing
 _Response = Tuple[requests.Response, Any]
 _Nodes = Dict[str, Dict[str, Union[int, str]]]
@@ -51,6 +48,8 @@ class API:
       >>>     pass
     """
 
+    _api_path = '/polyanalyst/api/'
+    _valid_api_versions = ['1.0']
     user_agent = f'PolyAnalyst6API python client v{__version__}'
 
     def __enter__(self) -> 'API':
@@ -67,10 +66,10 @@ class API:
         password: str = '',
         version: str = '1.0',
     ) -> None:
-        if version not in _VALID_API_VERSIONS:
-            raise ClientException('Valid api versions are ' + ', '.join(_VALID_API_VERSIONS))
+        if version not in self._valid_api_versions:
+            raise ClientException('Valid api versions are ' + ', '.join(self._valid_api_versions))
 
-        self.base_url = f'{urljoin(url, _API_PATH)}v{version}/'
+        self.base_url = f'{urljoin(url, self._api_path)}v{version}/'
         self.username = username
         self.password = password
 
