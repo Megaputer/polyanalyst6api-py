@@ -6,6 +6,7 @@ This module contains functionality for access to PolyAnalyst API.
 """
 
 import contextlib
+import datetime
 import time
 from typing import Any, Dict, List, Tuple, Union
 from urllib.parse import urljoin, urlparse
@@ -224,6 +225,14 @@ class Project:
         )
         nodes = {node.pop('name'): node for node in json['nodes']}
         return nodes, json['nodesStatistics']
+
+    def get_tasks(self):
+        """Returns task list info."""
+        json = self.api.get('project/tasks', json={'prjUUID': self.uuid})
+        # convert timestamp in milliseconds to python datetime
+        for task in json:
+            task['startTime'] = datetime.datetime.utcfromtimestamp(task['startTime'] / 1000)
+        return json
 
     def save(self) -> None:
         """Initiates saving of all changes that have been mode in the project."""
