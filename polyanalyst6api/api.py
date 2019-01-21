@@ -226,7 +226,7 @@ class Project:
         nodes = {node.pop('name'): node for node in json['nodes']}
         return nodes, json['nodesStatistics']
 
-    def get_tasks(self):
+    def get_tasks(self) -> List[Dict[str, any]]:
         """Returns task list info."""
         json = self.api.get('project/tasks', json={'prjUUID': self.uuid})
         # convert timestamp in milliseconds to python datetime
