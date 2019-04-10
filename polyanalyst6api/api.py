@@ -273,7 +273,11 @@ class Project:
         cutoff after 250 symbols.
 
         :param node: The node name
+        :raises APIException when node type is not Dataset or DataSource
         """
+        node_type = self._nodes[node]['type']
+        if node_type not in ('Dataset', 'DataSource'):
+            raise APIException(f"Invalid node type: {node_type} (only 'Dataset' or 'DataSource' are available)")
         return self.api.get(
             'dataset/preview',
             params={
