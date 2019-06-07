@@ -8,7 +8,7 @@ This module contains functionality for access to PolyAnalyst API.
 import contextlib
 import datetime
 import time
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Tuple, Union, Optional
 from urllib.parse import urljoin, urlparse
 
 import requests
@@ -88,6 +88,14 @@ class API:
             return self.request(urljoin(self.base_url, 'versions'), 'get')[1]
         except APIException:
             return ['1.0']
+
+    def get_server_info(self) -> Optional[Dict[str, Union[int, str, Dict[str, str]]]]:
+        """
+        Returns build, server version, and the most recent commits git hash sum
+        for each repository.
+        """
+        _, data = self.request(urljoin(self.url, 'server/info'), 'get')
+        return data
 
     def login(self) -> None:
         """Logs in to PolyAnalyst Server with user credentials."""
