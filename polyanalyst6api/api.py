@@ -236,7 +236,7 @@ class Project:
 
     def get_tasks(self) -> List[Dict[str, any]]:
         """Returns task list info."""
-        json = self.api.get('project/tasks', json={'prjUUID': self.uuid})
+        json = self.api.get('project/tasks', params={'prjUUID': self.uuid})
         # convert timestamp in milliseconds to python datetime
         for task in json:
             task['startTime'] = datetime.datetime.utcfromtimestamp(task['startTime'] / 1000)
