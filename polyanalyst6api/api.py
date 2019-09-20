@@ -8,6 +8,7 @@ This module contains functionality for access to PolyAnalyst API.
 import contextlib
 import datetime
 import time
+import warnings
 from typing import Any, Dict, List, Tuple, Union, Optional
 from urllib.parse import urljoin, urlparse
 
@@ -25,6 +26,31 @@ _Nodes = Dict[str, Dict[str, Union[int, str]]]
 _DataSet = List[Dict[str, Any]]
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+warnings.simplefilter('always', UserWarning)
+
+NodeTypes = [
+    "CSV Exporter/",
+    "DataSource/CSV",
+    "DataSource/EXCEL",
+    "DataSource/FILES",
+    "DataSource/INET",
+    "DataSource/ODBC",
+    "DataSource/RSS",
+    "DataSource/XML",
+    "Dataset/Biased",
+    "Dataset/ExtractTerms",
+    "Dataset/Python",
+    "Dataset/R",
+    "Dataset/ReplaceTerms",
+    "ODBC Exporter/",
+    "PA6TaxonomyResult/TaxonomyResult",
+    "SRLRuleSet/Filter Rows",
+    "SRLRuleSet/SRL Rule",
+    "TmlEntityExtractor/FEX",
+    "Sentiment Analysis",
+    "TmlLinkTerms/",
+]
 
 
 class API:
@@ -318,6 +344,28 @@ class Project:
             'project/delete',
             json={'prjUUID': self.uuid, 'forceUnload': force_unload}
         )
+
+    def set_parameters(self, node: str, node_type: str, parameters: Dict[str, Any]) -> None:
+        """Set default parameters of the selected Parameters node in the project.
+
+        :param node: a Parameters node name
+        :param node_type: a node type, which parameters need to be set. The types are listed in NodeTypes.
+        :param parameters: default parameters of the node to be set.
+        :raises ClientException when the node type is not Parameters
+        """
+        parameters_node = self._nodes[node]
+        if parameters_node['type'] != 'Parameters':
+            raise ClientException('The node type should be Parameters')
+
+        json: Optional[List[str]]
+        json = self.api.post(
+            'parameters/configure',
+            params={'prjUUID': self.uuid, 'obj': parameters_node['id']},
+            json={'type': node_type, 'settings': parameters}
+        )
+        if json:
+            for msg in json:
+                warnings.warn(msg)
 
     def wait_for_completion(self, node: str) -> bool:
         """Waits for the node to complete the execution, returns False if node
