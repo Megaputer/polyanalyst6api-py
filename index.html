@@ -383,7 +383,35 @@ cutoff after 250 symbols.</p>
 <dl class="method">
 <dt id="polyanalyst6api.api.Project.save">
 <code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#Project.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.Project.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initiates saving of all changes that have been mode in the project.</p>
+<dd><p>Initiates saving of all changes that have been made in the project.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="polyanalyst6api.api.Project.set_parameters">
+<code class="descname">set_parameters</code><span class="sig-paren">(</span><em>node</em>, <em>node_type</em>, <em>parameters</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#Project.set_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.Project.set_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set default parameters of the selected Parameters node in the project.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>node</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a Parameters node name</li>
+<li><strong>node_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a node type, which parameters need to be set. The types are listed in NodeTypes.</li>
+<li><strong>parameters</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]) – default parameters of the node to be set.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>:raises ClientException when the node type is not Parameters</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

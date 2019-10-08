@@ -42,6 +42,7 @@
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="k">import</span> <span class="n">urljoin</span><span class="p">,</span> <span class="n">urlparse</span>
 
@@ -53,12 +54,37 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;API&#39;</span><span class="p">,</span> <span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;PAException&#39;</span><span class="p">,</span> <span class="s1">&#39;ClientException&#39;</span><span class="p">,</span> <span class="s1">&#39;APIException&#39;</span><span class="p">]</span>
 
-<span class="c1"># typing</span>
-<span class="n">_Response</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
-<span class="n">_Nodes</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span>
-<span class="n">_DataSet</span> <span class="o">=</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
+<span class="c1"># type hints</span>
+<span class="n">Response</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+<span class="n">Nodes</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span>
+<span class="n">DataSet</span> <span class="o">=</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
 
 <span class="n">urllib3</span><span class="o">.</span><span class="n">disable_warnings</span><span class="p">(</span><span class="n">urllib3</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">InsecureRequestWarning</span><span class="p">)</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;always&#39;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>  <span class="c1"># without this set_parameters will show warnings only once</span>
+
+<span class="n">NodeTypes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;CSV Exporter/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DataSource/CSV&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DataSource/EXCEL&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DataSource/FILES&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DataSource/INET&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DataSource/ODBC&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DataSource/RSS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DataSource/XML&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Dataset/Biased&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Dataset/ExtractTerms&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Dataset/Python&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Dataset/R&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Dataset/ReplaceTerms&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ODBC Exporter/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PA6TaxonomyResult/TaxonomyResult&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SRLRuleSet/Filter Rows&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SRLRuleSet/SRL Rule&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TmlEntityExtractor/FEX&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Sentiment Analysis&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TmlLinkTerms/&quot;</span><span class="p">,</span>
+<span class="p">]</span>
 
 
 <div class="viewcode-block" id="API"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.API">[docs]</a><span class="k">class</span> <span class="nc">API</span><span class="p">:</span>
@@ -173,7 +199,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="API.request"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.API.request">[docs]</a>    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Response</span><span class="p">:</span>
+<div class="viewcode-block" id="API.request"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.API.request">[docs]</a>    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Sends ``method`` request to ``endpoint`` and returns tuple of</span>
 <span class="sd">        :class:`requests.Response` and json-encoded content of a response.</span>
 
@@ -192,7 +218,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_handle_response</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Response</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_handle_response</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">json</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
@@ -239,9 +265,9 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">:</span> <span class="n">API</span><span class="p">,</span> <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">api</span> <span class="o">=</span> <span class="n">api</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_nodes</span><span class="p">:</span> <span class="n">_Nodes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nodes</span><span class="p">:</span> <span class="n">Nodes</span> <span class="o">=</span> <span class="p">{}</span>
 
-<div class="viewcode-block" id="Project.get_nodes"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.get_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">get_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Nodes</span><span class="p">:</span>
+<div class="viewcode-block" id="Project.get_nodes"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.get_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">get_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Nodes</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns a dictionary of project&#39;s nodes information.</span>
 
 <span class="sd">        The node value is a dict with a mandatory keys: id, type, status.</span>
@@ -255,7 +281,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_nodes</span> <span class="o">=</span> <span class="p">{</span><span class="n">node</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">):</span> <span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;nodes&#39;</span><span class="p">]}</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nodes</span></div>
 
-<div class="viewcode-block" id="Project.get_execution_statistics"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.get_execution_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">get_execution_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">_Nodes</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+<div class="viewcode-block" id="Project.get_execution_statistics"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.get_execution_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">get_execution_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Nodes</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Returns the execution statistics for nodes in the project.</span>
 
 <span class="sd">        Similar to :func:`~api.Project.get_nodes` but nodes contains extra</span>
@@ -270,14 +296,14 @@
 
 <div class="viewcode-block" id="Project.get_tasks"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.get_tasks">[docs]</a>    <span class="k">def</span> <span class="nf">get_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Returns task list info.&quot;&quot;&quot;</span>
-        <span class="n">json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;project/tasks&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;prjUUID&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">})</span>
+        <span class="n">json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;project/tasks&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;prjUUID&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">})</span>
         <span class="c1"># convert timestamp in milliseconds to python datetime</span>
         <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">json</span><span class="p">:</span>
             <span class="n">task</span><span class="p">[</span><span class="s1">&#39;startTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">task</span><span class="p">[</span><span class="s1">&#39;startTime&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">json</span></div>
 
 <div class="viewcode-block" id="Project.save"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Initiates saving of all changes that have been mode in the project.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Initiates saving of all changes that have been made in the project.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;project/save&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;prjUUID&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">})</span></div>
 
 <div class="viewcode-block" id="Project.abort"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.abort">[docs]</a>    <span class="k">def</span> <span class="nf">abort</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -310,7 +336,7 @@
             <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_completion</span><span class="p">(</span><span class="n">node</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Project.preview"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.preview">[docs]</a>    <span class="k">def</span> <span class="nf">preview</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_DataSet</span><span class="p">:</span>
+<div class="viewcode-block" id="Project.preview"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.preview">[docs]</a>    <span class="k">def</span> <span class="nf">preview</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataSet</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns first 1000 rows of data from ``node``, texts and strings are</span>
 <span class="sd">        cutoff after 250 symbols.</span>
 
@@ -352,6 +378,29 @@
             <span class="s1">&#39;project/delete&#39;</span><span class="p">,</span>
             <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;prjUUID&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span> <span class="s1">&#39;forceUnload&#39;</span><span class="p">:</span> <span class="n">force_unload</span><span class="p">}</span>
         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Project.set_parameters"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.set_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">set_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">node_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set default parameters of the selected Parameters node in the project.</span>
+
+<span class="sd">        :param node: a Parameters node name</span>
+<span class="sd">        :param node_type: a node type, which parameters need to be set. The types are listed in NodeTypes.</span>
+<span class="sd">        :param parameters: default parameters of the node to be set.</span>
+
+<span class="sd">        :raises ClientException when the node type is not Parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parameters_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nodes</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">parameters_node</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;Parameters&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ClientException</span><span class="p">(</span><span class="s1">&#39;The node type should be Parameters&#39;</span><span class="p">)</span>
+
+        <span class="n">json</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
+        <span class="n">json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="s1">&#39;parameters/configure&#39;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;prjUUID&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span> <span class="s1">&#39;obj&#39;</span><span class="p">:</span> <span class="n">parameters_node</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]},</span>
+            <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">node_type</span><span class="p">,</span> <span class="s1">&#39;settings&#39;</span><span class="p">:</span> <span class="n">parameters</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">json</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">json</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Project.wait_for_completion"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.wait_for_completion">[docs]</a>    <span class="k">def</span> <span class="nf">wait_for_completion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Waits for the node to complete the execution, returns False if node</span>
