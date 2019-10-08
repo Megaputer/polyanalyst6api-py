@@ -269,7 +269,7 @@ class Project:
         return json
 
     def save(self) -> None:
-        """Initiates saving of all changes that have been mode in the project."""
+        """Initiates saving of all changes that have been made in the project."""
         self.api.post('project/save', json={'prjUUID': self.uuid})
 
     def abort(self) -> None:
