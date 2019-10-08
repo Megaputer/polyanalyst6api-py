@@ -27,7 +27,7 @@ _DataSet = List[Dict[str, Any]]
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-warnings.simplefilter('always', UserWarning)
+warnings.simplefilter('always', UserWarning)  # without this set_parameters will show warnings only once
 
 NodeTypes = [
     "CSV Exporter/",
