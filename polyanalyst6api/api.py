@@ -351,6 +351,7 @@ class Project:
         :param node: a Parameters node name
         :param node_type: a node type, which parameters need to be set. The types are listed in NodeTypes.
         :param parameters: default parameters of the node to be set.
+
         :raises ClientException when the node type is not Parameters
         """
         parameters_node = self._nodes[node]
