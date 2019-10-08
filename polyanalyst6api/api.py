@@ -20,10 +20,10 @@ from .exceptions import *
 
 __all__ = ['API', 'Project', 'PAException', 'ClientException', 'APIException']
 
-# typing
-_Response = Tuple[requests.Response, Any]
-_Nodes = Dict[str, Dict[str, Union[int, str]]]
-_DataSet = List[Dict[str, Any]]
+# type hints
+Response = Tuple[requests.Response, Any]
+Nodes = Dict[str, Dict[str, Union[int, str]]]
+DataSet = List[Dict[str, Any]]
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -165,7 +165,7 @@ class API:
         """
         return self.request(endpoint, method='post', **kwargs)[1]
 
-    def request(self, url: str, method: str, **kwargs) -> _Response:
+    def request(self, url: str, method: str, **kwargs) -> Response:
         """Sends ``method`` request to ``endpoint`` and returns tuple of
         :class:`requests.Response` and json-encoded content of a response.
 
@@ -184,7 +184,7 @@ class API:
             return self._handle_response(resp)
 
     @staticmethod
-    def _handle_response(response: requests.Response) -> _Response:
+    def _handle_response(response: requests.Response) -> Response:
         try:
             json = response.json()
         except ValueError:
@@ -231,9 +231,9 @@ class Project:
     def __init__(self, api: API, uuid: str) -> None:
         self.api = api
         self.uuid = uuid
-        self._nodes: _Nodes = {}
+        self._nodes: Nodes = {}
 
-    def get_nodes(self) -> _Nodes:
+    def get_nodes(self) -> Nodes:
         """Returns a dictionary of project's nodes information.
 
         The node value is a dict with a mandatory keys: id, type, status.
@@ -247,7 +247,7 @@ class Project:
         self._nodes = {node.pop('name'): node for node in json['nodes']}
         return self._nodes
 
-    def get_execution_statistics(self) -> Tuple[_Nodes, Dict[str, int]]:
+    def get_execution_statistics(self) -> Tuple[Nodes, Dict[str, int]]:
         """Returns the execution statistics for nodes in the project.
 
         Similar to :func:`~api.Project.get_nodes` but nodes contains extra
@@ -302,7 +302,7 @@ class Project:
             for node in nodes:
                 self.wait_for_completion(node)
 
-    def preview(self, node: str) -> _DataSet:
+    def preview(self, node: str) -> DataSet:
         """Returns first 1000 rows of data from ``node``, texts and strings are
         cutoff after 250 symbols.
 
