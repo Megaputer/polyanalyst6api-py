@@ -295,6 +295,8 @@ class Project:
 
         :raises APIException if any of nodes is not configured properly
         """
+        nodes = list({}.fromkeys(nodes))
+
         self.get_nodes()
         for node in nodes:
             if self._nodes[node]['status'] == 'incomplete':
