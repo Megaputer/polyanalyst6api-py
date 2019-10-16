@@ -36,7 +36,7 @@
 <p>This page contains specific information on the polyanalyst6api package classes and methods.</p>
 <dl class="class">
 <dt id="polyanalyst6api.api.API">
-<em class="property">class </em><code class="descclassname">polyanalyst6api.api.</code><code class="descname">API</code><span class="sig-paren">(</span><em>url</em>, <em>username</em>, <em>password=''</em>, <em>version='1.0'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">polyanalyst6api.api.</code><code class="descname">API</code><span class="sig-paren">(</span><em>url</em>, <em>username</em>, <em>password=''</em>, <em>ldap_server=None</em>, <em>version='1.0'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API" title="Permalink to this definition">¶</a></dt>
 <dd><p>PolyAnalyst API</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -47,6 +47,7 @@
 (e.g. <code class="docutils literal notranslate"><span class="pre">https://localhost:5043/</span></code>, <code class="docutils literal notranslate"><span class="pre">http://example.polyanalyst.com</span></code> .etc)</li>
 <li><strong>username</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The username to login with</li>
 <li><strong>password</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (optional) The password for specified username</li>
+<li><strong>ldap_server</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – (optional) LDAP Server address</li>
 <li><strong>version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (optional) Choose which PolyAnalyst API version to use.
 Default: <code class="docutils literal notranslate"><span class="pre">1.0</span></code></li>
 </ul>
@@ -54,6 +55,7 @@ Default: <code class="docutils literal notranslate"><span class="pre">1.0</span>
 </tr>
 </tbody>
 </table>
+<p>If ldap_server is provided, then login will be performed via LDAP Server.</p>
 <p>Usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">polyanalyst6api</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">polyanalyst6api</span><span class="o">.</span><span class="n">API</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">USERNAME</span><span class="p">,</span> <span class="n">PASSWORD</span><span class="p">)</span>
@@ -269,6 +271,7 @@ cannot be undone.</p>
 <dt id="polyanalyst6api.api.Project.execute">
 <code class="descname">execute</code><span class="sig-paren">(</span><em>*nodes</em>, <em>wait=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#Project.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.Project.execute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initiate execution of nodes and their children.</p>
+<p>Make sure to sort nodes by the execution flow order when passing multiple nodes and wait is True.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -283,12 +286,14 @@ cannot be undone.</p>
 </table>
 <p>Usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prj</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;Python&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">prj</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;Internet Source&#39;</span><span class="p">,</span> <span class="s1">&#39;Export to File&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Execute all nodes in project(assuming there’s no connection between them):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prj</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="o">*</span><span class="n">prj</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">())</span>
 </pre></div>
 </div>
+<p>:raises APIException if any of nodes is not configured properly</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -439,8 +444,8 @@ cutoff after 250 symbols.</p>
 <dl class="method">
 <dt id="polyanalyst6api.api.Project.wait_for_completion">
 <code class="descname">wait_for_completion</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#Project.wait_for_completion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.Project.wait_for_completion" title="Permalink to this definition">¶</a></dt>
-<dd><p>Waits for the node to complete the execution, returns False if node
-failed at execution or True otherwise.</p>
+<dd><p>Waits for the node to complete the execution. Returns True if node have completed successfully and
+False otherwise.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

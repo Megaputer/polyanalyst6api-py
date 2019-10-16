@@ -94,8 +94,11 @@
 <span class="sd">        (e.g. ``https://localhost:5043/``, ``http://example.polyanalyst.com`` .etc)</span>
 <span class="sd">    :param username: The username to login with</span>
 <span class="sd">    :param password: (optional) The password for specified username</span>
+<span class="sd">    :param ldap_server: (optional) LDAP Server address</span>
 <span class="sd">    :param version: (optional) Choose which PolyAnalyst API version to use.</span>
 <span class="sd">        Default: ``1.0``</span>
+
+<span class="sd">    If ldap_server is provided, then login will be performed via LDAP Server.</span>
 
 <span class="sd">    Usage::</span>
 
@@ -125,6 +128,7 @@
         <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">password</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="n">ldap_server</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;1.0&#39;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">version</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valid_api_versions</span><span class="p">:</span>
@@ -134,6 +138,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">,</span> <span class="n">f</span><span class="s1">&#39;v</span><span class="si">{version}</span><span class="s1">/&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ldap_server</span> <span class="o">=</span> <span class="n">ldap_server</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_s</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_s</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span><span class="p">})</span>
@@ -159,10 +164,15 @@
 
 <div class="viewcode-block" id="API.login"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.API.login">[docs]</a>    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Logs in to PolyAnalyst Server with user credentials.&quot;&quot;&quot;</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;uname&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="s1">&#39;pwd&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ldap_server</span><span class="p">:</span>
+            <span class="n">credentials</span><span class="p">[</span><span class="s1">&#39;useLDAP&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">credentials</span><span class="p">[</span><span class="s1">&#39;svr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ldap_server</span>
+
         <span class="n">resp</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
             <span class="s1">&#39;login&#39;</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="p">,</span>
-            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;uname&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="s1">&#39;pwd&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">},</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sid</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">cookies</span><span class="p">[</span><span class="s1">&#39;sid&#39;</span><span class="p">]</span></div>
 
@@ -313,18 +323,29 @@
 <div class="viewcode-block" id="Project.execute"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">nodes</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">wait</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Initiate execution of nodes and their children.</span>
 
+<span class="sd">        Make sure to sort nodes by the execution flow order when passing multiple nodes and wait is True.</span>
+
 <span class="sd">        :param nodes: The node names</span>
 <span class="sd">        :param wait: Wait for nodes to complete execution</span>
 
 <span class="sd">        Usage::</span>
 
 <span class="sd">          &gt;&gt;&gt; prj.execute(&#39;Python&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; prj.execute(&#39;Internet Source&#39;, &#39;Export to File&#39;)</span>
 
 <span class="sd">        Execute all nodes in project(assuming there&#39;s no connection between them)::</span>
 
 <span class="sd">          &gt;&gt;&gt; prj.execute(*prj.get_nodes())</span>
 
+<span class="sd">        :raises APIException if any of nodes is not configured properly</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">({}</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">nodes</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;incomplete&#39;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">APIException</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Cannot execute &quot;</span><span class="si">{node}</span><span class="s1">&quot;. The node is not configured properly.&#39;</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
             <span class="s1">&#39;project/execute&#39;</span><span class="p">,</span>
             <span class="n">json</span><span class="o">=</span><span class="p">{</span>
@@ -403,8 +424,8 @@
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Project.wait_for_completion"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.wait_for_completion">[docs]</a>    <span class="k">def</span> <span class="nf">wait_for_completion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Waits for the node to complete the execution, returns False if node</span>
-<span class="sd">        failed at execution or True otherwise.</span>
+        <span class="sd">&quot;&quot;&quot;Waits for the node to complete the execution. Returns True if node have completed successfully and</span>
+<span class="sd">        False otherwise.</span>
 
 <span class="sd">        :param node: The node name</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -414,6 +435,8 @@
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="k">if</span> <span class="n">stats</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;synchronized&#39;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">stats</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;incomplete&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.</span><span class="p">)</span></div></div>
 </pre></div>
 
