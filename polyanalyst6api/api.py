@@ -60,8 +60,11 @@ class API:
         (e.g. ``https://localhost:5043/``, ``http://example.polyanalyst.com`` .etc)
     :param username: The username to login with
     :param password: (optional) The password for specified username
+    :param ldap_server: (optional) LDAP Server address
     :param version: (optional) Choose which PolyAnalyst API version to use.
         Default: ``1.0``
+
+    If ldap_server is provided, then login will be performed via LDAP Server.
 
     Usage::
 
@@ -91,6 +94,7 @@ class API:
         url: str,
         username: str,
         password: str = '',
+        ldap_server: Optional[str] = None,
         version: str = '1.0',
     ) -> None:
         if version not in self._valid_api_versions:
@@ -100,6 +104,7 @@ class API:
         self.url = urljoin(self.base_url, f'v{version}/')
         self.username = username
         self.password = password
+        self.ldap_server = ldap_server
 
         self._s = requests.Session()
         self._s.headers.update({'User-Agent': self.user_agent})
@@ -125,10 +130,15 @@ class API:
 
     def login(self) -> None:
         """Logs in to PolyAnalyst Server with user credentials."""
+        credentials = {'uname': self.username, 'pwd': self.password}
+        if self.ldap_server:
+            credentials['useLDAP'] = 1
+            credentials['svr'] = self.ldap_server
+
         resp, _ = self.request(
             'login',
             method='post',
-            params={'uname': self.username, 'pwd': self.password},
+            params=credentials,
         )
         self.sid = resp.cookies['sid']
 
