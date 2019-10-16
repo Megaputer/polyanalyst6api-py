@@ -285,6 +285,7 @@ class Project:
         Usage::
 
           >>> prj.execute('Python')
+          >>> prj.execute('Internet Source', 'Export to File')
 
         Execute all nodes in project(assuming there's no connection between them)::
 
