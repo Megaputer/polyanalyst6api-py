@@ -291,7 +291,13 @@ class Project:
 
           >>> prj.execute(*prj.get_nodes())
 
+        :raises APIException if any of nodes is not configured properly
         """
+        self.get_nodes()
+        for node in nodes:
+            if self._nodes[node]['status'] == 'incomplete':
+                raise APIException(f'Cannot execute "{node}". The node is not configured properly.')
+
         self.api.post(
             'project/execute',
             json={
