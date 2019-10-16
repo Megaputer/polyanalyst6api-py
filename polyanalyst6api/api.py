@@ -279,6 +279,8 @@ class Project:
     def execute(self, *nodes: str, wait: bool = False) -> None:
         """Initiate execution of nodes and their children.
 
+        Make sure to sort nodes by the execution flow order when passing multiple nodes and wait is True.
+
         :param nodes: The node names
         :param wait: Wait for nodes to complete execution
 
