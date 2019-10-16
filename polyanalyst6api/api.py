@@ -376,8 +376,8 @@ class Project:
                 warnings.warn(msg)
 
     def wait_for_completion(self, node: str) -> bool:
-        """Waits for the node to complete the execution, returns False if node
-        failed at execution or True otherwise.
+        """Waits for the node to complete the execution. Returns True if node have completed successfully and
+        False otherwise.
 
         :param node: The node name
         """
@@ -387,4 +387,6 @@ class Project:
                 return False
             if stats['status'] == 'synchronized':
                 return True
+            elif stats['status'] == 'incomplete':
+                return False
             time.sleep(1.)
