@@ -100,6 +100,9 @@ class API:
         if version not in self._valid_api_versions:
             raise ClientException('Valid api versions are ' + ', '.join(self._valid_api_versions))
 
+        if not url:
+            raise ClientException(f'Invalid url: "{url}".')
+
         self.base_url = urljoin(url, self._api_path)
         self.url = urljoin(self.base_url, f'v{version}/')
         self.username = username
