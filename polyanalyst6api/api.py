@@ -109,6 +109,8 @@ class API:
         self.password = password
         self.ldap_server = ldap_server
 
+        self.fs = RemoteFileSystem(self)
+
         self._s = requests.Session()
         self._s.headers.update({'User-Agent': self.user_agent})
         self.sid = ''  # session identity
@@ -229,6 +231,55 @@ class API:
             raise APIException(error_msg, response.url, response.status_code)
 
         raise ClientException('An error occurred processing your request')
+
+
+class RemoteFileSystem:
+    def __init__(self, api: API):
+        self.api = api
+
+    def create_folder(self, name: str, path: str = '') -> None:
+        """
+        Create a new folder inside the PolyAnalyst user directory.
+
+        :param name: the folder name
+        :param path: a relative path of the folder's parent directory
+        """
+        self.api.get('folder/create', json={'path': path, 'name': name})
+
+    def delete_folder(self, name: str, path: str = '') -> None:
+        """
+        Delete the folder in the PolyAnalyst user directory.
+
+        :param name: the folder name
+        :param path: a relative path of the folder's parent directory
+        """
+        self.api.get('folder/delete', json={'path': path, 'name': name})
+
+    def delete_file(self, name: str, path: str = '') -> None:
+        """
+        Delete the file in the PolyAnalyst user directory.
+
+        :param name: the filename
+        :param path: a relative path of the file's parent directory
+        """
+        self.api.get('file/delete', json={'path': path, 'name': name})
+
+    def download_file(self, name: str, path: str = '') -> bytes:
+        """
+        Download the binary content of the file.
+        :param name: the filename
+        :param path: a relative path of the file's parent directory
+        """
+        data = self.api.get('file/download', json={'path': path, 'name': name})
+        resp, _ = self.api.request(
+            urljoin(self.api.url, '/polyanalyst/download'),
+            method='get',
+            params={'uid': data['uid']}
+        )
+        return resp.content
+
+    def upload_file(self):
+        return NotImplemented
 
 
 class Project:
