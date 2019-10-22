@@ -239,7 +239,7 @@ class RemoteFileSystem:
 
     def create_folder(self, name: str, path: str = '') -> None:
         """
-        Create a new folder inside the PolyAnalyst user directory.
+        Create a new folder inside the PolyAnalyst's user directory.
 
         :param name: the folder name
         :param path: a relative path of the folder's parent directory
@@ -248,7 +248,7 @@ class RemoteFileSystem:
 
     def delete_folder(self, name: str, path: str = '') -> None:
         """
-        Delete the folder in the PolyAnalyst user directory.
+        Delete the folder in the PolyAnalyst's user directory.
 
         :param name: the folder name
         :param path: a relative path of the folder's parent directory
@@ -257,7 +257,7 @@ class RemoteFileSystem:
 
     def delete_file(self, name: str, path: str = '') -> None:
         """
-        Delete the file in the PolyAnalyst user directory.
+        Delete the file in the PolyAnalyst's user directory.
 
         :param name: the filename
         :param path: a relative path of the file's parent directory
@@ -267,6 +267,7 @@ class RemoteFileSystem:
     def download_file(self, name: str, path: str = '') -> bytes:
         """
         Download the binary content of the file.
+
         :param name: the filename
         :param path: a relative path of the file's parent directory
         """
