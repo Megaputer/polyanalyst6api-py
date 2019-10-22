@@ -9,9 +9,10 @@ import contextlib
 import datetime
 import time
 import warnings
-from typing import Any, Dict, List, Tuple, Union, Optional
+from typing import Any, Dict, List, Tuple, Union, Optional, IO
 from urllib.parse import urljoin, urlparse
 
+import pytus
 import requests
 import urllib3
 
@@ -279,8 +280,26 @@ class RemoteFileSystem:
         )
         return resp.content
 
-    def upload_file(self):
-        return NotImplemented
+    def upload_file(self, file: IO, name: Optional[str] = None, path: Optional[str] = None) -> None:
+        """
+        Upload the file to the PolyAnalyst's user directory.
+
+        :param file: the file or file-like object to upload
+        :param name: (optional) the filename other than `file`'s name
+        :param path: (optional) a relative path of the file's parent directory
+
+        Usage:
+            >>> fs = RemoteFileSystem(...)
+            >>> with open('CarData.csv', mode='rb') as file:
+            >>>     fs.upload_file(file, name='cars.csv', path='/data')
+        """
+        pytus.upload(
+            file,
+            urljoin(self.api.url, 'file/upload'),
+            file_name=name,
+            session=self.api._s,
+            metadata={'foldername': path}
+        )
 
 
 class Project:
