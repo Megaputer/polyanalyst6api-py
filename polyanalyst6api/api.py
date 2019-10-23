@@ -295,6 +295,10 @@ class RemoteFileSystem:
             >>> with open('CarData.csv', mode='rb') as file:
             >>>     fs.upload_file(file, name='cars.csv', path='/data')
         """
+        if file.tell():
+            warnings.warn("The file object's current position is not at the beginning of the file."
+                          "This will result in uploading only the part of the file!")
+
         pytus.upload(
             file,
             urljoin(self.api.url, 'file/upload'),
