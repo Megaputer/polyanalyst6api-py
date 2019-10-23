@@ -17,7 +17,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.6"
 requests = "^2.19"
-pytus = "^0.1.0"
+pytus = "^0.2.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
