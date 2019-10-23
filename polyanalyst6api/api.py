@@ -280,7 +280,7 @@ class RemoteFileSystem:
         )
         return resp.content
 
-    def upload_file(self, file: IO, name: Optional[str] = None, path: Optional[str] = None) -> None:
+    def upload_file(self, file: IO, name: Optional[str] = None, path: str = '') -> None:
         """
         Upload the file to the PolyAnalyst's user directory.
 
