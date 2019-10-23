@@ -284,6 +284,8 @@ class RemoteFileSystem:
         """
         Upload the file to the PolyAnalyst's user directory.
 
+        Make sure to always create a new file or file-like object for every `upload_file` call!
+
         :param file: the file or file-like object to upload
         :param name: (optional) the filename other than `file`'s name
         :param path: (optional) a relative path of the file's parent directory
