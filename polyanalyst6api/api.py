@@ -159,7 +159,7 @@ class API:
 
     def project(self, uuid: str) -> 'Project':
         """Checks project with given uuid on existence and returns
-        :class:`Project` instance.
+        :class:`Project <Project>` instance.
 
         :param uuid: The project uuid
         """
@@ -168,7 +168,7 @@ class API:
         return prj
 
     def get(self, endpoint: str, **kwargs) -> Any:
-        """Shortcut for GET requests via :func:`~api.API.request`
+        """Shortcut for GET requests via :meth:`request <API.request>`
 
         :param endpoint: PolyAnalyst API endpoint
         :param kwargs: :func:`requests.request` keyword arguments
@@ -176,7 +176,7 @@ class API:
         return self.request(endpoint, method='get', **kwargs)[1]
 
     def post(self, endpoint: str, **kwargs) -> Any:
-        """Shortcut for POST requests via :func:`~api.API.request`
+        """Shortcut for POST requests via :meth:`request <API.request>`
 
         :param endpoint: PolyAnalyst API endpoint
         :param kwargs: :func:`requests.request` keyword arguments
@@ -244,15 +244,15 @@ class RemoteFileSystem:
         """
         Upload file or folder to PolyAnalyst server.
 
-        Pass `recursive` as False to just create folder on the server without
+        Pass ``recursive`` as False to just create folder on the server without
         uploading inner files and folders.
 
         :param source: path to the file or folder
         :param dest: (optional) path to the folder in the PolyAnalyst's user directory
         :param recursive: (optional) upload subdirectories recursively
 
-        :raise TypeError if `source` is not string or path-like object
-        :raise ValueError if `source` does not exists
+        :raise TypeError if ``source`` is not string or path-like object.
+               ValueError if ``source`` does not exists
         """
         if not isinstance(source, (str, os.PathLike)):
             raise TypeError('The source parameter should be either string or path-like object.')
@@ -358,7 +358,7 @@ class RemoteFileSystem:
 class Project:
     """This class maintains all operations with the PolyAnalyst's project and nodes.
 
-    :param api: An instance of API class
+    :param api: An instance of :class:`API <API>` class
     :param uuid: The uuid of the project you want to interact with
     """
 
@@ -387,8 +387,8 @@ class Project:
     def get_execution_statistics(self) -> Tuple[Nodes, Dict[str, int]]:
         """Returns the execution statistics for nodes in the project.
 
-        Similar to :func:`~api.Project.get_nodes` but nodes contains extra
-            information and the project statistics.
+        Similar to :meth:`get_nodes() <Project.get_nodes>` but nodes contains
+        extra information and the project statistics.
         """
         json = self.api.get(
             'project/execution-statistics',
@@ -416,7 +416,8 @@ class Project:
     def execute(self, *nodes: str, wait: bool = False) -> None:
         """Initiate execution of nodes and their children.
 
-        Make sure to sort nodes by the execution flow order when passing multiple nodes and wait is True.
+        Make sure to sort nodes by the execution flow order when passing
+        multiple nodes and wait is True.
 
         :param nodes: The node names
         :param wait: Wait for nodes to complete execution
@@ -455,7 +456,7 @@ class Project:
         cutoff after 250 symbols.
 
         :param node: The node name
-        :raises: APIException when node type is not Dataset or DataSource
+        :raises: :class:`APIException <APIException>` when node type is not Dataset or DataSource
         """
         node_type = self._nodes[node]['type']
         if node_type not in ('Dataset', 'DataSource'):
