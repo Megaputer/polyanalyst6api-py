@@ -1,3 +1,12 @@
+0.9.0 (2019-10-24)
+==================
+
+Features
+--------
+
+- Add `upload` method to `RemoteFileSysem` class which encapsulates bare api level `upload_file` and `upload_folder` methods (#3)
+
+
 0.8.2 (2019-10-23)
 ==================
 
