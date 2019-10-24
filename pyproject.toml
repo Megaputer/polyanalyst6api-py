@@ -6,7 +6,8 @@ authors = ["yatmanov <yatmanov@megaputer.ru>"]
 license = "MIT"
 readme = "README.md"
 
-homepage = "https://github.com/Megaputer/polyanalyst6api-python"
+repository = "https://github.com/Megaputer/polyanalyst6api-python/"
+documentation = "https://megaputer.github.io/polyanalyst6api-python/"
 
 keywords = ["megaputer", "polyanalyst", "polyanalyst6api", "api"]
 
