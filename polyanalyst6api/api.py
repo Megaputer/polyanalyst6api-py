@@ -63,7 +63,7 @@ class API:
         (e.g. ``https://localhost:5043/``, ``http://example.polyanalyst.com`` .etc)
     :param username: The username to login with
     :param password: (optional) The password for specified username
-    :param ldap_server: (optional) LDAP Server address
+    :param ldap_server: LDAP Server address
     :param version: (optional) Choose which PolyAnalyst API version to use.
         Default: ``1.0``
 
@@ -334,7 +334,7 @@ class RemoteFileSystem:
            Always prefer :meth:`upload <RemoteFileSystem.upload>` over this method.
 
         :param file: the file or file-like object to upload
-        :param name: (optional) the filename other than `file`'s name
+        :param name: the filename other than `file`'s name
         :param path: (optional) a relative path of the file's parent directory
 
         Usage:
