@@ -24,3 +24,10 @@ pytest = "^3.0"
 sphinx = "^1.8"
 sphinx-autodoc-typehints = "1.6.0"
 towncrier = "^19.2"
+
+[tool.towncrier]
+package = "polyanalyst6api"
+package_dir = "polyanalyst6api"
+filename = "CHANGELOG.md"
+directory = "CHANGES"
+title_format = "{version} ({project_date})"
