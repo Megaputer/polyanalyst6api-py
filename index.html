@@ -70,7 +70,7 @@ Default: <code class="docutils literal notranslate"><span class="pre">1.0</span>
 <dl class="method">
 <dt id="polyanalyst6api.api.API.get">
 <code class="descname">get</code><span class="sig-paren">(</span><em>endpoint</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shortcut for GET requests via <code class="xref py py-func docutils literal notranslate"><span class="pre">request()</span></code></p>
+<dd><p>Shortcut for GET requests via <a class="reference internal" href="#polyanalyst6api.api.API.request" title="polyanalyst6api.api.API.request"><code class="xref py py-meth docutils literal notranslate"><span class="pre">request</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -134,7 +134,7 @@ for each repository.</p>
 <dl class="method">
 <dt id="polyanalyst6api.api.API.post">
 <code class="descname">post</code><span class="sig-paren">(</span><em>endpoint</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.post" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shortcut for POST requests via <code class="xref py py-func docutils literal notranslate"><span class="pre">request()</span></code></p>
+<dd><p>Shortcut for POST requests via <a class="reference internal" href="#polyanalyst6api.api.API.request" title="polyanalyst6api.api.API.request"><code class="xref py py-meth docutils literal notranslate"><span class="pre">request</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -211,6 +211,173 @@ for each repository.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="polyanalyst6api.api.RemoteFileSystem">
+<em class="property">class </em><code class="descclassname">polyanalyst6api.api.</code><code class="descname">RemoteFileSystem</code><span class="sig-paren">(</span><em>api</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#RemoteFileSystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.RemoteFileSystem" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="polyanalyst6api.api.RemoteFileSystem.create_folder">
+<code class="descname">create_folder</code><span class="sig-paren">(</span><em>name</em>, <em>path=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#RemoteFileSystem.create_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.RemoteFileSystem.create_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new folder inside the PolyAnalyst’s user directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the folder name</li>
+<li><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a relative path of the folder’s parent directory</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="polyanalyst6api.api.RemoteFileSystem.delete_file">
+<code class="descname">delete_file</code><span class="sig-paren">(</span><em>name</em>, <em>path=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#RemoteFileSystem.delete_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.RemoteFileSystem.delete_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the file in the PolyAnalyst’s user directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the filename</li>
+<li><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a relative path of the file’s parent directory</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="polyanalyst6api.api.RemoteFileSystem.delete_folder">
+<code class="descname">delete_folder</code><span class="sig-paren">(</span><em>name</em>, <em>path=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#RemoteFileSystem.delete_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.RemoteFileSystem.delete_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the folder in the PolyAnalyst’s user directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the folder name</li>
+<li><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a relative path of the folder’s parent directory</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="polyanalyst6api.api.RemoteFileSystem.download_file">
+<code class="descname">download_file</code><span class="sig-paren">(</span><em>name</em>, <em>path=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#RemoteFileSystem.download_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.RemoteFileSystem.download_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download the binary content of the file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the filename</li>
+<li><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a relative path of the file’s parent directory</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="polyanalyst6api.api.RemoteFileSystem.upload">
+<code class="descname">upload</code><span class="sig-paren">(</span><em>source</em>, <em>dest=''</em>, <em>recursive=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#RemoteFileSystem.upload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.RemoteFileSystem.upload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload file or folder to PolyAnalyst server.</p>
+<p>Pass <code class="docutils literal notranslate"><span class="pre">recursive</span></code> as False to just create folder on the server without
+uploading inner files and folders.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>source</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PathLike</span></code>]) – path to the file or folder</li>
+<li><strong>dest</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (optional) path to the folder in the PolyAnalyst’s user directory</li>
+<li><strong>recursive</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – (optional) upload subdirectories recursively</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>:raise TypeError if <code class="docutils literal notranslate"><span class="pre">source</span></code> is not string or path-like object.</dt>
+<dd>ValueError if <code class="docutils literal notranslate"><span class="pre">source</span></code> does not exists</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="polyanalyst6api.api.RemoteFileSystem.upload_file">
+<code class="descname">upload_file</code><span class="sig-paren">(</span><em>file</em>, <em>name=None</em>, <em>path=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#RemoteFileSystem.upload_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.RemoteFileSystem.upload_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload the file to the PolyAnalyst’s user directory.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Make sure to create a new file or file-like object for every
+<a class="reference internal" href="#polyanalyst6api.api.RemoteFileSystem.upload_file" title="polyanalyst6api.api.RemoteFileSystem.upload_file"><code class="xref py py-meth docutils literal notranslate"><span class="pre">upload_file</span></code></a> call!</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Always prefer <a class="reference internal" href="#polyanalyst6api.api.RemoteFileSystem.upload" title="polyanalyst6api.api.RemoteFileSystem.upload"><code class="xref py py-meth docutils literal notranslate"><span class="pre">upload</span></code></a> over this method.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>file</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Io</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">AnyStr</span></code>]) – the file or file-like object to upload</li>
+<li><strong>name</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – (optional) the filename other than <cite>file</cite>’s name</li>
+<li><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (optional) a relative path of the file’s parent directory</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Usage:</dt>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span> <span class="o">=</span> <span class="n">RemoteFileSystem</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;CarData.csv&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">fs</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;cars.csv&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/data&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="polyanalyst6api.api.Project">
 <em class="property">class </em><code class="descclassname">polyanalyst6api.api.</code><code class="descname">Project</code><span class="sig-paren">(</span><em>api</em>, <em>uuid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#Project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.Project" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class maintains all operations with the PolyAnalyst’s project and nodes.</p>
@@ -219,7 +386,7 @@ for each repository.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>api</strong> (<a class="reference internal" href="#polyanalyst6api.api.API" title="polyanalyst6api.api.API"><code class="xref py py-class docutils literal notranslate"><span class="pre">API</span></code></a>) – An instance of API class</li>
+<li><strong>api</strong> (<a class="reference internal" href="#polyanalyst6api.api.API" title="polyanalyst6api.api.API"><code class="xref py py-class docutils literal notranslate"><span class="pre">API</span></code></a>) – An instance of <a class="reference internal" href="#polyanalyst6api.api.API" title="polyanalyst6api.api.API"><code class="xref py py-class docutils literal notranslate"><span class="pre">API</span></code></a> class</li>
 <li><strong>uuid</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The uuid of the project you want to interact with</li>
 </ul>
 </td>
@@ -271,7 +438,8 @@ cannot be undone.</p>
 <dt id="polyanalyst6api.api.Project.execute">
 <code class="descname">execute</code><span class="sig-paren">(</span><em>*nodes</em>, <em>wait=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#Project.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.Project.execute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initiate execution of nodes and their children.</p>
-<p>Make sure to sort nodes by the execution flow order when passing multiple nodes and wait is True.</p>
+<p>Make sure to sort nodes by the execution flow order when passing
+multiple nodes and wait is True.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -308,10 +476,8 @@ cannot be undone.</p>
 <dt id="polyanalyst6api.api.Project.get_execution_statistics">
 <code class="descname">get_execution_statistics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#Project.get_execution_statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.Project.get_execution_statistics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the execution statistics for nodes in the project.</p>
-<dl class="docutils">
-<dt>Similar to <code class="xref py py-func docutils literal notranslate"><span class="pre">get_nodes()</span></code> but nodes contains extra</dt>
-<dd>information and the project statistics.</dd>
-</dl>
+<p>Similar to <a class="reference internal" href="#polyanalyst6api.api.Project.get_nodes" title="polyanalyst6api.api.Project.get_nodes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_nodes()</span></code></a> but nodes contains
+extra information and the project statistics.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -363,7 +529,7 @@ cutoff after 250 symbols.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The node name</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">APIException when node type is not Dataset or DataSource</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">APIException</span></code> when node type is not Dataset or DataSource</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]]</td>
 </tr>

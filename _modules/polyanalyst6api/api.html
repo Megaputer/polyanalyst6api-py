@@ -41,11 +41,14 @@
 
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">IO</span>
 <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="k">import</span> <span class="n">urljoin</span><span class="p">,</span> <span class="n">urlparse</span>
 
+<span class="kn">import</span> <span class="nn">pytus</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">urllib3</span>
 
@@ -134,11 +137,16 @@
         <span class="k">if</span> <span class="n">version</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valid_api_versions</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ClientException</span><span class="p">(</span><span class="s1">&#39;Valid api versions are &#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_valid_api_versions</span><span class="p">))</span>
 
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">url</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ClientException</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Invalid url: &quot;</span><span class="si">{url}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api_path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">,</span> <span class="n">f</span><span class="s1">&#39;v</span><span class="si">{version}</span><span class="s1">/&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ldap_server</span> <span class="o">=</span> <span class="n">ldap_server</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fs</span> <span class="o">=</span> <span class="n">RemoteFileSystem</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_s</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_s</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span><span class="p">})</span>
@@ -185,7 +193,7 @@
 
 <div class="viewcode-block" id="API.project"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.API.project">[docs]</a>    <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Project&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Checks project with given uuid on existence and returns</span>
-<span class="sd">        :class:`Project` instance.</span>
+<span class="sd">        :class:`Project &lt;Project&gt;` instance.</span>
 
 <span class="sd">        :param uuid: The project uuid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -194,7 +202,7 @@
         <span class="k">return</span> <span class="n">prj</span></div>
 
 <div class="viewcode-block" id="API.get"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.API.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Shortcut for GET requests via :func:`~api.API.request`</span>
+        <span class="sd">&quot;&quot;&quot;Shortcut for GET requests via :meth:`request &lt;API.request&gt;`</span>
 
 <span class="sd">        :param endpoint: PolyAnalyst API endpoint</span>
 <span class="sd">        :param kwargs: :func:`requests.request` keyword arguments</span>
@@ -202,7 +210,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="API.post"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.API.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Shortcut for POST requests via :func:`~api.API.request`</span>
+        <span class="sd">&quot;&quot;&quot;Shortcut for POST requests via :meth:`request &lt;API.request&gt;`</span>
 
 <span class="sd">        :param endpoint: PolyAnalyst API endpoint</span>
 <span class="sd">        :param kwargs: :func:`requests.request` keyword arguments</span>
@@ -262,10 +270,129 @@
         <span class="k">raise</span> <span class="n">ClientException</span><span class="p">(</span><span class="s1">&#39;An error occurred processing your request&#39;</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="RemoteFileSystem"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.RemoteFileSystem">[docs]</a><span class="k">class</span> <span class="nc">RemoteFileSystem</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">:</span> <span class="n">API</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api</span> <span class="o">=</span> <span class="n">api</span>
+
+<div class="viewcode-block" id="RemoteFileSystem.upload"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.RemoteFileSystem.upload">[docs]</a>    <span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">dest</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Upload file or folder to PolyAnalyst server.</span>
+
+<span class="sd">        Pass ``recursive`` as False to just create folder on the server without</span>
+<span class="sd">        uploading inner files and folders.</span>
+
+<span class="sd">        :param source: path to the file or folder</span>
+<span class="sd">        :param dest: (optional) path to the folder in the PolyAnalyst&#39;s user directory</span>
+<span class="sd">        :param recursive: (optional) upload subdirectories recursively</span>
+
+<span class="sd">        :raise TypeError if ``source`` is not string or path-like object.</span>
+<span class="sd">               ValueError if ``source`` does not exists</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The source parameter should be either string or path-like object.&#39;</span><span class="p">)</span>
+
+        <span class="n">source</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">source</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Cannot find &#39;</span><span class="si">{source}</span><span class="s2">&#39;: No such file or directory.&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">_upload</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">dest_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                <span class="k">with</span> <span class="n">target</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">dest_dir</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">target</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">create_folder</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">dest_dir</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">APIException</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;Folder already exists&#39;</span> <span class="ow">in</span> <span class="n">exc</span><span class="o">.</span><span class="n">message</span><span class="p">:</span>
+                        <span class="k">pass</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span>
+
+                <span class="k">if</span> <span class="n">recursive</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">target</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+                        <span class="n">_upload</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{dest_dir}</span><span class="s1">/</span><span class="si">{target.name}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">_upload</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RemoteFileSystem.create_folder"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.RemoteFileSystem.create_folder">[docs]</a>    <span class="k">def</span> <span class="nf">create_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new folder inside the PolyAnalyst&#39;s user directory.</span>
+
+<span class="sd">        :param name: the folder name</span>
+<span class="sd">        :param path: a relative path of the folder&#39;s parent directory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder/create&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="RemoteFileSystem.delete_folder"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.RemoteFileSystem.delete_folder">[docs]</a>    <span class="k">def</span> <span class="nf">delete_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete the folder in the PolyAnalyst&#39;s user directory.</span>
+
+<span class="sd">        :param name: the folder name</span>
+<span class="sd">        :param path: a relative path of the folder&#39;s parent directory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder/delete&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="RemoteFileSystem.delete_file"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.RemoteFileSystem.delete_file">[docs]</a>    <span class="k">def</span> <span class="nf">delete_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete the file in the PolyAnalyst&#39;s user directory.</span>
+
+<span class="sd">        :param name: the filename</span>
+<span class="sd">        :param path: a relative path of the file&#39;s parent directory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file/delete&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="RemoteFileSystem.download_file"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.RemoteFileSystem.download_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Download the binary content of the file.</span>
+
+<span class="sd">        :param name: the filename</span>
+<span class="sd">        :param path: a relative path of the file&#39;s parent directory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file/download&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">})</span>
+        <span class="n">resp</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="n">urljoin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="s1">&#39;/polyanalyst/download&#39;</span><span class="p">),</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;get&#39;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;uid&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;uid&#39;</span><span class="p">]}</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">content</span></div>
+
+<div class="viewcode-block" id="RemoteFileSystem.upload_file"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.RemoteFileSystem.upload_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">IO</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Upload the file to the PolyAnalyst&#39;s user directory.</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            Make sure to create a new file or file-like object for every</span>
+<span class="sd">            :meth:`upload_file &lt;RemoteFileSystem.upload_file&gt;` call!</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">           Always prefer :meth:`upload &lt;RemoteFileSystem.upload&gt;` over this method.</span>
+
+<span class="sd">        :param file: the file or file-like object to upload</span>
+<span class="sd">        :param name: (optional) the filename other than `file`&#39;s name</span>
+<span class="sd">        :param path: (optional) a relative path of the file&#39;s parent directory</span>
+
+<span class="sd">        Usage:</span>
+<span class="sd">            &gt;&gt;&gt; fs = RemoteFileSystem(...)</span>
+<span class="sd">            &gt;&gt;&gt; with open(&#39;CarData.csv&#39;, mode=&#39;rb&#39;) as file:</span>
+<span class="sd">            &gt;&gt;&gt;     fs.upload_file(file, name=&#39;cars.csv&#39;, path=&#39;/data&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">tell</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The file object&#39;s current position is not at the beginning of the file.&quot;</span>
+                          <span class="s2">&quot;This will result in uploading only the part of the file!&quot;</span><span class="p">)</span>
+
+        <span class="n">pytus</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span>
+            <span class="n">file</span><span class="p">,</span>
+            <span class="n">urljoin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="s1">&#39;file/upload&#39;</span><span class="p">),</span>
+            <span class="n">file_name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">_s</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;foldername&#39;</span><span class="p">:</span> <span class="n">path</span><span class="p">}</span>
+        <span class="p">)</span></div></div>
+
+
 <div class="viewcode-block" id="Project"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;This class maintains all operations with the PolyAnalyst&#39;s project and nodes.</span>
 
-<span class="sd">    :param api: An instance of API class</span>
+<span class="sd">    :param api: An instance of :class:`API &lt;API&gt;` class</span>
 <span class="sd">    :param uuid: The uuid of the project you want to interact with</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -294,8 +421,8 @@
 <div class="viewcode-block" id="Project.get_execution_statistics"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.get_execution_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">get_execution_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Nodes</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Returns the execution statistics for nodes in the project.</span>
 
-<span class="sd">        Similar to :func:`~api.Project.get_nodes` but nodes contains extra</span>
-<span class="sd">            information and the project statistics.</span>
+<span class="sd">        Similar to :meth:`get_nodes() &lt;Project.get_nodes&gt;` but nodes contains</span>
+<span class="sd">        extra information and the project statistics.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
             <span class="s1">&#39;project/execution-statistics&#39;</span><span class="p">,</span>
@@ -323,7 +450,8 @@
 <div class="viewcode-block" id="Project.execute"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">nodes</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">wait</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Initiate execution of nodes and their children.</span>
 
-<span class="sd">        Make sure to sort nodes by the execution flow order when passing multiple nodes and wait is True.</span>
+<span class="sd">        Make sure to sort nodes by the execution flow order when passing</span>
+<span class="sd">        multiple nodes and wait is True.</span>
 
 <span class="sd">        :param nodes: The node names</span>
 <span class="sd">        :param wait: Wait for nodes to complete execution</span>
@@ -362,7 +490,7 @@
 <span class="sd">        cutoff after 250 symbols.</span>
 
 <span class="sd">        :param node: The node name</span>
-<span class="sd">        :raises: APIException when node type is not Dataset or DataSource</span>
+<span class="sd">        :raises: :class:`APIException &lt;APIException&gt;` when node type is not Dataset or DataSource</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">node_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">node_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;Dataset&#39;</span><span class="p">,</span> <span class="s1">&#39;DataSource&#39;</span><span class="p">):</span>

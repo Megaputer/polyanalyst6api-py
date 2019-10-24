@@ -10,6 +10,8 @@ This page contains specific information on the polyanalyst6api package classes a
 
 .. autoclass:: polyanalyst6api.api.API
    :members:
+.. autoclass:: polyanalyst6api.api.RemoteFileSystem
+   :members:
 .. autoclass:: polyanalyst6api.api.Project
    :members:
 
