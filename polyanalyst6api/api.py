@@ -7,6 +7,8 @@ This module contains functionality for access to PolyAnalyst API.
 
 import contextlib
 import datetime
+import os
+import pathlib
 import time
 import warnings
 from typing import Any, Dict, List, Tuple, Union, Optional, IO
@@ -237,6 +239,46 @@ class API:
 class RemoteFileSystem:
     def __init__(self, api: API):
         self.api = api
+
+    def upload(self, source: Union[str, os.PathLike], dest: str = '', recursive: bool = True) -> None:
+        """
+        Upload file or folder to PolyAnalyst server.
+
+        Pass `recursive` as False to just create folder on the server without
+        uploading inner files and folders.
+
+        :param source: path to the file or folder
+        :param dest: (optional) path to the folder in the PolyAnalyst's user directory
+        :param recursive: (optional) upload subdirectories recursively
+
+        :raise TypeError if `source` is not string or path-like object
+        :raise ValueError if `source` does not exists
+        """
+        if not isinstance(source, (str, os.PathLike)):
+            raise TypeError('The source parameter should be either string or path-like object.')
+
+        source = pathlib.Path(source)
+        if not source.exists():
+            raise ValueError(f"Cannot find '{source}': No such file or directory.")
+
+        def _upload(target: pathlib.Path, dest_dir: str) -> None:
+            if target.is_file():
+                with target.open(mode='rb') as f:
+                    self.api.fs.upload_file(f, name=target.name, path=dest_dir)
+            elif target.is_dir():
+                try:
+                    self.api.fs.create_folder(name=target.name, path=dest_dir)
+                except APIException as exc:
+                    if 'Folder already exists' in exc.message:
+                        pass
+                    else:
+                        raise
+
+                if recursive:
+                    for child in target.iterdir():
+                        _upload(child, f'{dest_dir}/{target.name}')
+
+        _upload(source, dest)
 
     def create_folder(self, name: str, path: str = '') -> None:
         """
