@@ -1,3 +1,15 @@
+"""
+This example was added before version '0.9.0' on which 'upload' method was
+introduced. The 'upload' method repeats the `upload` function functionality from
+this module. Although the example will run on newer versions of `polyanalyst6api`
+we recommend to use `upload` method. So this example reduces to:
+
+    >>> with pa.API(polyanalyst_url, user, password) as api:
+    >>>     api.fs.upload(local_source, server_dest)
+    >>>     if remove_dest_after_upload:
+    >>>         api.fs.delete_folder(local_source)
+
+"""
 import pathlib
 import sys
 
