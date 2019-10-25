@@ -1,0 +1,1 @@
+Fixed can't delete file from the server after calling upload_file two and more times with the same file object

@@ -15,6 +15,7 @@ from typing import Any, Dict, List, Tuple, Union, Optional, IO
 from urllib.parse import urljoin, urlparse
 
 import pytus
+from pytus.main import _get_offset, _get_file_size
 import requests
 import urllib3
 
@@ -346,13 +347,32 @@ class RemoteFileSystem:
             warnings.warn("The file object's current position is not at the beginning of the file."
                           "This will result in uploading only the part of the file!")
 
-        pytus.upload(
-            file,
+        file_name = name or os.path.basename(file.name)
+        file_size = _get_file_size(file)
+        metadata = {'foldername': path}
+
+        file_endpoint, _ = pytus.create(
             urljoin(self.api.url, 'file/upload'),
-            file_name=name,
+            file_name,
+            file_size,
             session=self.api._s,
-            metadata={'foldername': path}
+            metadata=metadata
         )
+
+        pytus.resume(
+            file,
+            file_endpoint,
+            session=self.api._s,
+            offset=0
+        )
+
+        # free up resources on the server if file is not uploaded completely
+        try:
+            offset = _get_offset(file_endpoint, session=self.api._s)
+            if file_size != offset:
+                pytus.terminate(file_endpoint, session=self.api._s)
+        except requests.exceptions.RequestException:
+            pass
 
 
 class Project:
