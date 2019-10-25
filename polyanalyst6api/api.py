@@ -233,7 +233,7 @@ class API:
         with contextlib.suppress(NameError):
             raise APIException(error_msg, response.url, response.status_code)
 
-        raise ClientException('An error occurred processing your request')
+        return response, None
 
 
 class RemoteFileSystem:
