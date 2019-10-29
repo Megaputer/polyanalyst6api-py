@@ -1,3 +1,12 @@
+0.9.2 (2019-10-29)
+==================
+
+Bugfixes
+--------
+
+- Changed requests methods of RemoteFileSystem functions to correct ones as specified in the API documentation (#9)
+
+
 0.9.1 (2019-10-25)
 ==================
 
