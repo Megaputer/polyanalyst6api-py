@@ -5,9 +5,9 @@ Bugfixes
 --------
 
 - The client was raising unspecified ClienException when response has 2xx success
-  status code but not 200 or 202. Now client's `API.request` method just returns
-  a tuple with `requests.Response` instance and `None` when response status code
-  neither 200, 202, 403 or 500. (#7)
+  status code other than 200 or 202. Now client's `API.request` method just returns
+  a tuple of `requests.Response` and `None` when response status code neither of
+  200, 202, 403 or 500. (#7)
 - Fixed can't delete file from the server after calling upload_file two and more times with the same file object (#8)
 
 
@@ -34,10 +34,10 @@ Features
 Bugfixes
 --------
 
-- Update pytus version to 0.2.0. This will fix access denied error when calling `delete_file` method after uploading an empty file. (#2)
+- Fix access denied error when calling `delete_file` method after uploading an empty file. (#2)
 
 
 Improved Documentation
 ----------------------
 
-- `upload_file` issues a warning if `file`'s current position is not pointed to the beginning of the file. (#1)
+- `upload_file` issues a warning when `file`'s current position is not pointed to the beginning of the file. (#1)
