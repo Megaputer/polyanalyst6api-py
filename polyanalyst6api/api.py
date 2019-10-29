@@ -288,7 +288,7 @@ class RemoteFileSystem:
         :param name: the folder name
         :param path: a relative path of the folder's parent directory
         """
-        self.api.get('folder/create', json={'path': path, 'name': name})
+        self.api.post('folder/create', json={'path': path, 'name': name})
 
     def delete_folder(self, name: str, path: str = '') -> None:
         """
@@ -297,7 +297,7 @@ class RemoteFileSystem:
         :param name: the folder name
         :param path: a relative path of the folder's parent directory
         """
-        self.api.get('folder/delete', json={'path': path, 'name': name})
+        self.api.post('folder/delete', json={'path': path, 'name': name})
 
     def delete_file(self, name: str, path: str = '') -> None:
         """
@@ -306,7 +306,7 @@ class RemoteFileSystem:
         :param name: the filename
         :param path: a relative path of the file's parent directory
         """
-        self.api.get('file/delete', json={'path': path, 'name': name})
+        self.api.post('file/delete', json={'path': path, 'name': name})
 
     def download_file(self, name: str, path: str = '') -> bytes:
         """
@@ -315,7 +315,7 @@ class RemoteFileSystem:
         :param name: the filename
         :param path: a relative path of the file's parent directory
         """
-        data = self.api.get('file/download', json={'path': path, 'name': name})
+        data = self.api.post('file/download', json={'path': path, 'name': name})
         resp, _ = self.api.request(
             urljoin(self.api.url, '/polyanalyst/download'),
             method='get',

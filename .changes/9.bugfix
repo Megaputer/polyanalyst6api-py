@@ -1,0 +1,1 @@
+Changed requests methods of RemoteFileSystem functions to correct ones as specified in the API documentation
