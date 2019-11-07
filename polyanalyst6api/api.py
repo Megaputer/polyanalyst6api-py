@@ -212,7 +212,13 @@ class API:
         if response.status_code in (200, 202):
             return response, json
 
-        if response.status_code == 403:
+        if json.get('error'):
+            with contextlib.suppress(KeyError):
+                error = json['error']
+                error_msg = f"{error['title']}. Message: '{error['message']}'"
+
+        # the old error response format handling
+        elif response.status_code == 403:
             if 'are not logged in' in response.text:
                 error_msg = 'You are not logged in to PolyAnalyst Server'
             elif 'operation is limited ' in response.text:

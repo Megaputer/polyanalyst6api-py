@@ -1,0 +1,1 @@
+Added handling of new error response format
