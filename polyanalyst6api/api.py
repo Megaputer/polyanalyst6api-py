@@ -219,12 +219,9 @@ class API:
                 error_msg = ('Access to this operation is limited to project '
                              'owners and administrator')
         elif response.status_code == 500:
-            try:
-                if json[0] != 'Error':
-                    raise Exception
-                error_msg = json[1]
-            except Exception:
-                pass
+            with contextlib.suppress(IndexError):
+                if json[0] == 'Error':
+                    error_msg = json[1]
         else:
             try:
                 response.raise_for_status()
