@@ -81,7 +81,7 @@ Full API specification is stored in the **PolyAnalyst User Manual** under the ur
 
 ## Supported Python version
 
-`polyanalyst6api-python` works only with `python3` (3.4+).
+`polyanalyst6api-python` works only with `python3` (3.6+).
 
 ## License
 
