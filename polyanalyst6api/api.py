@@ -212,7 +212,7 @@ class API:
         if response.status_code in (200, 202):
             return response, json
 
-        if json.get('error'):
+        if isinstance(json, dict) and json.get('error'):
             with contextlib.suppress(KeyError):
                 error = json['error']
                 error_msg = f"{error['title']}. Message: '{error['message']}'"
@@ -225,7 +225,7 @@ class API:
                 error_msg = ('Access to this operation is limited to project '
                              'owners and administrator')
         elif response.status_code == 500:
-            with contextlib.suppress(IndexError):
+            with contextlib.suppress(IndexError, TypeError):
                 if json[0] == 'Error':
                     error_msg = json[1]
         else:
