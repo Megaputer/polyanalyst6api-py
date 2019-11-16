@@ -137,6 +137,10 @@ class API:
         _, data = self.request(urljoin(self.url, 'server/info'), 'get')
         return data
 
+    def get_parameters(self) -> List[Dict[str, Union[str, List]]]:
+        """Returns list of nodes with parameters supported by ``Parameters`` node."""
+        return self.get('parameters/nodes')
+
     def login(self) -> None:
         """Logs in to PolyAnalyst Server with user credentials."""
         credentials = {'uname': self.username, 'pwd': self.password}
