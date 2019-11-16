@@ -1,3 +1,12 @@
+0.11.0 (2019-11-16)
+===================
+
+Features
+--------
+
+- Add `get_parameters` method to `polyanalyst.API` class for retrieving list of nodes supported by `Parameters` node. Each node info contains its name, type and detailed list of parameters. (#12)
+
+
 0.10.1 (2019-11-07)
 ===================
 
