@@ -47,7 +47,7 @@
 (e.g. <code class="docutils literal notranslate"><span class="pre">https://localhost:5043/</span></code>, <code class="docutils literal notranslate"><span class="pre">http://example.polyanalyst.com</span></code> .etc)</li>
 <li><strong>username</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The username to login with</li>
 <li><strong>password</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (optional) The password for specified username</li>
-<li><strong>ldap_server</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – (optional) LDAP Server address</li>
+<li><strong>ldap_server</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – LDAP Server address</li>
 <li><strong>version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (optional) Choose which PolyAnalyst API version to use.
 Default: <code class="docutils literal notranslate"><span class="pre">1.0</span></code></li>
 </ul>
@@ -83,6 +83,20 @@ Default: <code class="docutils literal notranslate"><span class="pre">1.0</span>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></p>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="polyanalyst6api.api.API.get_parameters">
+<code class="descname">get_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.get_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.get_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of nodes with parameters supported by <code class="docutils literal notranslate"><span class="pre">Parameters</span></code> node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[~T]]]]</td>
 </tr>
 </tbody>
 </table>
@@ -349,7 +363,7 @@ uploading inner files and folders.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>file</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Io</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">AnyStr</span></code>]) – the file or file-like object to upload</li>
-<li><strong>name</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – (optional) the filename other than <cite>file</cite>’s name</li>
+<li><strong>name</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – the filename other than <cite>file</cite>’s name</li>
 <li><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (optional) a relative path of the file’s parent directory</li>
 </ul>
 </td>
