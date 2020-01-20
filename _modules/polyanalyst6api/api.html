@@ -113,7 +113,7 @@
 <span class="sd">    Or as a context manager::</span>
 
 <span class="sd">      &gt;&gt;&gt; with polyanalyst6api.API(URL, USERNAME, PASSWORD) as api:</span>
-<span class="sd">      &gt;&gt;&gt;     pass</span>
+<span class="sd">      &gt;&gt;&gt;     ...</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_api_path</span> <span class="o">=</span> <span class="s1">&#39;/polyanalyst/api/&#39;</span>
@@ -125,6 +125,10 @@
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">:</span>
+            <span class="k">pass</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_s</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
@@ -188,6 +192,10 @@
             <span class="n">params</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sid</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">cookies</span><span class="p">[</span><span class="s1">&#39;sid&#39;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="API.logout"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.API.logout">[docs]</a>    <span class="k">def</span> <span class="nf">logout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Logs out current user from PolyAnalyst Server.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;logout&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="API.run_task"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.API.run_task">[docs]</a>    <span class="k">def</span> <span class="nf">run_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Initiates scheduler task execution.</span>
