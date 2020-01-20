@@ -155,6 +155,10 @@ class API:
         )
         self.sid = resp.cookies['sid']
 
+    def logout(self) -> None:
+        """Logs out current user from PolyAnalyst Server."""
+        self.get('logout')
+
     def run_task(self, id: int) -> None:
         """Initiates scheduler task execution.
 
