@@ -1,3 +1,12 @@
+0.12.0 (2020-01-20)
+===================
+
+Features
+--------
+
+- Added `logout` method. Implemented logout of current user when `API` context exited if this endpoint supported by server. (#13)
+
+
 0.11.0 (2019-11-16)
 ===================
 
