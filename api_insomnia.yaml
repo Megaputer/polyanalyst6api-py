@@ -1,7 +1,7 @@
 _type: export
 __export_format: 4
-__export_date: 2019-11-16T11:38:20.756Z
-__export_source: insomnia.desktop.app:v7.0.3
+__export_date: 2020-01-20T12:07:32.502Z
+__export_source: insomnia.desktop.app:v7.0.6
 resources:
   - _id: req_5ad271379d0d4835959fdde96f89de3d
     authentication: {}
@@ -18,6 +18,7 @@ resources:
     parentId: wrk_647e693e8cb94612bd08b724650f4ae7
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -52,6 +53,7 @@ resources:
     parentId: fld_f7b7ccea301041baa0b8452a768b611d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -67,46 +69,6 @@ resources:
     name: /polyanalyst/api/v1.0
     parentId: wrk_647e693e8cb94612bd08b724650f4ae7
     _type: request_group
-  - _id: req_e0e6a60b3bd041b6adcf1ac2ab586120
-    authentication: {}
-    body: {}
-    created: 1560431361499
-    description: ""
-    headers: []
-    isPrivate: false
-    metaSortKey: -1530448160583.75
-    method: GET
-    modified: 1571651284244
-    name: server/info
-    parameters: []
-    parentId: fld_f7b7ccea301041baa0b8452a768b611d
-    settingDisableRenderRequestBody: false
-    settingEncodeUrl: true
-    settingRebuildPath: true
-    settingSendCookies: true
-    settingStoreCookies: true
-    url: "{{SRV}}/polyanalyst/api/v1.0/server/info"
-    _type: request
-  - _id: req_301402fc85e748d78bc3bda560905983
-    authentication: {}
-    body: {}
-    created: 1573903443256
-    description: ""
-    headers: []
-    isPrivate: false
-    metaSortKey: -1530448160582.1875
-    method: GET
-    modified: 1573903923440
-    name: /parameters/nodes
-    parameters: []
-    parentId: fld_f7b7ccea301041baa0b8452a768b611d
-    settingDisableRenderRequestBody: false
-    settingEncodeUrl: true
-    settingRebuildPath: true
-    settingSendCookies: true
-    settingStoreCookies: true
-    url: "{{SRV}}/polyanalyst/api/v1.0/parameters/nodes"
-    _type: request
   - _id: req_1287b835ab914044bf404effd6e63649
     authentication: {}
     body: {}
@@ -125,33 +87,11 @@ resources:
     parentId: fld_f7b7ccea301041baa0b8452a768b611d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
     url: "{{SRV}}/polyanalyst/api/v1.0/project/nodes"
-    _type: request
-  - _id: req_d5554fa682184de29a33cc4f41a5c70d
-    authentication: {}
-    body: {}
-    created: 1560431361490
-    description: ""
-    headers: []
-    isPrivate: false
-    metaSortKey: -1530448160577.5
-    method: GET
-    modified: 1571651269098
-    name: project/execution-statistics
-    parameters:
-      - id: pair_fef8a1869d12477881926a6744dc6302
-        name: prjUUID
-        value: "{{ PRJ  }}"
-    parentId: fld_f7b7ccea301041baa0b8452a768b611d
-    settingDisableRenderRequestBody: false
-    settingEncodeUrl: true
-    settingRebuildPath: true
-    settingSendCookies: true
-    settingStoreCookies: true
-    url: "{{SRV}}/polyanalyst/api/v1.0/project/execution-statistics"
     _type: request
   - _id: req_a81ab4ecc89b426596452b2138eae091
     authentication: {}
@@ -182,38 +122,11 @@ resources:
     parentId: fld_f7b7ccea301041baa0b8452a768b611d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
     url: "{{SRV}}/polyanalyst/api/v1.0/project/execute"
-    _type: request
-  - _id: req_152eed2456b44535ab8a8923de5b1ceb
-    authentication: {}
-    body:
-      mimeType: application/json
-      text: |-
-        {
-        	"prjUUID": "{{ PRJ  }}"
-        }
-    created: 1560431361417
-    description: ""
-    headers:
-      - id: pair_a2908c48a13c4c59b638e9cc89e6f864
-        name: Content-Type
-        value: application/json
-    isPrivate: false
-    metaSortKey: -1509493641465.25
-    method: POST
-    modified: 1571648200657
-    name: project/global-abort
-    parameters: []
-    parentId: fld_f7b7ccea301041baa0b8452a768b611d
-    settingDisableRenderRequestBody: false
-    settingEncodeUrl: true
-    settingRebuildPath: true
-    settingSendCookies: true
-    settingStoreCookies: true
-    url: "{{SRV}}/polyanalyst/api/v1.0/project/global-abort"
     _type: request
   - _id: req_a2e0242871fc423984cc194494f981ea
     authentication: {}
@@ -238,12 +151,13 @@ resources:
     parentId: fld_f7b7ccea301041baa0b8452a768b611d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
     url: "{{SRV}}/polyanalyst/api/v1.0/project/save"
     _type: request
-  - _id: req_ece28d24ce024a8ab371eb7080b21644
+  - _id: req_152eed2456b44535ab8a8923de5b1ceb
     authentication: {}
     body:
       mimeType: application/json
@@ -251,82 +165,26 @@ resources:
         {
         	"prjUUID": "{{ PRJ  }}"
         }
-    created: 1560431361439
+    created: 1560431361417
     description: ""
     headers:
-      - id: pair_f04bda509cd941379c042de66a8c641c
+      - id: pair_a2908c48a13c4c59b638e9cc89e6f864
         name: Content-Type
         value: application/json
     isPrivate: false
-    metaSortKey: -1509493641415.25
+    metaSortKey: -1509493641465.25
     method: POST
-    modified: 1572019259218
-    name: project/unload
+    modified: 1571648200657
+    name: project/global-abort
     parameters: []
     parentId: fld_f7b7ccea301041baa0b8452a768b611d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
-    url: "{{SRV}}/polyanalyst/api/v1.0/project/unload"
-    _type: request
-  - _id: req_2b0578a9801d47a5856cac82afefc30c
-    authentication: {}
-    body:
-      mimeType: application/json
-      text: |-
-        {
-        	"prjUUID": "{{ PRJ  }}"
-        }
-    created: 1560431361460
-    description: ""
-    headers:
-      - id: pair_f04bda509cd941379c042de66a8c641c
-        name: Content-Type
-        value: application/json
-    isPrivate: false
-    metaSortKey: -1509493641402.75
-    method: POST
-    modified: 1571648223186
-    name: project/repair
-    parameters: []
-    parentId: fld_f7b7ccea301041baa0b8452a768b611d
-    settingDisableRenderRequestBody: false
-    settingEncodeUrl: true
-    settingRebuildPath: true
-    settingSendCookies: true
-    settingStoreCookies: true
-    url: "{{SRV}}/polyanalyst/api/v1.0/project/repair"
-    _type: request
-  - _id: req_e67ecb0b10c249749b47f900da90ef40
-    authentication: {}
-    body:
-      mimeType: application/json
-      text: |-
-        {
-        	"prjUUID": "{{ PRJ  }}",
-        	"forceUnload": true
-        }
-    created: 1560431361449
-    description: ""
-    headers:
-      - id: pair_f04bda509cd941379c042de66a8c641c
-        name: Content-Type
-        value: application/json
-    isPrivate: false
-    metaSortKey: -1509493641390.25
-    method: POST
-    modified: 1571648230176
-    name: project/delete
-    parameters: []
-    parentId: fld_f7b7ccea301041baa0b8452a768b611d
-    settingDisableRenderRequestBody: false
-    settingEncodeUrl: true
-    settingRebuildPath: true
-    settingSendCookies: true
-    settingStoreCookies: true
-    url: "{{SRV}}/polyanalyst/api/v1.0/project/delete"
+    url: "{{SRV}}/polyanalyst/api/v1.0/project/global-abort"
     _type: request
   - _id: req_6fc9e35d061c454b9a9e9a82d387d7a9
     authentication: {}
@@ -352,10 +210,99 @@ resources:
     parentId: fld_f7b7ccea301041baa0b8452a768b611d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
     url: "{{SRV}}/polyanalyst/api/v1.0/dataset/preview"
+    _type: request
+  - _id: req_ece28d24ce024a8ab371eb7080b21644
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"prjUUID": "{{ PRJ  }}"
+        }
+    created: 1560431361439
+    description: ""
+    headers:
+      - id: pair_f04bda509cd941379c042de66a8c641c
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1509493641415.25
+    method: POST
+    modified: 1572019259218
+    name: project/unload
+    parameters: []
+    parentId: fld_f7b7ccea301041baa0b8452a768b611d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{SRV}}/polyanalyst/api/v1.0/project/unload"
+    _type: request
+  - _id: req_e67ecb0b10c249749b47f900da90ef40
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"prjUUID": "{{ PRJ  }}",
+        	"forceUnload": true
+        }
+    created: 1560431361449
+    description: ""
+    headers:
+      - id: pair_f04bda509cd941379c042de66a8c641c
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1509493641390.25
+    method: POST
+    modified: 1571648230176
+    name: project/delete
+    parameters: []
+    parentId: fld_f7b7ccea301041baa0b8452a768b611d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{SRV}}/polyanalyst/api/v1.0/project/delete"
+    _type: request
+  - _id: req_2b0578a9801d47a5856cac82afefc30c
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"prjUUID": "{{ PRJ  }}"
+        }
+    created: 1560431361460
+    description: ""
+    headers:
+      - id: pair_f04bda509cd941379c042de66a8c641c
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1509493641402.75
+    method: POST
+    modified: 1571648223186
+    name: project/repair
+    parameters: []
+    parentId: fld_f7b7ccea301041baa0b8452a768b611d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{SRV}}/polyanalyst/api/v1.0/project/repair"
     _type: request
   - _id: req_a6fd9c40e9584c31a7da24545632eb10
     authentication: {}
@@ -380,10 +327,56 @@ resources:
     parentId: fld_f7b7ccea301041baa0b8452a768b611d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
     url: "{{SRV}}/polyanalyst/api/v1.0/scheduler/run-task"
+    _type: request
+  - _id: req_d5554fa682184de29a33cc4f41a5c70d
+    authentication: {}
+    body: {}
+    created: 1560431361490
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1530448160577.5
+    method: GET
+    modified: 1571651269098
+    name: project/execution-statistics
+    parameters:
+      - id: pair_fef8a1869d12477881926a6744dc6302
+        name: prjUUID
+        value: "{{ PRJ  }}"
+    parentId: fld_f7b7ccea301041baa0b8452a768b611d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{SRV}}/polyanalyst/api/v1.0/project/execution-statistics"
+    _type: request
+  - _id: req_e0e6a60b3bd041b6adcf1ac2ab586120
+    authentication: {}
+    body: {}
+    created: 1560431361499
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1530448160583.75
+    method: GET
+    modified: 1571651284244
+    name: server/info
+    parameters: []
+    parentId: fld_f7b7ccea301041baa0b8452a768b611d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{SRV}}/polyanalyst/api/v1.0/server/info"
     _type: request
   - _id: req_f3a79ab57da846eb90c71c63a496c64f
     authentication: {}
@@ -409,6 +402,7 @@ resources:
     parentId: fld_f7b7ccea301041baa0b8452a768b611d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -438,6 +432,7 @@ resources:
     parentId: fld_f7b7ccea301041baa0b8452a768b611d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -467,6 +462,7 @@ resources:
     parentId: fld_f7b7ccea301041baa0b8452a768b611d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -496,10 +492,53 @@ resources:
     parentId: fld_f7b7ccea301041baa0b8452a768b611d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
     url: "{{ SRV  }}/polyanalyst/api/v1.0/file/download"
+    _type: request
+  - _id: req_301402fc85e748d78bc3bda560905983
+    authentication: {}
+    body: {}
+    created: 1573903443256
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1530448160582.1875
+    method: GET
+    modified: 1573903923440
+    name: /parameters/nodes
+    parameters: []
+    parentId: fld_f7b7ccea301041baa0b8452a768b611d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{SRV}}/polyanalyst/api/v1.0/parameters/nodes"
+    _type: request
+  - _id: req_19d800d71a5c492c8bf8464ad787fc3f
+    authentication: {}
+    body: {}
+    created: 1579522018827
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1530448160599.375
+    method: POST
+    modified: 1579522034667
+    name: logout
+    parameters: []
+    parentId: fld_f7b7ccea301041baa0b8452a768b611d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{SRV}}/polyanalyst/api/v1.0/logout"
     _type: request
   - _id: req_0acaac034ba9479793f8387e92b7445d
     authentication: {}
@@ -530,6 +569,7 @@ resources:
     parentId: fld_ae8892408e924049b70d348319418787
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -560,6 +600,7 @@ resources:
     parentId: fld_ae8892408e924049b70d348319418787
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -580,6 +621,7 @@ resources:
     parentId: fld_ae8892408e924049b70d348319418787
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
