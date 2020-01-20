@@ -79,7 +79,7 @@ class API:
     Or as a context manager::
 
       >>> with polyanalyst6api.API(URL, USERNAME, PASSWORD) as api:
-      >>>     pass
+      >>>     ...
     """
 
     _api_path = '/polyanalyst/api/'
@@ -91,6 +91,10 @@ class API:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        try:
+            self.logout()
+        except requests.HTTPError:
+            pass
         self._s.__exit__()
 
     def __init__(
