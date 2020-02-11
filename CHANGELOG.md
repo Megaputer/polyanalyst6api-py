@@ -1,3 +1,12 @@
+0.12.1 (2020-02-11)
+===================
+
+Bugfixes
+--------
+
+- Fixed APIs context manager raises APIException when the server doesn't support /logout endpoint (#14)
+
+
 0.12.0 (2020-01-20)
 ===================
 
