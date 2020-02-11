@@ -93,8 +93,11 @@ class API:
     def __exit__(self, exc_type, exc_val, exc_tb):
         try:
             self.logout()
-        except requests.HTTPError:
-            pass
+        except APIException as exc:
+            if exc.status_code == 404:
+                pass
+            else:
+                raise
         self._s.__exit__()
 
     def __init__(
