@@ -1,3 +1,12 @@
+0.13.0 (2020-03-12)
+===================
+
+Features
+--------
+
+- Added the ability to reset Parameters node status (T19556)
+
+
 0.12.1 (2020-02-11)
 ===================
 
