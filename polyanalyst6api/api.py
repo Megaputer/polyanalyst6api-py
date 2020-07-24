@@ -525,13 +525,22 @@ class Project:
             json={'prjUUID': self.uuid, 'forceUnload': force_unload}
         )
 
-    def set_parameters(self, node: str, node_type: str, parameters: Dict[str, Any], declare_unsync: bool = True) -> None:
+    def set_parameters(
+            self,
+            node: str,
+            node_type: str,
+            parameters: Dict[str, Any],
+            declare_unsync: bool = True,
+            hard_update: bool = True,
+    ) -> None:
         """Set default parameters of the selected Parameters node in the project.
 
         :param node: a Parameters node name
         :param node_type: a node type, which parameters need to be set. The types are listed in NodeTypes.
         :param parameters: default parameters of the node to be set.
-        :param declare_unsync: reset the status of the Parameters node
+        :param declare_unsync: reset the status of the Parameters node.
+        :param hard_update: update every child node with new parameters if True, otherwise reset their statuses. Works
+        only if declare_unsync is True.
 
         :raises ClientException when the `node` type is not Parameters
         """
@@ -543,7 +552,12 @@ class Project:
         json = self.api.post(
             'parameters/configure',
             params={'prjUUID': self.uuid, 'obj': parameters_node['id']},
-            json={'type': node_type, 'settings': parameters, 'declareUnsync': declare_unsync}
+            json={
+                'type': node_type,
+                'settings': parameters,
+                'declareUnsync': declare_unsync,
+                'hardUpdate': hard_update,
+            }
         )
         if json:
             for msg in json:
