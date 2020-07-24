@@ -1,3 +1,18 @@
+0.14.0 (2020-07-24)
+===================
+
+Features
+--------
+
+- Added new hard_update argument to set_parameters method (T19988)
+
+
+Bugfixes
+--------
+
+- Fixed "[WinError 10054] An existing connection was forcibly closed by the remote host" caused by requests to not implemented /logout endpoint
+
+
 0.13.0 (2020-03-12)
 ===================
 
