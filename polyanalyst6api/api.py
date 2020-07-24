@@ -91,13 +91,6 @@ class API:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        try:
-            self.logout()
-        except APIException as exc:
-            if exc.status_code == 404:
-                pass
-            else:
-                raise
         self._s.__exit__()
 
     def __init__(
@@ -163,8 +156,8 @@ class API:
         self.sid = resp.cookies['sid']
 
     def logout(self) -> None:
-        """Logs out current user from PolyAnalyst Server."""
-        self.get('logout')
+        """NOT IMPLEMENTED YET."""
+        pass
 
     def run_task(self, id: int) -> None:
         """Initiates scheduler task execution.
