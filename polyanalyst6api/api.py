@@ -61,12 +61,11 @@ class API:
     """PolyAnalyst API
 
     :param url: The scheme, host and port(if exists) of a PolyAnalyst server
-        (e.g. ``https://localhost:5043/``, ``http://example.polyanalyst.com`` .etc)
+        (e.g. ``https://localhost:5043/``, ``http://example.polyanalyst.com``)
     :param username: The username to login with
     :param password: (optional) The password for specified username
-    :param ldap_server: LDAP Server address
-    :param version: (optional) Choose which PolyAnalyst API version to use.
-        Default: ``1.0``
+    :param ldap_server: (optional) LDAP Server address
+    :param version: (optional) Choose which PolyAnalyst API version to use. Default: ``1.0``
 
     If ldap_server is provided, then login will be performed via LDAP Server.
 
@@ -79,7 +78,7 @@ class API:
     Or as a context manager::
 
       >>> with polyanalyst6api.API(URL, USERNAME, PASSWORD) as api:
-      >>>     ...
+      ...     assert api.sid
     """
 
     _api_path = '/polyanalyst/api/'
@@ -130,10 +129,7 @@ class API:
             return ['1.0']
 
     def get_server_info(self) -> Optional[Dict[str, Union[int, str, Dict[str, str]]]]:
-        """
-        Returns build, server version, and the most recent commits git hash sum
-        for each repository.
-        """
+        """Returns general server information including build number, version and commit hashes."""
         _, data = self.request(urljoin(self.url, 'server/info'), 'get')
         return data
 
@@ -167,8 +163,7 @@ class API:
         self.post('scheduler/run-task', json={'taskId': id})
 
     def project(self, uuid: str) -> 'Project':
-        """Checks project with given uuid on existence and returns
-        :class:`Project <Project>` instance.
+        """Returns :class:`Project <Project>` instance with given uuid.
 
         :param uuid: The project uuid
         """
@@ -349,10 +344,10 @@ class RemoteFileSystem:
         :param name: the filename other than `file`'s name
         :param path: (optional) a relative path of the file's parent directory
 
-        Usage:
-            >>> fs = RemoteFileSystem(...)
-            >>> with open('CarData.csv', mode='rb') as file:
-            >>>     fs.upload_file(file, name='cars.csv', path='/data')
+        Usage::
+          >>> fs = RemoteFileSystem(...)
+          >>> with open('CarData.csv', mode='rb') as file:
+          ...     fs.upload_file(file, name='cars.csv', path='/data')
         """
         if file.tell():
             warnings.warn("The file object's current position is not at the beginning of the file."
