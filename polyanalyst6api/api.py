@@ -396,6 +396,7 @@ class Project:
         self.api = api
         self.uuid = uuid
         self._nodes: Nodes = {}
+        self._node_list: List[Node] = []
 
     def get_node_list(self) -> List[Node]:
         """Returns a list of project nodes"""
@@ -465,62 +466,60 @@ class Project:
         """Aborts the execution of all nodes in the project."""
         self.api.post('project/global-abort', json={'prjUUID': self.uuid})
 
-    def execute(self, *nodes: str, wait: bool = False) -> None:
+    def execute(self, *nodes: Union[str, Dict[str, str]], wait: bool = False) -> None:
         """Initiate execution of nodes and their children.
 
-        Make sure to sort nodes by the execution flow order when passing
-        multiple nodes and wait is True.
-
-        :param nodes: The node names
-        :param wait: Wait for nodes to complete execution
+        :param nodes: node names and/or dicts with name and type of nodes
+        :param wait: wait for nodes execution to complete
 
         Usage::
 
-          >>> prj.execute('Python')
-          >>> prj.execute('Internet Source', 'Export to File')
+        pass the names of the nodes to be executed separated by commas
+          >>> prj.execute('Internet Source', 'Python')
 
-        Execute all nodes in project(assuming there's no connection between them)::
+        or, if there are several nodes in the project with the same name, pass
+        them as a dict with mandatory 'name' and 'type' keys (and because of this,
+        you can also pass items of prj.get_node_list())
+          >>> prj.execute(
+                  {'name': 'Example node', 'type': 'DataSource'},
+                  {'name': 'Example node', 'type': 'Dataset'},
+                  'Federated Search',
+                  prj.get_node_list()[1],
+              )
 
-          >>> prj.execute(*prj.get_nodes())
-
-        :raises APIException if any of nodes is not configured properly
+        use wait=True to wait for the passed nodes execution to complete. Note
+        that the other nodes execution started by this command will not be awaited.
+          >>> prj.execute('Export to MS Word', wait=True)
         """
-        nodes = list({}.fromkeys(nodes))
+        nodes = list(nodes)
+        for i, node in enumerate(nodes):
+            if isinstance(node, str):
+                nodes[i] = {'name': node, 'type': self._find_node(node)['type']}
 
-        self.get_nodes()
-        for node in nodes:
-            if self._nodes[node]['status'] == 'incomplete':
-                raise APIException(f'Cannot execute "{node}". The node is not configured properly.')
-
-        self.api.post(
-            'project/execute',
-            json={
-                'prjUUID': self.uuid,
-                'nodes': [{'type': self._nodes[name]['type'], 'name': name} for name in nodes],
-            },
-        )
+        self.api.post('project/execute', json={'prjUUID': self.uuid, 'nodes': nodes})
         if wait:
             for node in nodes:
                 self.wait_for_completion(node)
 
-    def preview(self, node: str) -> DataSet:
+    def preview(self, node: Union[str, Dict[str, str]]) -> DataSet:
         """Returns first 1000 rows of data from ``node``, texts and strings are
         cutoff after 250 symbols.
 
-        :param node: The node name
-        :raises: :class:`APIException <APIException>` when node type is not Dataset or DataSource
+        :param node: node name or dict with name and type of node
+
+        Usage::
+          >>> data_set = prj.preview('Python')
+
+        or, pass dict if the project contains several nodes with the same name
+          >>> data_set = prj.preview({'name': 'Python', 'type': 'Dataset'})
         """
-        node_type = self._nodes[node]['type']
-        if node_type not in ('Dataset', 'DataSource'):
-            raise APIException(f"Invalid node type: {node_type} (only 'Dataset' or 'DataSource' are available)")
-        return self.api.get(
-            'dataset/preview',
-            params={
-                'prjUUID': self.uuid,
-                'name': node,
-                'type': self._nodes[node]['type'],
-            },
-        )
+        if isinstance(node, str):
+            node = {'name': node, 'type': self._find_node(node)['type']}
+
+        if node['type'] not in ('Dataset', 'DataSource'):
+            raise APIException(f"Invalid node type: {node['type']} (only 'Dataset' or 'DataSource' are available)")
+
+        return self.api.get('dataset/preview', params={'prjUUID': self.uuid, **node})
 
     def unload(self) -> None:
         """Unload the project from the memory and free system resources."""
@@ -548,7 +547,7 @@ class Project:
 
     def set_parameters(
             self,
-            node: str,
+            node: Union[str, Dict[str, str]],
             node_type: str,
             parameters: Dict[str, Any],
             declare_unsync: bool = True,
@@ -556,8 +555,8 @@ class Project:
     ) -> None:
         """Set default parameters of the selected Parameters node in the project.
 
-        :param node: a Parameters node name
-        :param node_type: a node type, which parameters need to be set. The types are listed in NodeTypes.
+        :param node: name or dict with name and type of Parameters node
+        :param node_type: node type, which parameters need to be set. The types are listed in NodeTypes.
         :param parameters: default parameters of the node to be set.
         :param declare_unsync: reset the status of the Parameters node.
         :param hard_update: update every child node with new parameters if True, otherwise reset their statuses. Works
@@ -565,7 +564,11 @@ class Project:
 
         :raises ClientException when the `node` type is not Parameters
         """
-        parameters_node = self._nodes[node]
+        if isinstance(node, str):
+            parameters_node = self._find_node(node)
+        else:
+            parameters_node = self._find_node(node['name'], node['type'])
+
         if parameters_node['type'] != 'Parameters':
             raise ClientException('The node type should be Parameters')
 
@@ -584,18 +587,37 @@ class Project:
             for msg in json:
                 warnings.warn(msg)
 
-    def wait_for_completion(self, node: str) -> bool:
+    def wait_for_completion(self, node: Union[str, Dict[str, str]]) -> bool:
         """Waits for the node to complete the execution. Returns True if node have completed successfully and
         False otherwise.
 
-        :param node: The node name
+        :param node: node name or dict with name and type of node
         """
+        if isinstance(node, str):
+            node = self._find_node(node)
+
+        time.sleep(0.5)  # give pa time to update node statuses
         while True:
-            stats = self.get_nodes()[node]
+            self._update_node_list()
+            stats = self._find_node(node['name'], node['type'])
+
             if stats.get('errMsg'):
                 return False
             if stats['status'] == 'synchronized':
                 return True
             elif stats['status'] == 'incomplete':
                 return False
-            time.sleep(1.)
+
+            time.sleep(1)
+
+    def _update_node_list(self) -> None:
+        self._node_list = self.get_node_list()
+
+    def _find_node(self, name: str, type_: Optional[str] = None) -> Optional[Node]:
+        for node in self._node_list:
+            if type_:
+                if node['name'] == name and node['type'] == type_:
+                    return node
+            else:
+                if node['name'] == name:
+                    return node
