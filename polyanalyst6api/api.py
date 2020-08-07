@@ -27,6 +27,7 @@ __all__ = ['API', 'Project', 'PAException', 'ClientException', 'APIException']
 # type hints
 Response = Tuple[requests.Response, Any]
 Nodes = Dict[str, Dict[str, Union[int, str]]]
+Node: Dict[str, Union[str, int]]
 DataSet = List[Dict[str, Any]]
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -396,6 +397,14 @@ class Project:
         self.uuid = uuid
         self._nodes: Nodes = {}
 
+    def get_node_list(self) -> List[Node]:
+        """Returns a list of project nodes"""
+        return self.api.get(
+            'project/nodes',
+            params={'prjUUID': self.uuid},
+            headers={'sid': self.api.sid},
+        )['nodes']
+
     def get_nodes(self) -> Nodes:
         """Returns a dictionary of project's nodes information.
 
@@ -409,6 +418,13 @@ class Project:
         )
         self._nodes = {node.pop('name'): node for node in json['nodes']}
         return self._nodes
+
+    def get_execution_stats(self) -> List[Node]:
+        """Returns nodes execution statistics"""
+        return self.api.get(
+            'project/execution-statistics',
+            params={'prjUUID': self.uuid}
+        )['nodes']
 
     def get_execution_statistics(self) -> Tuple[Nodes, Dict[str, int]]:
         """Returns the execution statistics for nodes in the project.
