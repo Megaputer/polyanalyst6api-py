@@ -169,7 +169,7 @@ class API:
         :param uuid: The project uuid
         """
         prj = Project(self, uuid)
-        _ = prj.get_nodes()
+        prj._update_node_list()  # check that the project with given uuid exists
         return prj
 
     def get(self, endpoint: str, **kwargs) -> Any:
@@ -395,7 +395,6 @@ class Project:
     def __init__(self, api: API, uuid: str) -> None:
         self.api = api
         self.uuid = uuid
-        self._nodes: Nodes = {}
         self._node_list: List[Node] = []
 
     def get_node_list(self) -> List[Node]:
@@ -422,8 +421,7 @@ class Project:
             params={'prjUUID': self.uuid},
             headers={'sid': self.api.sid},
         )
-        self._nodes = {node.pop('name'): node for node in json['nodes']}
-        return self._nodes
+        return {node.pop('name'): node for node in json['nodes']}
 
     def get_execution_stats(self) -> List[Node]:
         """Returns nodes execution statistics"""
