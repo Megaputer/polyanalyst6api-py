@@ -411,6 +411,11 @@ class Project:
         The node value is a dict with a mandatory keys: id, type, status.
         It also may contain errMsg key if last node execution was failed.
         """
+        warnings.warn(
+            'Project.get_nodes() is deprecated, use Project.get_node_list() instead.',
+            DeprecationWarning,
+            stacklevel=2,
+        )
         json = self.api.get(
             'project/nodes',
             params={'prjUUID': self.uuid},
@@ -432,6 +437,11 @@ class Project:
         Similar to :meth:`get_nodes() <Project.get_nodes>` but nodes contains
         extra information and the project statistics.
         """
+        warnings.warn(
+            'Project.get_execution_statistics() is deprecated, use Project.get_execution_stats() instead.',
+            DeprecationWarning,
+            stacklevel=2,
+        )
         json = self.api.get(
             'project/execution-statistics',
             params={'prjUUID': self.uuid}
