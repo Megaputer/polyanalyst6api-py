@@ -390,7 +390,7 @@ class Project:
     """
 
     def __repr__(self):
-        return f'Project({self.uuid})'
+        return f'<Project [{self.uuid}]>'
 
     def __init__(self, api: API, uuid: str) -> None:
         self.api = api
@@ -405,48 +405,12 @@ class Project:
             headers={'sid': self.api.sid},
         )['nodes']
 
-    def get_nodes(self) -> Nodes:
-        """Returns a dictionary of project's nodes information.
-
-        The node value is a dict with a mandatory keys: id, type, status.
-        It also may contain errMsg key if last node execution was failed.
-        """
-        warnings.warn(
-            'Project.get_nodes() is deprecated, use Project.get_node_list() instead.',
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        json = self.api.get(
-            'project/nodes',
-            params={'prjUUID': self.uuid},
-            headers={'sid': self.api.sid},
-        )
-        return {node.pop('name'): node for node in json['nodes']}
-
     def get_execution_stats(self) -> List[Node]:
         """Returns nodes execution statistics"""
         return self.api.get(
             'project/execution-statistics',
             params={'prjUUID': self.uuid}
         )['nodes']
-
-    def get_execution_statistics(self) -> Tuple[Nodes, Dict[str, int]]:
-        """Returns the execution statistics for nodes in the project.
-
-        Similar to :meth:`get_nodes() <Project.get_nodes>` but nodes contains
-        extra information and the project statistics.
-        """
-        warnings.warn(
-            'Project.get_execution_statistics() is deprecated, use Project.get_execution_stats() instead.',
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        json = self.api.get(
-            'project/execution-statistics',
-            params={'prjUUID': self.uuid}
-        )
-        nodes = {node.pop('name'): node for node in json['nodes']}
-        return nodes, json['nodesStatistics']
 
     def get_tasks(self) -> List[Dict[str, any]]:
         """Returns task list info."""
@@ -619,3 +583,39 @@ class Project:
             else:
                 if node['name'] == name:
                     return node
+
+    def get_nodes(self) -> Nodes:
+        """Returns a dictionary of project's nodes information.
+
+        The node value is a dict with a mandatory keys: id, type, status.
+        It also may contain errMsg key if last node execution was failed.
+        """
+        warnings.warn(
+            'Project.get_nodes() is deprecated, use Project.get_node_list() instead.',
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        json = self.api.get(
+            'project/nodes',
+            params={'prjUUID': self.uuid},
+            headers={'sid': self.api.sid},
+        )
+        return {node.pop('name'): node for node in json['nodes']}
+
+    def get_execution_statistics(self) -> Tuple[Nodes, Dict[str, int]]:
+        """Returns the execution statistics for nodes in the project.
+
+        Similar to :meth:`get_nodes() <Project.get_nodes>` but nodes contains
+        extra information and the project statistics.
+        """
+        warnings.warn(
+            'Project.get_execution_statistics() is deprecated, use Project.get_execution_stats() instead.',
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        json = self.api.get(
+            'project/execution-statistics',
+            params={'prjUUID': self.uuid}
+        )
+        nodes = {node.pop('name'): node for node in json['nodes']}
+        return nodes, json['nodesStatistics']
