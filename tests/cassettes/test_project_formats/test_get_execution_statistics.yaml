@@ -1,0 +1,51 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - extdebug=0; sid=7189801001788834022; underdev=1
+      User-Agent:
+      - PolyAnalyst6API python client v0.14.0
+    method: GET
+    uri: https://localhost:5043/polyanalyst/api/v1.0/project/execution-statistics?prjUUID=bbd41a95-a45c-4cd6-bb0a-8bc472d04708
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEALWSsU7DMBCG3+VmU9kGGjtrKyQGEAI2xGDVh2rRnpF9EQpR3h1XQSGELh26WZ/P
+        vvt+XQcUPWaoXzoIHmqlBHD7gVDDg0tuj4wpgwAqxznL7LjJheaWNtsUKXyhH3ji53B4oK5tJSur
+        zJU1VgCS/8etFuCb5DhEgloupLwswLHLyI/xs/x/oUawirsCpIC3hHiH+5jaWwoc3G5GbwJN2Drk
+        97GuUkaqX14qR9qLnxT0mMJ6aDyJoOVtpJP1rTmib5XUy6n+ciG1menrmb0+k73sX8WwDU9cxskc
+        NqVb90fv/nC9ig1xmaPvvwFAJ6MkPgIAAA==
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      cache-control:
+      - no-cache, , must-revalidate
+      content-encoding:
+      - gzip
+      content-length:
+      - '253'
+      content-type:
+      - application/json; charset="utf-8"
+      date:
+      - Mon, 10 Aug 2020 17:06:34 GMT
+      expires:
+      - Thu, 31 Dec 1969 23:59:59 GMT
+      pragma:
+      - no-cache;
+      server:
+      - PolyAnalyst/6.5
+      set-cookie:
+      - sid=7189801001788834022; Path=/; Version=1; HttpOnly
+      - extdebug=0; Max-Age=2147483647; Path=/; Version=1
+      - underdev=1; Max-Age=2147483647; Path=/; Version=1
+    status:
+      code: 200
+      message: OK
+version: 1
