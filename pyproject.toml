@@ -26,6 +26,11 @@ pytest = "^3.0"
 sphinx = "^1.8"
 sphinx-autodoc-typehints = "1.6.0"
 towncrier = "^19.2"
+vcrpy = "^4.1.0"
+pytest-recording = "^0.8.1"
+jsonschema = "^3.2.0"
+pydantic = "^1.6.1"
+pytest-ordering = "^0.6"
 
 [tool.towncrier]
 package = "polyanalyst6api"
