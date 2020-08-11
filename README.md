@@ -1,23 +1,22 @@
 # polyanalyst6api
 
-`polyanalyst6api` is a python package for accessing PolyAnalyst's APIs.
+[![PyPI package](https://img.shields.io/pypi/v/polyanalyst6api.svg?)](https://pypi.org/project/polyanalyst6api)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/polyanalyst6api.svg?)](https://pypi.org/project/polyanalyst6api/)
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/Megaputer/polyanalyst6api-python/blob/master/LICENSE)
+
+`polyanalyst6api` is a Python library for interacting with PolyAnalyst's APIs.
 
 ## Installation
 
-The easiest way to install `polyanalyst6api-python` is from [PyPI](https://pypi.org/project/polyanalyst6api/):
+Python 3.6+ is required. Install, upgrade and uninstall `polyanalyst6api-python` with these commands:
 
 ```
 $ pip install polyanalyst6api
+$ pip install --upgrade polyanalyst6api
+$ pip uninstall polyanalyst6api
 ```
 
-You may also use Git to clone the repository from GitHub and install it manually:
-
-```
-git clone https://github.com/Megaputer/polyanalyst6api-python.git
-cd polyanalyst6api-python
-pip install poetry
-poetry install
-```
+## Usage
 
 ## Usage
 
@@ -79,10 +78,6 @@ Full API specification is stored in the **PolyAnalyst User Manual** under the ur
 /polyanalyst/help/eng/24_Application_Programming_Interfaces/toc.html
 ```
 
-## Supported Python version
-
-`polyanalyst6api-python` works only with `python3` (3.6+).
-
 ## License
 
-This project is licensed under the MIT License - see the LICENSE.md file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
