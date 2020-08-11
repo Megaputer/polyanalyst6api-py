@@ -18,8 +18,6 @@ $ pip uninstall polyanalyst6api
 
 ## Usage
 
-## Usage
-
 See [API Reference](https://megaputer.github.io/polyanalyst6api-python/) for more detailed information.
 
 ### Authentication
