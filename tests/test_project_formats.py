@@ -2,10 +2,11 @@ import enum
 import time
 from typing import Any, Dict, List, Optional, Union
 
-import polyanalyst6api
-import pytest
 import jsonschema
+import pytest
 from pydantic import BaseModel
+
+import polyanalyst6api
 
 URL = 'https://localhost:5043'
 USER = 'administrator'
@@ -129,8 +130,7 @@ def test_get_nodes(project):
     class Nodes(BaseModel):
         __root__: Dict[str, _Node]
 
-    result = project.get_nodes()
-    assert jsonschema.validate(result, Nodes.schema()) is None
+    assert jsonschema.validate(project.get_nodes(), Nodes.schema()) is None
 
 
 @pytest.mark.vcr
