@@ -4,7 +4,7 @@
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/polyanalyst6api.svg?)](https://pypi.org/project/polyanalyst6api/)
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/Megaputer/polyanalyst6api-python/blob/master/LICENSE)
 
-`polyanalyst6api` is a Python library for interacting with PolyAnalyst's APIs.
+`polyanalyst6api` is a Python library for interacting with PolyAnalyst APIs.
 
 ## Installation
 
