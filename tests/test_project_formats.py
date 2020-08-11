@@ -94,6 +94,18 @@ def test_get_execution_statistics(project):
     assert jsonschema.validate(stats, NodesStatistics.schema()) is None
 
 
+@pytest.mark.vcr('test_get_execution_statistics.yaml')
+def test_get_execution_statistics_is_deprecated(project):
+    with pytest.deprecated_call():
+        _ = project.get_execution_statistics()
+
+
+@pytest.mark.vcr('test_get_nodes.yaml')
+def test_get_nodes_is_deprecated(project):
+    with pytest.deprecated_call():
+        _ = project.get_nodes()
+
+
 @pytest.mark.vcr
 def test_get_nodes(project):
     class Node(BaseModel):
