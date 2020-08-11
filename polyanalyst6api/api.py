@@ -61,7 +61,7 @@ NodeTypes = [
 class API:
     """PolyAnalyst API
 
-    :param url: The scheme, host and port(if exists) of a PolyAnalyst server
+    :param url: The scheme, host and port(if exists) of a PolyAnalyst server \
         (e.g. ``https://localhost:5043/``, ``http://example.polyanalyst.com``)
     :param username: The username to login with
     :param password: (optional) The password for specified username
@@ -259,8 +259,8 @@ class RemoteFileSystem:
         :param dest: (optional) path to the folder in the PolyAnalyst's user directory
         :param recursive: (optional) upload subdirectories recursively
 
-        :raise TypeError if ``source`` is not string or path-like object.
-               ValueError if ``source`` does not exists
+        :raise TypeError if ``source`` is not string or path-like object.\
+            ValueError if ``source`` does not exists
         """
         if not isinstance(source, (str, os.PathLike)):
             raise TypeError('The source parameter should be either string or path-like object.')
@@ -436,21 +436,22 @@ class Project:
 
         Usage::
 
-        pass the names of the nodes to be executed separated by commas
           >>> prj.execute('Internet Source', 'Python')
 
         or, if there are several nodes in the project with the same name, pass
-        them as a dict with mandatory 'name' and 'type' keys (and because of this,
-        you can also pass items of prj.get_node_list())
-          >>> prj.execute(
-                  {'name': 'Example node', 'type': 'DataSource'},
-                  {'name': 'Example node', 'type': 'Dataset'},
-                  'Federated Search',
-                  prj.get_node_list()[1],
-              )
+        them as a dict with mandatory ``name`` and ``type`` keys (and because of this,
+        you can also pass items of :func:`get_node_list`)
 
-        use wait=True to wait for the passed nodes execution to complete. Note
-        that the other nodes execution started by this command will not be awaited.
+          >>> prj.execute(
+          ...     {'name': 'Example node', 'type': 'DataSource'},
+          ...     {'name': 'Example node', 'type': 'Dataset'},
+          ...     'Federated Search',
+          ...     prj.get_node_list()[1],
+          ... )
+
+        use ``wait=True`` to wait for the passed nodes execution to complete.
+        Note that the other nodes execution started by this command will not be awaited.
+
           >>> prj.execute('Export to MS Word', wait=True)
         """
         nodes = list(nodes)
@@ -521,8 +522,8 @@ class Project:
         :param node_type: node type, which parameters need to be set. The types are listed in NodeTypes.
         :param parameters: default parameters of the node to be set.
         :param declare_unsync: reset the status of the Parameters node.
-        :param hard_update: update every child node with new parameters if True, otherwise reset their statuses. Works
-        only if declare_unsync is True.
+        :param hard_update: update every child node with new parameters if True, \
+            otherwise reset their statuses. Works only if declare_unsync is True.
 
         :raises ClientException when the `node` type is not Parameters
         """
@@ -550,8 +551,8 @@ class Project:
                 warnings.warn(msg)
 
     def wait_for_completion(self, node: Union[str, Dict[str, str]]) -> bool:
-        """Waits for the node to complete the execution. Returns True if node have completed successfully and
-        False otherwise.
+        """Waits for the node to complete the execution. Returns True if node have
+        completed successfully and False otherwise.
 
         :param node: node name or dict with name and type of node
         """
@@ -589,6 +590,9 @@ class Project:
 
         The node value is a dict with a mandatory keys: id, type, status.
         It also may contain errMsg key if last node execution was failed.
+
+        .. deprecated:: 0.15.0
+           Use :func:`get_node_list` instead.
         """
         warnings.warn(
             'Project.get_nodes() is deprecated, use Project.get_node_list() instead.',
@@ -607,6 +611,9 @@ class Project:
 
         Similar to :meth:`get_nodes() <Project.get_nodes>` but nodes contains
         extra information and the project statistics.
+
+        .. deprecated:: 0.15.0
+           Use :func:`get_execution_stats` instead.
         """
         warnings.warn(
             'Project.get_execution_statistics() is deprecated, use Project.get_execution_stats() instead.',
