@@ -5,14 +5,13 @@ from typing import Any, Dict, List, Optional, Union
 import polyanalyst6api
 import pytest
 import jsonschema
-from pydantic import BaseModel, create_model
+from pydantic import BaseModel
 
 URL = 'https://localhost:5043'
 USER = 'administrator'
 UUID = 'bbd41a95-a45c-4cd6-bb0a-8bc472d04708'
 
-# that the formats of the returned data of the Project methods has not changed
-# todo export and use pydantic models to api.py
+# test that the formats of the returned data of the Project methods has not changed
 
 
 @pytest.fixture(scope='module')  # todo with module scope tests runs slower
@@ -22,11 +21,37 @@ def project():
     return api.project(UUID)
 
 
+# todo export and use pydantic models in api.py
 class NodeStatus(str, enum.Enum):
     incomplete = 'incomplete'
     empty = 'empty'
     unsynchronized = 'unsynchronized'
     synchronized = 'synchronized'
+
+
+class Node(BaseModel):
+    id: int
+    name: str
+    type: str
+    status: NodeStatus
+    errMsg: Optional[str]
+
+
+class NodeStatistic(BaseModel):
+    id: int
+    type: str
+    name: str
+    status: NodeStatus
+    errMsg: Optional[str]
+    startTime: int
+    endTime: int
+    duration: float
+    datasetRows: Optional[int]
+    datasetCols: Optional[int]
+    freeMemoryInitial: int
+    freeMemoryFinal: int
+    freeDiskInitial: int
+    freeDiskFinal: int
 
 
 @pytest.mark.run('first')
@@ -66,23 +91,13 @@ def test_get_tasks(project):
 @pytest.mark.run('third')
 @pytest.mark.vcr
 def test_get_execution_statistics(project):
-    class Node(BaseModel):
-        id: int
-        type: str
-        # name: str
-        status: NodeStatus
-        errMsg: Optional[str]
-        startTime: int
-        endTime: int
-        duration: float
-        datasetRows: Optional[int]
-        datasetCols: Optional[int]
-        freeMemoryInitial: int
-        freeMemoryFinal: int
-        freeDiskInitial: int
-        freeDiskFinal: int
+    class _NodeStatistic(NodeStatistic):
+        name: Optional[str]  # todo exclude field https://github.com/samuelcolvin/pydantic/issues/830
 
-    class NodesStatistics(BaseModel):
+    class Nodes(BaseModel):
+        __root__: Dict[str, _NodeStatistic]
+
+    class Statistics(BaseModel):
         emptyNodesCount: Optional[int]
         synchronizedNodesCount: Optional[int]
         unsynchronizedNodesCount: Optional[int]
@@ -90,8 +105,8 @@ def test_get_execution_statistics(project):
     time.sleep(5)  # todo wait only when requesting
     nodes, stats = project.get_execution_statistics()
 
-    assert jsonschema.validate(nodes, create_model('', __root__=Node).schema()) is None
-    assert jsonschema.validate(stats, NodesStatistics.schema()) is None
+    assert jsonschema.validate(nodes, Nodes.schema()) is None
+    assert jsonschema.validate(stats, Statistics.schema()) is None
 
 
 @pytest.mark.vcr('test_get_execution_statistics.yaml')
@@ -108,15 +123,14 @@ def test_get_nodes_is_deprecated(project):
 
 @pytest.mark.vcr
 def test_get_nodes(project):
-    class Node(BaseModel):
-        id: int
-        # name: str
-        type: str
-        status: NodeStatus
-        errMsg: Optional[str]
+    class _Node(Node):
+        name: Optional[str]
+
+    class Nodes(BaseModel):
+        __root__: Dict[str, _Node]
 
     result = project.get_nodes()
-    assert jsonschema.validate(result, create_model('', __root__=Node).schema()) is None
+    assert jsonschema.validate(result, Nodes.schema()) is None
 
 
 @pytest.mark.vcr
@@ -130,3 +144,17 @@ def test_preview(project):
     assert jsonschema.validate(project.preview('Python'), Preview.schema()) is None
 
 
+@pytest.mark.vcr('test_get_nodes.yaml')
+def _test_get_node_list(project):
+    class Nodes(BaseModel):
+        __root__: List[Node]
+
+    assert jsonschema.validate(project.get_node_list(), Nodes.schema()) is None
+
+
+@pytest.mark.vcr('test_get_execution_statistics.yaml')
+def test_get_execution_stats(project):
+    class Stats(BaseModel):
+        __root__: List[NodeStatistic]
+
+    assert jsonschema.validate(project.get_execution_stats(), Stats.schema()) is None
