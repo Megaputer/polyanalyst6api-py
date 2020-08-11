@@ -1,3 +1,18 @@
+0.15.0 (2020-08-11)
+===================
+
+Features
+--------
+
+- Added support for working with nodes with the same names  (T21997)
+
+Deprecations and Removals
+-------------------------
+
+- Deprecated Project.get_nodes() and Project.get_execution_statistics() methods
+- Removed private Project._nodes attribute
+
+
 0.14.0 (2020-07-24)
 ===================
 
