@@ -432,7 +432,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_node_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="Project.get_node_list"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.get_node_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_node_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Returns a list of project nodes&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Returns a list of project nodes.</span>
+
+<span class="sd">        .. versionadded:: 0.15.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
             <span class="s1">&#39;project/nodes&#39;</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;prjUUID&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">},</span>
@@ -440,7 +443,10 @@
         <span class="p">)[</span><span class="s1">&#39;nodes&#39;</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Project.get_execution_stats"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.Project.get_execution_stats">[docs]</a>    <span class="k">def</span> <span class="nf">get_execution_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Returns nodes execution statistics&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Returns nodes execution statistics.</span>
+
+<span class="sd">        .. versionadded:: 0.15.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
             <span class="s1">&#39;project/execution-statistics&#39;</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;prjUUID&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">}</span>
@@ -505,6 +511,7 @@
 <span class="sd">        :param node: node name or dict with name and type of node</span>
 
 <span class="sd">        Usage::</span>
+
 <span class="sd">          &gt;&gt;&gt; data_set = prj.preview(&#39;Python&#39;)</span>
 
 <span class="sd">        or, pass dict if the project contains several nodes with the same name</span>
