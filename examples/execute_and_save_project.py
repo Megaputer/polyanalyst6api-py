@@ -17,7 +17,7 @@ except pa.APIException as exc:
     print(exc)
 else:
     # wait for nodes to complete execution
-    for node in prj.get_nodes():
+    for node in prj.get_node_list():
         prj.wait_for_completion(node)
 
     prj.save()

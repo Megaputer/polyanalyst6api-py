@@ -8,6 +8,6 @@ project_id = ''
 
 with pa.API(netloc, login, password) as api:
     prj = api.project(project_id)
-    nodes_stats = prj.get_execution_statistics()[0]
-    for node_name, node_stats in nodes_stats.items():
-        print(f"The {node_name} node execution takes {node_stats['duration']} seconds.")
+    stats = prj.get_execution_stats()
+    for node in stats:
+        print(f"The {node['name']} node execution takes {node['duration']} seconds.")
