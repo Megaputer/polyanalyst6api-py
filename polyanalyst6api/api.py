@@ -398,7 +398,10 @@ class Project:
         self._node_list: List[Node] = []
 
     def get_node_list(self) -> List[Node]:
-        """Returns a list of project nodes"""
+        """Returns a list of project nodes.
+
+        .. versionadded:: 0.15.0
+        """
         return self.api.get(
             'project/nodes',
             params={'prjUUID': self.uuid},
@@ -406,7 +409,10 @@ class Project:
         )['nodes']
 
     def get_execution_stats(self) -> List[Node]:
-        """Returns nodes execution statistics"""
+        """Returns nodes execution statistics.
+
+        .. versionadded:: 0.15.0
+        """
         return self.api.get(
             'project/execution-statistics',
             params={'prjUUID': self.uuid}
@@ -471,6 +477,7 @@ class Project:
         :param node: node name or dict with name and type of node
 
         Usage::
+
           >>> data_set = prj.preview('Python')
 
         or, pass dict if the project contains several nodes with the same name
