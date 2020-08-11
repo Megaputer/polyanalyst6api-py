@@ -27,7 +27,7 @@ __all__ = ['API', 'Project', 'PAException', 'ClientException', 'APIException']
 # type hints
 Response = Tuple[requests.Response, Any]
 Nodes = Dict[str, Dict[str, Union[int, str]]]
-Node: Dict[str, Union[str, int]]
+Node = Dict[str, Union[str, int]]
 DataSet = List[Dict[str, Any]]
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
