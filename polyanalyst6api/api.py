@@ -436,10 +436,10 @@ class Project:
         """Aborts the execution of all nodes in the project."""
         self.api.post('project/global-abort', json={'prjUUID': self.uuid})
 
-    def execute(self, *nodes: Union[str, Dict[str, str]], wait: bool = False) -> None:
+    def execute(self, *args: Union[str, Dict[str, str]], wait: bool = False) -> None:
         """Initiate execution of nodes and their children.
 
-        :param nodes: node names and/or dicts with name and type of nodes
+        :param args: node names and/or dicts with name and type of nodes
         :param wait: wait for nodes execution to complete
 
         Usage::
@@ -462,10 +462,12 @@ class Project:
 
           >>> prj.execute('Export to MS Word', wait=True)
         """
-        nodes = list(nodes)
-        for i, node in enumerate(nodes):
-            if isinstance(node, str):
-                nodes[i] = {'name': node, 'type': self._find_node(node)['type']}
+        nodes = []
+        for arg in args:
+            node = self._find_node(arg)
+            nodes.append(
+                {'name': node['name'], 'type': node['type']}
+            )
 
         self.api.post('project/execute', json={'prjUUID': self.uuid, 'nodes': nodes})
         if wait:
@@ -500,12 +502,7 @@ class Project:
 
         .. versionadded:: 0.16.0
         """
-        if isinstance(node, str):
-            node = self._find_node(node)
-        else:
-            node = self._find_node(node['name'], node['type'])
-
-        return DataSet(self, node['id'])
+        return DataSet(self, self._find_node(node)['id'])
 
     def unload(self) -> None:
         """Unload the project from the memory and free system resources."""
@@ -547,21 +544,11 @@ class Project:
         :param declare_unsync: reset the status of the Parameters node.
         :param hard_update: update every child node with new parameters if True, \
             otherwise reset their statuses. Works only if declare_unsync is True.
-
-        :raises ClientException when the `node` type is not Parameters
         """
-        if isinstance(node, str):
-            parameters_node = self._find_node(node)
-        else:
-            parameters_node = self._find_node(node['name'], node['type'])
-
-        if parameters_node['type'] != 'Parameters':
-            raise ClientException('The node type should be Parameters')
-
-        json: Optional[List[str]]
-        json = self.api.post(
+        warns: Optional[List[str]]
+        warns = self.api.post(
             'parameters/configure',
-            params={'prjUUID': self.uuid, 'obj': parameters_node['id']},
+            params={'prjUUID': self.uuid, 'obj': self._find_node(node)['id']},
             json={
                 'type': node_type,
                 'settings': parameters,
@@ -569,8 +556,8 @@ class Project:
                 'hardUpdate': hard_update,
             }
         )
-        if json:
-            for msg in json:
+        if warns:
+            for msg in warns:
                 warnings.warn(msg)
 
     def wait_for_completion(self, node: Union[str, Dict[str, str]]) -> bool:
@@ -579,13 +566,10 @@ class Project:
 
         :param node: node name or dict with name and type of node
         """
-        if isinstance(node, str):
-            node = self._find_node(node)
-
         time.sleep(0.5)  # give pa time to update node statuses
         while True:
             self._update_node_list()
-            stats = self._find_node(node['name'], node['type'])
+            stats = self._find_node(node)
 
             if stats.get('errMsg'):
                 return False
@@ -599,13 +583,13 @@ class Project:
     def _update_node_list(self) -> None:
         self._node_list = self.get_node_list()
 
-    def _find_node(self, name: str, type_: Optional[str] = None) -> Optional[Node]:
+    def _find_node(self, node_: Union[str, Dict[str, str]]) -> Optional[Node]:
         for node in self._node_list:
-            if type_:
-                if node['name'] == name and node['type'] == type_:
+            if isinstance(node_, str):
+                if node['name'] == node_:
                     return node
             else:
-                if node['name'] == name:
+                if node['name'] == node_['name'] and node['type'] == node_['type']:
                     return node
 
     def get_nodes(self) -> Nodes:
