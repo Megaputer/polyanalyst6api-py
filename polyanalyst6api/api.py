@@ -7,11 +7,12 @@ This module contains functionality for access to PolyAnalyst API.
 
 import contextlib
 import datetime
+import functools
 import os
 import pathlib
 import time
 import warnings
-from typing import Any, Dict, List, Tuple, Union, Optional, IO
+from typing import Any, Dict, List, Tuple, Union, Optional, IO, Iterator
 from urllib.parse import urljoin, urlparse
 
 import pytus
@@ -28,7 +29,8 @@ __all__ = ['API', 'Project', 'PAException', 'ClientException', 'APIException']
 Response = Tuple[requests.Response, Any]
 Nodes = Dict[str, Dict[str, Union[int, str]]]
 Node = Dict[str, Union[str, int]]
-DataSet = List[Dict[str, Any]]
+_DataSet = List[Dict[str, Any]]
+JSON_VAL = Union[bool, str, int, float, None]
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -470,7 +472,7 @@ class Project:
             for node in nodes:
                 self.wait_for_completion(node)
 
-    def preview(self, node: Union[str, Dict[str, str]]) -> DataSet:
+    def preview(self, node: Union[str, Dict[str, str]]) -> _DataSet:
         """Returns first 1000 rows of data from ``node``, texts and strings are
         cutoff after 250 symbols.
 
@@ -490,6 +492,20 @@ class Project:
             raise APIException(f"Invalid node type: {node['type']} (only 'Dataset' or 'DataSource' are available)")
 
         return self.api.get('dataset/preview', params={'prjUUID': self.uuid, **node})
+
+    def dataset(self, node: Union[str, Dict[str, str]]):
+        """Get dataset object
+
+        :param node: node name or dict with name and type of the node
+
+        .. versionadded:: 0.16.0
+        """
+        if isinstance(node, str):
+            node = self._find_node(node)
+        else:
+            node = self._find_node(node['name'], node['type'])
+
+        return DataSet(self, node['id'])
 
     def unload(self) -> None:
         """Unload the project from the memory and free system resources."""
@@ -633,3 +649,126 @@ class Project:
         )
         nodes = {node.pop('name'): node for node in json['nodes']}
         return nodes, json['nodesStatistics']
+
+
+def retry_on_invalid_guid(func):
+    @functools.wraps(func)
+    def wrapper(cls, *args, **kwargs):
+        try:
+            return func(cls, *args, **kwargs)
+        except APIException:
+            cls._update_guid()
+            return func(cls, *args, **kwargs)
+    return wrapper
+
+
+class DataSet:
+    def __init__(self, prj: Project, _id: int):
+        self._prj = prj
+        self._api = prj.api
+        self.node_id = _id
+        self.guid: Optional[str] = None
+
+    @retry_on_invalid_guid
+    def get_info(self) -> Dict[str, Any]:
+        return self._api.get(
+            'dataset/info',
+            params={'wrapperGuid': self.guid}
+        )
+
+    @retry_on_invalid_guid
+    def get_progress(self) -> Dict[str, Union[int, str]]:
+        return self._api.get(
+            'dataset/progress',
+            params={'wrapperGuid': self.guid}
+        )
+
+    def iter_rows(self, start: int = 0, stop: Optional[int] = None) -> Iterator[Dict[str, JSON_VAL]]:
+        """
+        Iterate over dataset rows.
+
+        :param start:
+        :param stop:
+
+        :raises ValueError if start or stop is out of datasets' row range
+
+        Usage::
+
+          download first 10 rows
+          >>> head = []
+          >>> for row in ds.iter_rows(0, 10):
+          ...     head.append(row)
+          download full dataset
+          >>> table = list(ds.iter_rows())
+          convert downloaded dataset to pandas.DataFrame
+          >>> df = pandas.DataFrame(table)
+        """
+        info = self.get_info()
+        max_row = info['rowCount']
+        if stop is None:
+            stop = max_row
+
+        # предпологается что если stop определен то пользователь в курсе количества строк в датасете
+        if not 0 <= start <= stop <= max_row:
+            raise ValueError(f'start and stop arguments must be within dataset row range: (0, {max_row})')
+
+        rows = self._values(stop)['table']
+        get_text = self._cell_text
+
+        class RowIterator:
+            def __init__(self):
+                self.c = start
+
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                if self.c >= stop:
+                    raise StopIteration
+
+                result = {}
+                for column in info['columnsInfo']:
+                    if column['flags'].get('getTextAlways'):
+                        result[column['title']] = get_text(self.c, column['id'], column['title'])
+                    # elif column['type'] == 'DateTime':  # todo convert to python datetime?
+                    else:
+                        result[column['title']] = rows[self.c][column['id']]
+
+                self.c += 1
+                return result
+
+        return RowIterator()
+
+    def _update_guid(self) -> None:
+        self.guid = self._api.get(
+            'dataset/wrapper-guid',
+            params={
+                'prjUUID': self._prj.uuid,
+                'obj': self.node_id,
+            }
+        )['wrapperGuid']
+
+    @retry_on_invalid_guid
+    def _values(self, row_count: int) -> Dict[str, Union[List, Dict]]:
+        return self._api.get(
+            'dataset/values',
+            json={
+                'wrapperGuid': self.guid,
+                'rowCount': row_count,
+            }
+        )
+
+    @retry_on_invalid_guid
+    def _cell_text(self, row: int, col: int, _title) -> str:
+        return self._api.get(
+            'dataset/cell-text',
+            json={
+                'wrapperGuid': self.guid,
+                'row': row,
+                'col': col,
+                # todo remove next keys
+                'colTitle': _title,
+                'offset': 0,
+                'count': 0,
+            }
+        )['text']
