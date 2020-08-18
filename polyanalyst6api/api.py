@@ -480,6 +480,9 @@ class Project:
 
         :param node: node name or dict with name and type of node
 
+        .. deprecated:: 0.16.0
+           Use :method:: prj.dataset().preview() instead.
+
         Usage::
 
           >>> data_set = prj.preview('Python')
@@ -487,13 +490,7 @@ class Project:
         or, pass dict if the project contains several nodes with the same name
           >>> data_set = prj.preview({'name': 'Python', 'type': 'Dataset'})
         """
-        if isinstance(node, str):
-            node = {'name': node, 'type': self._find_node(node)['type']}
-
-        if node['type'] not in ('Dataset', 'DataSource'):
-            raise APIException(f"Invalid node type: {node['type']} (only 'Dataset' or 'DataSource' are available)")
-
-        return self.api.get('dataset/preview', params={'prjUUID': self.uuid, **node})
+        return self.dataset(node).preview()
 
     def dataset(self, node: Union[str, Dict[str, str]]):
         """Get dataset object
@@ -502,7 +499,7 @@ class Project:
 
         .. versionadded:: 0.16.0
         """
-        return DataSet(self, self._find_node(node)['id'])
+        return DataSet(self, self._find_node(node))
 
     def unload(self) -> None:
         """Unload the project from the memory and free system resources."""
@@ -647,10 +644,10 @@ def retry_on_invalid_guid(func):
 
 
 class DataSet:
-    def __init__(self, prj: Project, _id: int):
+    def __init__(self, prj: Project, node: Node):
         self._prj = prj
         self._api = prj.api
-        self.node_id = _id
+        self._node = node
         self.guid: Optional[str] = None
 
     @retry_on_invalid_guid
@@ -665,6 +662,19 @@ class DataSet:
         return self._api.get(
             'dataset/progress',
             params={'wrapperGuid': self.guid}
+        )
+
+    def preview(self):
+        """Returns first 1000 rows of data from ``node``, texts and strings are
+        cutoff after 250 symbols.
+        """
+        return self._api.get(
+            'dataset/preview',
+            params={
+                'prjUUID': self._prj.uuid,
+                'name': self._node['name'],
+                'type': self._node['type'],
+            }
         )
 
     def iter_rows(self, start: int = 0, stop: Optional[int] = None) -> Iterator[Dict[str, JSON_VAL]]:
@@ -728,7 +738,7 @@ class DataSet:
             'dataset/wrapper-guid',
             params={
                 'prjUUID': self._prj.uuid,
-                'obj': self.node_id,
+                'obj': self._node['id'],
             }
         )['wrapperGuid']
 
