@@ -63,6 +63,7 @@ time.sleep(5)
 result = pandas.DataFrame(data={'col1': [1.1, 2], 'col2': ['text', None]})
     '''
     project.set_parameters('Parameters', 'Dataset/Python', parameters={'Script': script})
+    time.sleep(0.1)
     project.execute('Python')
     assert True
 
