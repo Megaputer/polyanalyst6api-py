@@ -144,7 +144,7 @@ class API:
         """Logs in to PolyAnalyst Server with user credentials."""
         credentials = {'uname': self.username, 'pwd': self.password}
         if self.ldap_server:
-            credentials['useLDAP'] = 1
+            credentials['useLDAP'] = '1'
             credentials['svr'] = self.ldap_server
 
         resp, _ = self.request('login', method='post', params=credentials)
@@ -232,7 +232,7 @@ class API:
             try:
                 response.raise_for_status()
             except requests.HTTPError as exc:
-                error_msg = exc
+                error_msg = str(exc)
 
         with contextlib.suppress(NameError):
             raise APIException(error_msg, response.url, response.status_code)
@@ -407,7 +407,7 @@ class Project:
         """
         return self.api.get('project/execution-statistics', params={'prjUUID': self.uuid})['nodes']
 
-    def get_tasks(self) -> List[Dict[str, any]]:
+    def get_tasks(self) -> List[Dict[str, Any]]:
         """Returns task list info."""
         json = self.api.get('project/tasks', params={'prjUUID': self.uuid})
         # convert timestamp in milliseconds to python datetime
@@ -457,7 +457,7 @@ class Project:
         self.api.post('project/execute', json={'prjUUID': self.uuid, 'nodes': nodes})
         if wait:
             for node in nodes:
-                self.wait_for_completion(node)
+                self.wait_for_completion(node)  # type: ignore
 
     def preview(self, node: Union[str, Dict[str, str]]) -> _DataSet:
         """Returns first 1000 rows of data from ``node``, texts and strings are
@@ -562,14 +562,17 @@ class Project:
     def _update_node_list(self) -> None:
         self._node_list = self.get_node_list()
 
-    def _find_node(self, node_: Union[str, Dict[str, str]]) -> Optional[Node]:
+    def _find_node(self, node_: Union[str, Dict[str, str]]) -> Node:
+        if isinstance(node_, str):
+            name_, type_ = node_, None
+        else:
+            name_, type_ = node_['name'], node_['type']
+
         for node in self._node_list:
-            if isinstance(node_, str):
-                if node['name'] == node_:
-                    return node
-            else:
-                if node['name'] == node_['name'] and node['type'] == node_['type']:
-                    return node
+            if node['name'] == name_ and (type_ is None or node['type'] == type_):
+                return node
+
+        raise APIException(f"Node not found: name='{name_}', type='{type_}'", status_code=500)
 
     def get_nodes(self) -> Nodes:
         """Returns a dictionary of project's nodes information.
@@ -636,7 +639,7 @@ class DataSet:
     def get_progress(self) -> Dict[str, Union[int, str]]:
         return self._api.get('dataset/progress', params={'wrapperGuid': self.guid})
 
-    def preview(self):
+    def preview(self) -> _DataSet:
         """Returns first 1000 rows of data from ``node``, texts and strings are
         cutoff after 250 symbols.
         """
