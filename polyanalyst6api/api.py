@@ -127,13 +127,13 @@ class API:
         """Returns api versions supported by PolyAnalyst server."""
         # the 'versions' endpoint was added in the 2191 polyanalyst's version
         try:
-            return self.request(urljoin(self.base_url, 'versions'), 'get')[1]
+            return self.request(urljoin(self.base_url, 'versions'), method='get')[1]
         except APIException:
             return ['1.0']
 
     def get_server_info(self) -> Optional[Dict[str, Union[int, str, Dict[str, str]]]]:
         """Returns general server information including build number, version and commit hashes."""
-        _, data = self.request(urljoin(self.url, 'server/info'), 'get')
+        _, data = self.request(urljoin(self.url, 'server/info'), method='get')
         return data
 
     def get_parameters(self) -> List[Dict[str, Union[str, List]]]:
@@ -152,7 +152,6 @@ class API:
 
     def logout(self) -> None:
         """NOT IMPLEMENTED YET."""
-        pass
 
     def run_task(self, id: int) -> None:
         """Initiates scheduler task execution.
@@ -199,8 +198,8 @@ class API:
         kwargs['verify'] = self.certfile
         try:
             resp = self._s.request(method, url, **kwargs)
-        except requests.RequestException as e:
-            raise ClientException(e)
+        except requests.RequestException as exc:
+            raise ClientException(exc)
         else:
             return self._handle_response(resp)
 
@@ -232,8 +231,8 @@ class API:
         else:
             try:
                 response.raise_for_status()
-            except requests.HTTPError as e:
-                error_msg = e
+            except requests.HTTPError as exc:
+                error_msg = exc
 
         with contextlib.suppress(NameError):
             raise APIException(error_msg, response.url, response.status_code)
@@ -555,7 +554,7 @@ class Project:
                 return False
             if stats['status'] == 'synchronized':
                 return True
-            elif stats['status'] == 'incomplete':
+            if stats['status'] == 'incomplete':
                 return False
 
             time.sleep(1)
@@ -680,24 +679,24 @@ class DataSet:
 
         class RowIterator:
             def __init__(self):
-                self.c = start
+                self.idx = start
 
             def __iter__(self):
                 return self
 
             def __next__(self):
-                if self.c >= stop:
+                if self.idx >= stop:
                     raise StopIteration
 
                 result = {}
                 for column in info['columnsInfo']:
                     if column['flags'].get('getTextAlways'):
-                        result[column['title']] = get_text(self.c, column['id'], column['title'])
+                        result[column['title']] = get_text(self.idx, column['id'], column['title'])
                     # elif column['type'] == 'DateTime':  # todo convert to python datetime?
                     else:
-                        result[column['title']] = rows[self.c][column['id']]
+                        result[column['title']] = rows[self.idx][column['id']]
 
-                self.c += 1
+                self.idx += 1
                 return result
 
         return RowIterator()
