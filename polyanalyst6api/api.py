@@ -147,11 +147,7 @@ class API:
             credentials['useLDAP'] = 1
             credentials['svr'] = self.ldap_server
 
-        resp, _ = self.request(
-            'login',
-            method='post',
-            params=credentials,
-        )
+        resp, _ = self.request('login', method='post', params=credentials)
         self.sid = resp.cookies['sid']
 
     def logout(self) -> None:
@@ -228,8 +224,7 @@ class API:
             if 'are not logged in' in response.text:
                 error_msg = 'You are not logged in to PolyAnalyst Server'
             elif 'operation is limited ' in response.text:
-                error_msg = ('Access to this operation is limited to project '
-                             'owners and administrator')
+                error_msg = 'Access to this operation is limited to project owners and administrator'
         elif response.status_code == 500:
             with contextlib.suppress(IndexError, TypeError):
                 if json[0] == 'Error':
@@ -353,27 +348,23 @@ class RemoteFileSystem:
           ...     fs.upload_file(file, name='cars.csv', path='/data')
         """
         if file.tell():
-            warnings.warn("The file object's current position is not at the beginning of the file."
-                          "This will result in uploading only the part of the file!")
+            warnings.warn(
+                "The file object's current position is not at the beginning of the file."
+                "This will result in uploading only the part of the file!"
+            )
 
         file_name = name or os.path.basename(file.name)
         file_size = _get_file_size(file)
-        metadata = {'foldername': path}
 
         file_endpoint, _ = pytus.create(
             urljoin(self.api.url, 'file/upload'),
             file_name,
             file_size,
             session=self.api._s,
-            metadata=metadata
+            metadata={'foldername': path},
         )
 
-        pytus.resume(
-            file,
-            file_endpoint,
-            session=self.api._s,
-            offset=0
-        )
+        pytus.resume(file, file_endpoint, session=self.api._s, offset=0)
 
         # free up resources on the server if file is not uploaded completely
         try:
@@ -415,10 +406,7 @@ class Project:
 
         .. versionadded:: 0.15.0
         """
-        return self.api.get(
-            'project/execution-statistics',
-            params={'prjUUID': self.uuid}
-        )['nodes']
+        return self.api.get('project/execution-statistics', params={'prjUUID': self.uuid})['nodes']
 
     def get_tasks(self) -> List[Dict[str, any]]:
         """Returns task list info."""
@@ -465,9 +453,7 @@ class Project:
         nodes = []
         for arg in args:
             node = self._find_node(arg)
-            nodes.append(
-                {'name': node['name'], 'type': node['type']}
-            )
+            nodes.append({'name': node['name'], 'type': node['type']})
 
         self.api.post('project/execute', json={'prjUUID': self.uuid, 'nodes': nodes})
         if wait:
@@ -520,18 +506,15 @@ class Project:
         This operation available only for project owner and administrators, and
         cannot be undone.
         """
-        self.api.post(
-            'project/delete',
-            json={'prjUUID': self.uuid, 'forceUnload': force_unload}
-        )
+        self.api.post('project/delete', json={'prjUUID': self.uuid, 'forceUnload': force_unload})
 
     def set_parameters(
-            self,
-            node: Union[str, Dict[str, str]],
-            node_type: str,
-            parameters: Dict[str, Any],
-            declare_unsync: bool = True,
-            hard_update: bool = True,
+        self,
+        node: Union[str, Dict[str, str]],
+        node_type: str,
+        parameters: Dict[str, Any],
+        declare_unsync: bool = True,
+        hard_update: bool = True,
     ) -> None:
         """Set default parameters of the selected Parameters node in the project.
 
@@ -551,7 +534,7 @@ class Project:
                 'settings': parameters,
                 'declareUnsync': declare_unsync,
                 'hardUpdate': hard_update,
-            }
+            },
         )
         if warns:
             for msg in warns:
@@ -599,9 +582,7 @@ class Project:
            Use :func:`get_node_list` instead.
         """
         warnings.warn(
-            'Project.get_nodes() is deprecated, use Project.get_node_list() instead.',
-            DeprecationWarning,
-            stacklevel=2,
+            'Project.get_nodes() is deprecated, use Project.get_node_list() instead.', DeprecationWarning, stacklevel=2
         )
         json = self.api.get(
             'project/nodes',
@@ -624,10 +605,7 @@ class Project:
             DeprecationWarning,
             stacklevel=2,
         )
-        json = self.api.get(
-            'project/execution-statistics',
-            params={'prjUUID': self.uuid}
-        )
+        json = self.api.get('project/execution-statistics', params={'prjUUID': self.uuid})
         nodes = {node.pop('name'): node for node in json['nodes']}
         return nodes, json['nodesStatistics']
 
@@ -640,6 +618,7 @@ def retry_on_invalid_guid(func):
         except APIException:
             cls._update_guid()
             return func(cls, *args, **kwargs)
+
     return wrapper
 
 
@@ -652,17 +631,11 @@ class DataSet:
 
     @retry_on_invalid_guid
     def get_info(self) -> Dict[str, Any]:
-        return self._api.get(
-            'dataset/info',
-            params={'wrapperGuid': self.guid}
-        )
+        return self._api.get('dataset/info', params={'wrapperGuid': self.guid})
 
     @retry_on_invalid_guid
     def get_progress(self) -> Dict[str, Union[int, str]]:
-        return self._api.get(
-            'dataset/progress',
-            params={'wrapperGuid': self.guid}
-        )
+        return self._api.get('dataset/progress', params={'wrapperGuid': self.guid})
 
     def preview(self):
         """Returns first 1000 rows of data from ``node``, texts and strings are
@@ -670,11 +643,7 @@ class DataSet:
         """
         return self._api.get(
             'dataset/preview',
-            params={
-                'prjUUID': self._prj.uuid,
-                'name': self._node['name'],
-                'type': self._node['type'],
-            }
+            params={'prjUUID': self._prj.uuid, 'name': self._node['name'], 'type': self._node['type']},
         )
 
     def iter_rows(self, start: int = 0, stop: Optional[int] = None) -> Iterator[Dict[str, JSON_VAL]]:
@@ -736,21 +705,12 @@ class DataSet:
     def _update_guid(self) -> None:
         self.guid = self._api.get(
             'dataset/wrapper-guid',
-            params={
-                'prjUUID': self._prj.uuid,
-                'obj': self._node['id'],
-            }
+            params={'prjUUID': self._prj.uuid, 'obj': self._node['id']},
         )['wrapperGuid']
 
     @retry_on_invalid_guid
     def _values(self, row_count: int) -> Dict[str, Union[List, Dict]]:
-        return self._api.get(
-            'dataset/values',
-            json={
-                'wrapperGuid': self.guid,
-                'rowCount': row_count,
-            }
-        )
+        return self._api.get('dataset/values', json={'wrapperGuid': self.guid, 'rowCount': row_count})
 
     @retry_on_invalid_guid
     def _cell_text(self, row: int, col: int, _title) -> str:
@@ -764,5 +724,5 @@ class DataSet:
                 'colTitle': _title,
                 'offset': 0,
                 'count': 0,
-            }
+            },
         )['text']

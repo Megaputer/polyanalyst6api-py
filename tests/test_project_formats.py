@@ -82,7 +82,7 @@ def test_get_tasks(project):
     class TaskList(BaseModel):
         __root__: List[Task]
 
-    time.sleep(.5)  # wait till PA updates node statuses
+    time.sleep(0.5)  # wait till PA updates node statuses
     task_list = project.get_tasks()
 
     assert len(task_list) == 1

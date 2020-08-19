@@ -28,18 +28,14 @@ with polyanalyst6api.API(server_url, user, password) as api:
     info = api.get_server_info()
     build_version = int(info['build'])
     if build_version < 2293 and build_version != 2236:
-        sys.exit(f'The given PolyAnalyst server does not support Setting parameters feature. '
-                 f'Please upgrade to the latest version.')
+        sys.exit(
+            'The given PolyAnalyst server does not support Setting parameters feature. '
+            'Please upgrade to the latest version.'
+        )
 
     prj = api.project(project_uuid)
 
-    prj.set_parameters(
-        'Parameters',
-        'DataSource/INET',
-        parameters={
-            'URL': URL,
-        }
-    )
+    prj.set_parameters('Parameters', 'DataSource/INET', parameters={'URL': URL})
 
     prj.execute('Internet Source', wait=True)
 
