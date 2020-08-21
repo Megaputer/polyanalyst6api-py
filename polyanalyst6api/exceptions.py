@@ -29,3 +29,7 @@ class APIException(PAException):
 
 class ClientException(PAException):
     """Indicate errors that don't involve interaction with PolyAnalyst's API."""
+
+
+class _WrapperNotFound(PAException):
+    pass

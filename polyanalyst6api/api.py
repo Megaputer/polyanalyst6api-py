@@ -21,7 +21,7 @@ import requests
 import urllib3
 
 from . import __version__
-from .exceptions import *
+from .exceptions import APIException, ClientException, PAException, _WrapperNotFound
 
 __all__ = ['API', 'Project', 'PAException', 'ClientException', 'APIException']
 
@@ -216,6 +216,8 @@ class API:
         if isinstance(json, dict) and json.get('error'):
             with contextlib.suppress(KeyError):
                 error = json['error']
+                if 'The wrapper with the given GUID is not found on the server' == error['message']:
+                    raise _WrapperNotFound
                 error_msg = f"{error['title']}. Message: '{error['message']}'"
 
         # the old error response format handling
@@ -617,10 +619,9 @@ def retry_on_invalid_guid(func):
     def wrapper(cls, *args, **kwargs):
         try:
             return func(cls, *args, **kwargs)
-        except APIException:
+        except _WrapperNotFound:
             cls._update_guid()
             return func(cls, *args, **kwargs)
-
     return wrapper
 
 
@@ -629,7 +630,9 @@ class DataSet:
         self._prj = prj
         self._api = prj.api
         self._node = node
-        self.guid: Optional[str] = None
+        # on purpose send wrong wrapperGuid(empty string) at first request to /dataset/* endpoints
+        # to create dataset wrapper on server and retrieve its' guid by @retry_on_invalid_guid
+        self.guid: str = ''
 
     @retry_on_invalid_guid
     def get_info(self) -> Dict[str, Any]:
