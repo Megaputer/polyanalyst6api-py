@@ -105,22 +105,11 @@ def test_get_execution_statistics(project):
         unsynchronizedNodesCount: Optional[int]
 
     time.sleep(5)  # todo wait only when requesting
-    nodes, stats = project.get_execution_statistics()
+    with pytest.deprecated_call():
+        nodes, stats = project.get_execution_statistics()
 
     assert jsonschema.validate(nodes, Nodes.schema()) is None
     assert jsonschema.validate(stats, Statistics.schema()) is None
-
-
-@pytest.mark.vcr('test_get_execution_statistics.yaml')
-def test_get_execution_statistics_is_deprecated(project):
-    with pytest.deprecated_call():
-        _ = project.get_execution_statistics()
-
-
-@pytest.mark.vcr('test_get_nodes.yaml')
-def test_get_nodes_is_deprecated(project):
-    with pytest.deprecated_call():
-        _ = project.get_nodes()
 
 
 @pytest.mark.vcr
@@ -131,7 +120,9 @@ def test_get_nodes(project):
     class Nodes(BaseModel):
         __root__: Dict[str, _Node]
 
-    assert jsonschema.validate(project.get_nodes(), Nodes.schema()) is None
+    with pytest.deprecated_call():
+        nodes = project.get_nodes()
+    assert jsonschema.validate(nodes, Nodes.schema()) is None
 
 
 @pytest.mark.vcr
@@ -142,7 +133,7 @@ def test_preview(project):
     class Preview(BaseModel):
         __root__: List[Row]
 
-    assert jsonschema.validate(project.preview('Python'), Preview.schema()) is None
+    assert jsonschema.validate(project.dataset('Python').preview(), Preview.schema()) is None
 
 
 @pytest.mark.vcr('test_get_nodes.yaml')
