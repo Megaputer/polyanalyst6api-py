@@ -1,3 +1,18 @@
+0.16.0 (2020-09-21)
+===================
+
+Features
+--------
+
+- Added functionality to view properties and full texts of datasets (#21517)
+
+
+Deprecations and Removals
+-------------------------
+
+- Deprecated Project.preview() in favor of Project.dataset().preview() (#1)
+
+
 0.15.0 (2020-08-11)
 ===================
 
