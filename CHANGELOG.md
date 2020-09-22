@@ -1,10 +1,33 @@
+0.17.0 (2020-09-22)
+===================
+
+Features
+--------
+
+- Added new method Project.is_running (T22411)
+- Changed Project.execute() to return execution wave identifier (T22411)
+
+
+Deprecations and Removals
+-------------------------
+
+- Deprecated Project.wait_for_completion() in favor of Project.is_running() (#1)
+
+
+Improved Documentation
+----------------------
+
+- Documented Dataset methods in API Reference (#2)
+- Fixed links to methods in documentation (#3)
+
+
 0.16.0 (2020-09-21)
 ===================
 
 Features
 --------
 
-- Added functionality to view properties and full texts of datasets (#21517)
+- Added functionality to view properties and full texts of datasets (T21517)
 
 
 Deprecations and Removals
