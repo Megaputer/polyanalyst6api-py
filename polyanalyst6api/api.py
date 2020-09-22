@@ -13,7 +13,7 @@ import pathlib
 import time
 import warnings
 from typing import Any, Dict, List, Tuple, Union, Optional, IO, Iterator
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin, urlparse, parse_qs
 
 import pytus
 from pytus.main import _get_offset, _get_file_size
@@ -257,7 +257,7 @@ class RemoteFileSystem:
         :param dest: (optional) path to the folder in the PolyAnalyst's user directory
         :param recursive: (optional) upload subdirectories recursively
 
-        :raise TypeError if ``source`` is not string or path-like object.\
+        :raises: TypeError if ``source`` is not string or path-like object.\
             ValueError if ``source`` does not exists
         """
         if not isinstance(source, (str, os.PathLike)):
@@ -334,10 +334,10 @@ class RemoteFileSystem:
 
         .. warning::
             Make sure to create a new file or file-like object for every
-            :meth:`upload_file <RemoteFileSystem.upload_file>` call!
+            :meth:`RemoteFileSystem.upload_file` call!
 
         .. note::
-           Always prefer :meth:`upload <RemoteFileSystem.upload>` over this method.
+           Always prefer :meth:`RemoteFileSystem.upload` over this method.
 
         :param file: the file or file-like object to upload
         :param name: the filename other than `file`'s name
@@ -425,19 +425,24 @@ class Project:
         """Aborts the execution of all nodes in the project."""
         self.api.post('project/global-abort', json={'prjUUID': self.uuid})
 
-    def execute(self, *args: Union[str, Dict[str, str]], wait: bool = False) -> None:
-        """Initiate execution of nodes and their children.
+    def execute(self, *args: Union[str, Dict[str, str]], wait: bool = False) -> Optional[int]:
+        """
+        Initiates execution of nodes and returns execution wave identifier.
 
         :param args: node names and/or dicts with name and type of nodes
         :param wait: wait for nodes execution to complete
 
         Usage::
 
-          >>> prj.execute('Internet Source', 'Python')
+          >>> wave_id = prj.execute('Internet Source', 'Python')
+
+        use ``wait=True`` to wait for the passed nodes execution to complete.
+
+          >>> prj.execute('Export to MS Word', wait=True)
 
         or, if there are several nodes in the project with the same name, pass
-        them as a dict with mandatory ``name`` and ``type`` keys (and because of this,
-        you can also pass items of :func:`get_node_list`)
+        them as dicts with `name` and `type` keys (and because of this, you can
+        also pass items of :meth:`Project.get_node_list`)
 
           >>> prj.execute(
           ...     {'name': 'Example node', 'type': 'DataSource'},
@@ -445,21 +450,50 @@ class Project:
           ...     'Federated Search',
           ...     prj.get_node_list()[1],
           ... )
-
-        use ``wait=True`` to wait for the passed nodes execution to complete.
-        Note that the other nodes execution started by this command will not be awaited.
-
-          >>> prj.execute('Export to MS Word', wait=True)
         """
         nodes = []
         for arg in args:
             node = self._find_node(arg)
             nodes.append({'name': node['name'], 'type': node['type']})
 
-        self.api.post('project/execute', json={'prjUUID': self.uuid, 'nodes': nodes})
+        resp, _ = self.api.request(
+            'project/execute',
+            method='post',
+            json={'prjUUID': self.uuid, 'nodes': nodes},
+        )
+
+        location = resp.headers.get('location')
+        query = urlparse(location).query
+        try:
+            wave_id = int(parse_qs(query).get('executionWave')[0])
+        except TypeError:
+            wave_id = None
+
         if wait:
-            for node in nodes:
-                self.wait_for_completion(node)  # type: ignore
+            if wave_id is None:
+                for node in nodes:
+                    self.wait_for_completion(node)  # type: ignore
+                return
+
+            while self.is_running(wave_id):
+                time.sleep(1)
+
+        return wave_id
+
+    def is_running(self, wave_id: int) -> bool:
+        """
+        Checks that execution wave is still running in the project.
+
+        If `wave_id` is `-1` then the project is checked against any active
+        execution, saving, publishing operations.
+
+        :param wave_id: Execution wave identifier
+        """
+        data = self.api.get(
+            'project/is-running',
+            params={'prjUUID': self.uuid, 'executionWave': wave_id},
+        )
+        return bool(data['result'])
 
     def preview(self, node: Union[str, Dict[str, str]]) -> _DataSet:
         """Returns first 1000 rows of data from ``node``, texts and strings are
@@ -468,19 +502,12 @@ class Project:
         :param node: node name or dict with name and type of node
 
         .. deprecated:: 0.16.0
-           Use :method:: prj.dataset().preview() instead.
-
-        Usage::
-
-          >>> data_set = prj.preview('Python')
-
-        or, pass dict if the project contains several nodes with the same name
-          >>> data_set = prj.preview({'name': 'Python', 'type': 'Dataset'})
+            Use :meth:`DataSet.preview` instead.
         """
         return self.dataset(node).preview()
 
     def dataset(self, node: Union[str, Dict[str, str]]):
-        """Get dataset object
+        """Get dataset wrapper object.
 
         :param node: node name or dict with name and type of the node
 
@@ -541,26 +568,6 @@ class Project:
             for msg in warns:
                 warnings.warn(msg)
 
-    def wait_for_completion(self, node: Union[str, Dict[str, str]]) -> bool:
-        """Waits for the node to complete the execution. Returns True if node have
-        completed successfully and False otherwise.
-
-        :param node: node name or dict with name and type of node
-        """
-        time.sleep(0.5)  # give pa time to update node statuses
-        while True:
-            self._update_node_list()
-            stats = self._find_node(node)
-
-            if stats.get('errMsg'):
-                return False
-            if stats['status'] == 'synchronized':
-                return True
-            if stats['status'] == 'incomplete':
-                return False
-
-            time.sleep(1)
-
     def _update_node_list(self) -> None:
         self._node_list = self.get_node_list()
 
@@ -576,14 +583,39 @@ class Project:
 
         raise APIException(f"Node not found: name='{name_}', type='{type_}'", status_code=500)
 
+    def wait_for_completion(self, node: Union[str, Dict[str, str]]) -> bool:
+        """Waits for the node to complete the execution. Returns True if node have
+        completed successfully and False otherwise.
+
+        .. deprecated:: 0.17.0
+           Use :meth:`Project.is_running` instead.
+
+        :param node: node name or dict with name and type of node
+        """
+        warnings.warn(
+            'Project.wait_for_completion() is deprecated, use Project.is_running() instead.',
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        time.sleep(0.5)  # give pa time to update node statuses
+        while True:
+            self._update_node_list()
+            stats = self._find_node(node)
+
+            if stats.get('errMsg'):
+                return False
+            if stats['status'] == 'synchronized':
+                return True
+            if stats['status'] == 'incomplete':
+                return False
+
+            time.sleep(1)
+
     def get_nodes(self) -> Nodes:
         """Returns a dictionary of project's nodes information.
 
-        The node value is a dict with a mandatory keys: id, type, status.
-        It also may contain errMsg key if last node execution was failed.
-
         .. deprecated:: 0.15.0
-           Use :func:`get_node_list` instead.
+           Use :meth:`Project.get_node_list` instead.
         """
         warnings.warn(
             'Project.get_nodes() is deprecated, use Project.get_node_list() instead.', DeprecationWarning, stacklevel=2
@@ -598,11 +630,10 @@ class Project:
     def get_execution_statistics(self) -> Tuple[Nodes, Dict[str, int]]:
         """Returns the execution statistics for nodes in the project.
 
-        Similar to :meth:`get_nodes() <Project.get_nodes>` but nodes contains
-        extra information and the project statistics.
+        Similar to :meth:`Project.get_nodes` but nodes contains extra information and the project statistics.
 
         .. deprecated:: 0.15.0
-           Use :func:`get_execution_stats` instead.
+           Use :meth:`Project.get_execution_stats` instead.
         """
         warnings.warn(
             'Project.get_execution_statistics() is deprecated, use Project.get_execution_stats() instead.',
@@ -636,16 +667,16 @@ class DataSet:
 
     @retry_on_invalid_guid
     def get_info(self) -> Dict[str, Any]:
+        """Get information about dataset."""
         return self._api.get('dataset/info', params={'wrapperGuid': self.guid})
 
     @retry_on_invalid_guid
     def get_progress(self) -> Dict[str, Union[int, str]]:
+        """Get dataset progress."""
         return self._api.get('dataset/progress', params={'wrapperGuid': self.guid})
 
     def preview(self) -> _DataSet:
-        """Returns first 1000 rows of data from ``node``, texts and strings are
-        cutoff after 250 symbols.
-        """
+        """Returns first 1000 rows with strings truncated to 250 characters."""
         return self._api.get(
             'dataset/preview',
             params={'prjUUID': self._prj.uuid, 'name': self._node['name'], 'type': self._node['type']},
@@ -653,22 +684,21 @@ class DataSet:
 
     def iter_rows(self, start: int = 0, stop: Optional[int] = None) -> Iterator[Dict[str, JSON_VAL]]:
         """
-        Iterate over dataset rows.
+        Iterate over rows in dataset.
 
         :param start:
         :param stop:
 
-        :raises ValueError if start or stop is out of datasets' row range
+        :raises: ValueError if `start` or `stop` is out of datasets' row range
 
         Usage::
 
-          download first 10 rows
+          # download first 10 rows
           >>> head = []
           >>> for row in ds.iter_rows(0, 10):
           ...     head.append(row)
-          download full dataset
+          # download full dataset and convert it to pandas.DataFrame
           >>> table = list(ds.iter_rows())
-          convert downloaded dataset to pandas.DataFrame
           >>> df = pandas.DataFrame(table)
         """
         info = self.get_info()
