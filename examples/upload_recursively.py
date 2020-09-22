@@ -4,7 +4,7 @@ introduced. The 'upload' method repeats the `upload` function functionality from
 this module. Although the example will run on newer versions of `polyanalyst6api`
 we recommend to use `upload` method. So this example reduces to:
 
-    >>> with pa.API(polyanalyst_url, user, password) as api:
+    >>> with polyanalyst6api.API(server_url, user, password) as api:
     >>>     api.fs.upload(local_source, server_dest)
     >>>     if remove_dest_after_upload:
     >>>         api.fs.delete_folder(local_source)
@@ -13,10 +13,10 @@ we recommend to use `upload` method. So this example reduces to:
 import pathlib
 import sys
 
-import polyanalyst6api as pa
+import polyanalyst6api
 
-polyanalyst_url = ''
-user = ''
+server_url = ''
+username = ''
 password = ''
 
 local_source = r'D:\Examples'
@@ -42,7 +42,7 @@ def upload(target: pathlib.Path, dest_dir: str):
         print(f'creating folder {target.name} in the {dest_dir}')
         try:
             api.fs.create_folder(name=target.name, path=dest_dir)
-        except pa.APIException as exc:
+        except polyanalyst6api.APIException as exc:
             if 'Folder already exists' in exc.message:
                 pass
             else:
@@ -50,11 +50,9 @@ def upload(target: pathlib.Path, dest_dir: str):
 
         for child in target.iterdir():
             upload(child, f'{dest_dir}/{target.name}')
-    else:
-        pass
 
 
-with pa.API(polyanalyst_url, user, password) as api:
+with polyanalyst6api.API(server_url, username, password) as api:
     source = pathlib.Path(local_source)
     if not source.exists():
         sys.exit('The `local_source` does not exists')

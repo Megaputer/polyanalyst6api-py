@@ -1,13 +1,13 @@
-import polyanalyst6api as pa
+import polyanalyst6api
 
-netloc = ''
-login = ''
+server_url = ''
+username = ''
 password = ''
 project_id = ''
 
 
-with pa.API(netloc, login, password) as api:
+with polyanalyst6api.API(server_url, username, password) as api:
     prj = api.project(project_id)
-    stats = prj.get_execution_stats()
-    for node in stats:
-        print(f"The {node['name']} node execution takes {node['duration']} seconds.")
+
+    for node in prj.get_execution_stats():
+        print(f"{node['name']} node took {node['duration']} seconds to execute.")

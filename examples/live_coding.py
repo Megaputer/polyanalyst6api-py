@@ -5,30 +5,11 @@ import argparse
 import time
 
 import urllib3
-import polyanalyst6api as pa
+import polyanalyst6api
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-URL = 'https://localhost:5043'
-
-
-def execute(node, prj):
-    prj.execute(node)
-    prj.wait_for_completion(node)
-    return prj.preview(node)
-
-
-def main(node, uuid, username, password):
-    with pa.API(URL, username, password) as api:
-        prj = api.project(uuid)
-
-        prev_result = execute(node, prj)
-        while True:
-            result = execute(node, prj)
-            if result != prev_result:
-                print(result)
-                prev_result = result
-            time.sleep(1.0)
+server_url = 'https://localhost:5043'
 
 
 if __name__ == '__main__':
@@ -39,4 +20,15 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--password', required=False, default='')
 
     args = parser.parse_args()
-    main(args.node, args.project, args.username, args.password)
+
+    with polyanalyst6api.API(server_url, args.username, args.password) as api:
+        prj = api.project(args.project)
+
+        prev_result = None
+        while True:
+            prj.execute(args.node, wait=True)
+            result = prj.dataset(args.node).preview()
+            if result != prev_result:
+                print(result)
+                prev_result = result
+            time.sleep(1)

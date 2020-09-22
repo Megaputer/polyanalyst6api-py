@@ -1,23 +1,19 @@
-import polyanalyst6api as pa
+import time
+import polyanalyst6api
 
-netloc = ''  # protocol, domain, port : https://www.example.com/ or https://localhost:5043/
-login = ''
+server_url = ''  # protocol, domain, port : https://www.example.com/ or https://localhost:5043/
+username = ''
 password = ''
 project_id = ''
 node_name = ''  # root node name
 
 
-api = pa.API(netloc, login, password)
-api.login()
-prj = api.project(project_id)
+with polyanalyst6api.API(server_url, username, password) as api:
+    prj = api.project(project_id)
 
-try:
     prj.execute(node_name)
-except pa.APIException as exc:
-    print(exc)
-else:
-    # wait for nodes to complete execution
-    for node in prj.get_node_list():
-        prj.wait_for_completion(node)
-
     prj.save()
+
+    # wait until node is executed and project is saved
+    while prj.is_running(wave_id=-1):
+        time.sleep(1)
