@@ -14,6 +14,8 @@ This page contains specific information on the polyanalyst6api package classes a
    :members:
 .. autoclass:: polyanalyst6api.api.Project
    :members:
+.. autoclass:: polyanalyst6api.api.DataSet
+   :members:
 
 Exceptions
 ----------
