@@ -1,0 +1,1 @@
+Deprecated `API.fs` and `RemoteFileSystem` in favor of `API.drive` and `Drive`, respectively

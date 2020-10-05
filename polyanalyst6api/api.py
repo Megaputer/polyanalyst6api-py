@@ -116,13 +116,17 @@ class API:
         self.password = password
         self.ldap_server = ldap_server
 
-        self.fs = RemoteFileSystem(self)
-
         self._s = requests.Session()
         self._s.headers.update({'User-Agent': self.user_agent})
         self.sid = ''  # session identity
         # path to certificate file. by default ignore insecure connection warnings
         self.certfile = False
+        self.drive = Drive(self)
+
+    @property
+    def fs(self):
+        warnings.warn('"fs" attribute has been renamed "drive"', DeprecationWarning, 2)
+        return self.drive
 
     def get_versions(self) -> List[str]:
         """Returns api versions supported by PolyAnalyst server."""
@@ -244,7 +248,7 @@ class API:
         return response, None
 
 
-class RemoteFileSystem:
+class Drive:
     def __init__(self, api: API):
         self.api = api
 
@@ -336,19 +340,19 @@ class RemoteFileSystem:
 
         .. warning::
             Make sure to create a new file or file-like object for every
-            :meth:`RemoteFileSystem.upload_file` call!
+            :meth:`Drive.upload_file` call!
 
         .. note::
-           Always prefer :meth:`RemoteFileSystem.upload` over this method.
+           Always prefer :meth:`Drive.upload` over this method.
 
         :param file: the file or file-like object to upload
         :param name: the filename other than `file`'s name
         :param path: (optional) a relative path of the file's parent directory
 
         Usage::
-          >>> fs = RemoteFileSystem(...)
+          >>> drive = Drive(...)
           >>> with open('CarData.csv', mode='rb') as file:
-          ...     fs.upload_file(file, name='cars.csv', path='/data')
+          ...     drive.upload_file(file, name='cars.csv', path='/data')
         """
         if file.tell():
             warnings.warn(
@@ -376,6 +380,11 @@ class RemoteFileSystem:
                 pytus.terminate(file_endpoint, session=self.api._s)
         except requests.exceptions.RequestException:
             pass
+
+
+class RemoteFileSystem(Drive):
+    def __init_subclass__(cls):
+        warnings.warn('"RemoteFileSystem" has been renamed "Drive"', DeprecationWarning, 2)
 
 
 class Project:
