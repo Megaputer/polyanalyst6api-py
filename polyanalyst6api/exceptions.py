@@ -5,6 +5,8 @@ polyanalyst6api.exceptions
 This module contains polyanlyst6api specific Exception classes.
 """
 
+__all__ = ['PAException', 'ClientException', 'APIException']
+
 
 class PAException(Exception):
     """Generic error class, catch-all for most polyanalyst6api issues."""
