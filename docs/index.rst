@@ -10,11 +10,13 @@ This page contains specific information on the polyanalyst6api package classes a
 
 .. autoclass:: polyanalyst6api.api.API
    :members:
-.. autoclass:: polyanalyst6api.api.RemoteFileSystem
+.. autoclass:: polyanalyst6api.drive.Drive
    :members:
-.. autoclass:: polyanalyst6api.api.Project
+.. autoclass:: polyanalyst6api.project.Project
    :members:
-.. autoclass:: polyanalyst6api.api.DataSet
+.. autoclass:: polyanalyst6api.project.DataSet
+   :members:
+.. autoclass:: polyanalyst6api.project.Parameters
    :members:
 
 Exceptions
