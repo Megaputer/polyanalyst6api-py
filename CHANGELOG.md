@@ -1,3 +1,28 @@
+0.18.0 (2020-10-08)
+===================
+
+Features
+--------
+
+- Added `logout` method and logging out current user when exiting `API` context (#1)
+- Added `API.drive` attribute to work with `PolyAnalyst Drive` (#2)
+- Added new `Project.parameters` with `get` and `set` methods (#4)
+- Added new `Parameters.clear` method to reset parameters of particular node type (#5)
+
+
+Improved Documentation
+----------------------
+
+- Fixed method documentation lengths (#7)
+
+
+Deprecations and Removals
+-------------------------
+
+- Deprecated `API.fs` and `RemoteFileSystem` in favor of `API.drive` and `Drive`, respectively (#3)
+- Deprecated `API.get_parameters` and `Project.set_parameters` methods (#6)
+
+
 0.17.0 (2020-09-22)
 ===================
 
