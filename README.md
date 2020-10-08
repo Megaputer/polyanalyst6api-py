@@ -6,6 +6,9 @@
 
 `polyanalyst6api` is a Python library for interacting with PolyAnalyst APIs.
 
+This package provides easy to use wrappers for PolyAnalyst `Analytical Client`, `Scheduler` and `Drive`.
+With it you can execute nodes, view datasets, run tasks, download/upload files and so on.
+
 ## Installation
 
 Python 3.6+ is required. Install, upgrade and uninstall `polyanalyst6api-python` with these commands:
@@ -16,52 +19,46 @@ $ pip install --upgrade polyanalyst6api
 $ pip uninstall polyanalyst6api
 ```
 
-## Usage
+## Documentation
 
-See [API Reference](https://megaputer.github.io/polyanalyst6api-python/) for more detailed information.
+See [API Reference](https://megaputer.github.io/polyanalyst6api-python/) for the library methods.
+
+Refer to **PolyAnalyst User Manual** at **Application Programming Interfaces** > **Version 01** for
+REST API specification.
+
+## Usage
 
 ### Authentication
 
-Import client, initialize it and log in to PolyAnalyst's server:
-
+Use `API` context manager to automatically log in and log out of PolyAnalyst server:
 ```python
-import polyanalyst6api as polyanalyst
+from polyanalyst6api import API
 
-api = polyanalyst.API(POLYANALIST_URL, USERNAME, PASSWORD)
-api.login()
-```
-
-`API` supports Context Manager protocol, so you could use it with `with` statement. In this case `API` will automatically log in with provided credentials.
-
-```python
-with polyanalyst.API(POLYANALIST_URL, USERNAME, PASSWORD) as api:
-    pass
+with API(POLYANALIST_URL, USERNAME, PASSWORD) as api:
+    ...
 ```
 
 ### Working with project
 
-See [polyanalyst6api-python/examples](https://github.com/Megaputer/polyanalyst6api-python/tree/master/examples) for a more complex examples.
-
-At first you need to connect to existing project:
+Instantiate project wrapper by calling with existing project ID:
 ```python
 prj = api.project(PROJECT_UUID)
 ```
 
-Print node names within project:
+Set `Python` node code using parent `Parameters` node.
 ```python
-for node_name in prj.get_nodes():
-    print(node_name)
+prj.parameters('Parameters (1)').set('Dataset/Python', {'Script': 'result = pandas.DataFrame([{"val": 42}])'})
 ```
 
-Initiate node execution:
+Execute `Python` node and wait to complete execution
 ```python
-prj.execute(NODE_NAME)
+prj.execute('Python', wait=True)
 ```
 
-Display the preview of node results:
+Check node results:
 ```python
-result = prj.preview(NODE_NAME)
-print(result)
+ds = prj.dataset('Python').preview()
+assert ds[0]['val'] == 42
 ```
 
 Save project:
@@ -69,12 +66,15 @@ Save project:
 prj.save()
 ```
 
-## PolyAnalyst API
-Full API specification is stored in the **PolyAnalyst User Manual** under the url below:
+### Downloading file from user home folder using PA Drive API
 
+```python
+content = api.drive.download_file('README.txt')
+with open(r'C:\README.txt', mode='wb+') as local_file:
+    local_file.write(content)
 ```
-/polyanalyst/help/eng/24_Application_Programming_Interfaces/toc.html
-```
+
+See [polyanalyst6api-python/examples](https://github.com/Megaputer/polyanalyst6api-python/tree/master/examples) for more complex examples.
 
 ## License
 
