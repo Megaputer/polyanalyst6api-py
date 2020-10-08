@@ -47,7 +47,10 @@ prj = api.project(PROJECT_UUID)
 
 Set `Python` node code using parent `Parameters` node.
 ```python
-prj.parameters('Parameters (1)').set('Dataset/Python', {'Script': 'result = pandas.DataFrame([{"val": 42}])'})
+prj.parameters('Parameters (1)').set(
+    'Dataset/Python',
+    {'Script': 'result = pandas.DataFrame([{"val": 42}])'}
+)
 ```
 
 Execute `Python` node and wait to complete execution
