@@ -74,13 +74,7 @@ class API:
 
     Usage::
 
-      >>> import polyanalyst6api
-      >>> api = polyanalyst6api.API(URL, USERNAME, PASSWORD)
-      >>> api.login()
-
-    Or as a context manager::
-
-      >>> with polyanalyst6api.API(URL, USERNAME, PASSWORD) as api:
+      >>> with API(URL, USERNAME, PASSWORD) as api:
       ...     assert api.sid
     """
 
@@ -629,7 +623,9 @@ class Project:
            Use :meth:`Project.get_node_list` instead.
         """
         warnings.warn(
-            'Project.get_nodes() is deprecated, use Project.get_node_list() instead.', DeprecationWarning, stacklevel=2
+            'Project.get_nodes() is deprecated, use Project.get_node_list() instead.',
+            DeprecationWarning,
+            stacklevel=2,
         )
         json = self.api.get(
             'project/nodes',
@@ -641,7 +637,8 @@ class Project:
     def get_execution_statistics(self) -> Tuple[Nodes, Dict[str, int]]:
         """Returns the execution statistics for nodes in the project.
 
-        Similar to :meth:`Project.get_nodes` but nodes contains extra information and the project statistics.
+        Similar to :meth:`Project.get_nodes` but nodes contains extra information
+        and the project statistics.
 
         .. deprecated:: 0.15.0
            Use :meth:`Project.get_execution_stats` instead.
