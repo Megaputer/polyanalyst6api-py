@@ -337,7 +337,7 @@ class Parameters:
         """
         return self.api.post(
             'parameters/configure',
-            params={'prjUUID': self.uuid, 'obj': id},
+            params={'prjUUID': self.uuid, 'obj': self.id},
             json={
                 'type': node_type,
                 'settings': parameters,
