@@ -136,8 +136,18 @@ class API:
         return data
 
     def get_parameters(self) -> List[Dict[str, Union[str, List]]]:
-        """Returns list of nodes with parameters supported by ``Parameters`` node."""
-        return self.get('parameters/nodes')
+        """
+        Returns list of nodes with parameters supported by ``Parameters`` node.
+
+        .. deprecated:: 0.18.0
+            Use :meth:`Parameters.get` instead.
+        """
+        warnings.warn(
+            'API.get_parameters() is deprecated, use Parameters.get() instead.',
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return Parameters(self, None, None).get()
 
     def login(self) -> None:
         """Logs in to PolyAnalyst Server with user credentials."""
@@ -500,17 +510,6 @@ class Project:
         )
         return bool(data['result'])
 
-    def preview(self, node: Union[str, Dict[str, str]]) -> _DataSet:
-        """Returns first 1000 rows of data from ``node``, texts and strings are
-        cutoff after 250 symbols.
-
-        :param node: node name or dict with name and type of node
-
-        .. deprecated:: 0.16.0
-            Use :meth:`DataSet.preview` instead.
-        """
-        return self.dataset(node).preview()
-
     def dataset(self, node: Union[str, Dict[str, str]]):
         """Get dataset wrapper object.
 
@@ -519,6 +518,15 @@ class Project:
         .. versionadded:: 0.16.0
         """
         return DataSet(self, self._find_node(node))
+
+    def parameters(self, name: str):
+        """Get parameters wrapper object.
+
+        :param name: Parameters node name
+
+        .. versionadded:: 0.18.0
+        """
+        return Parameters(self.api, self.uuid, self._find_node(name)['id'])
 
     def unload(self) -> None:
         """Unload the project from the memory and free system resources."""
@@ -540,38 +548,6 @@ class Project:
         cannot be undone.
         """
         self.api.post('project/delete', json={'prjUUID': self.uuid, 'forceUnload': force_unload})
-
-    def set_parameters(
-        self,
-        node: Union[str, Dict[str, str]],
-        node_type: str,
-        parameters: Dict[str, Any],
-        declare_unsync: bool = True,
-        hard_update: bool = True,
-    ) -> None:
-        """Set default parameters of the selected Parameters node in the project.
-
-        :param node: name or dict with name and type of Parameters node
-        :param node_type: node type, which parameters need to be set. The types are listed in NodeTypes.
-        :param parameters: default parameters of the node to be set.
-        :param declare_unsync: reset the status of the Parameters node.
-        :param hard_update: update every child node with new parameters if True, \
-            otherwise reset their statuses. Works only if declare_unsync is True.
-        """
-        warns: Optional[List[str]]
-        warns = self.api.post(
-            'parameters/configure',
-            params={'prjUUID': self.uuid, 'obj': self._find_node(node)['id']},
-            json={
-                'type': node_type,
-                'settings': parameters,
-                'declareUnsync': declare_unsync,
-                'hardUpdate': hard_update,
-            },
-        )
-        if warns:
-            for msg in warns:
-                warnings.warn(msg)
 
     def _update_node_list(self) -> None:
         self._node_list = self.get_node_list()
@@ -651,6 +627,109 @@ class Project:
         json = self.api.get('project/execution-statistics', params={'prjUUID': self.uuid})
         nodes = {node.pop('name'): node for node in json['nodes']}
         return nodes, json['nodesStatistics']
+
+    def preview(self, node: Union[str, Dict[str, str]]) -> _DataSet:
+        """Returns first 1000 rows of data from ``node``, texts and strings are
+        cutoff after 250 symbols.
+
+        :param node: node name or dict with name and type of node
+
+        .. deprecated:: 0.16.0
+            Use :meth:`Dataset.preview` instead.
+        """
+        warnings.warn(
+            'Project.preview() is deprecated, use Dataset.preview() instead.',
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.dataset(node).preview()
+
+    def set_parameters(
+            self,
+            node: str,
+            node_type: str,
+            parameters: Dict[str, Any],
+            declare_unsync: bool = True,
+            hard_update: bool = True,
+    ) -> None:
+        """
+        Set parameters of the selected Parameters node in the project.
+
+        .. deprecated:: 0.18.0
+           Use :meth:`Parameters.set` instead.
+
+        :param node: name of Parameters node
+        :param node_type: node type, which parameters need to be set. The types \
+            are listed in NodeTypes.
+        :param parameters: default parameters of the node to be set.
+        :param declare_unsync: reset the status of the Parameters node.
+        :param hard_update: update every child node with new parameters if True, \
+            otherwise reset their statuses. Works only if declare_unsync is True.
+        """
+        warnings.warn(
+            'Project.set_parameters() is deprecated, use Project.parameters.set() instead.',
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        warns = self.parameters(node).set(node_type, parameters, declare_unsync, hard_update)
+        if warns:
+            for msg in warns:
+                warnings.warn(msg)
+
+
+class Parameters:
+    def __init__(self, api, uuid: Optional[str], id: Optional[str]):
+        self.api = api
+        self.uuid = uuid
+        self.id = id
+
+    def get(self):
+        """Returns list of nodes with parameters supported by ``Parameters`` node."""
+        return self.api.get('parameters/nodes')
+
+    def set(
+            self,
+            node_type: str,
+            parameters: Dict[str, str],
+            declare_unsync: bool = True,
+            hard_update: bool = True,
+    ) -> Optional[List[str]]:
+        """
+        Sets `node_type` parameters for the Parameters node.
+
+        :param node_type: node type which parameters needs to be set
+        :param parameters: node type parameters
+        :param declare_unsync: reset status of the Parameters node. True by default.
+        :param hard_update: update every child node with new parameters if True, \
+            otherwise reset their statuses. Works only if declare_unsync is True.\
+            True by default.
+        """
+        return self.api.post(
+            'parameters/configure',
+            params={'prjUUID': self.uuid, 'obj': id},
+            json={
+                'type': node_type,
+                'settings': parameters,
+                'declareUnsync': declare_unsync,
+                'hardUpdate': hard_update,
+            },
+        )
+
+    def clear(self, *node_types: List[str], declare_unsync: bool = True) -> Optional[List[str]]:
+        """
+        Clears parameters of `node_types` for the Parameters node.
+
+        :param node_types: node types which parameters needs to be cleared
+        :param declare_unsync: reset status of the Parameters node
+        """
+        return self.api.post(
+            'parameters/clear',
+            params={'prjUUID': self.uuid, 'obj': id},
+            json={
+                'nodes': node_types,
+                'declareUnsync': declare_unsync,
+            }
+        )
 
 
 def retry_on_invalid_guid(func):
