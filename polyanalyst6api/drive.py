@@ -148,7 +148,7 @@ class Drive:
         # free up resources on the server if file is not uploaded completely
         try:
             offset = _get_offset(file_endpoint, session=self.api._s)
-            if file_size != offset:
+            if file_size != offset or file_size == 0:
                 pytus.terminate(file_endpoint, session=self.api._s)
         except requests.exceptions.RequestException:
             pass
