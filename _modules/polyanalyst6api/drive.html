@@ -1,0 +1,213 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>polyanalyst6api.drive &#8212; polyanalyst6api 0.18.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for polyanalyst6api.drive</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">polyanalyst6api.drive</span>
+<span class="sd">~~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">This module contains functionality for access to PolyAnalyst Drive API.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="k">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">IO</span>
+
+<span class="kn">import</span> <span class="nn">pytus</span>
+<span class="kn">from</span> <span class="nn">pytus.main</span> <span class="k">import</span> <span class="n">_get_offset</span><span class="p">,</span> <span class="n">_get_file_size</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="k">import</span> <span class="n">APIException</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Drive&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="Drive"><a class="viewcode-back" href="../../index.html#polyanalyst6api.drive.Drive">[docs]</a><span class="k">class</span> <span class="nc">Drive</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api</span> <span class="o">=</span> <span class="n">api</span>
+
+<div class="viewcode-block" id="Drive.upload"><a class="viewcode-back" href="../../index.html#polyanalyst6api.drive.Drive.upload">[docs]</a>    <span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">dest</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Upload file or folder to PolyAnalyst server.</span>
+
+<span class="sd">        Pass ``recursive`` as False to just create folder on the server without</span>
+<span class="sd">        uploading inner files and folders.</span>
+
+<span class="sd">        :param source: path to the file or folder</span>
+<span class="sd">        :param dest: (optional) path to the folder in the PolyAnalyst&#39;s user directory</span>
+<span class="sd">        :param recursive: (optional) upload subdirectories recursively</span>
+
+<span class="sd">        :raises: TypeError if ``source`` is not string or path-like object.\</span>
+<span class="sd">            ValueError if ``source`` does not exists</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The source parameter should be either string or path-like object.&#39;</span><span class="p">)</span>
+
+        <span class="n">source</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">source</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Cannot find &#39;</span><span class="si">{source}</span><span class="s2">&#39;: No such file or directory.&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">_upload</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">dest_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                <span class="k">with</span> <span class="n">target</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">dest_dir</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">target</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">create_folder</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">dest_dir</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">APIException</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;Folder already exists&#39;</span> <span class="ow">in</span> <span class="n">exc</span><span class="o">.</span><span class="n">message</span><span class="p">:</span>
+                        <span class="k">pass</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span>
+
+                <span class="k">if</span> <span class="n">recursive</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">target</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+                        <span class="n">_upload</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{dest_dir}</span><span class="s1">/</span><span class="si">{target.name}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">_upload</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Drive.create_folder"><a class="viewcode-back" href="../../index.html#polyanalyst6api.drive.Drive.create_folder">[docs]</a>    <span class="k">def</span> <span class="nf">create_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new folder inside the PolyAnalyst&#39;s user directory.</span>
+
+<span class="sd">        :param name: the folder name</span>
+<span class="sd">        :param path: a relative path of the folder&#39;s parent directory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;folder/create&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="Drive.delete_folder"><a class="viewcode-back" href="../../index.html#polyanalyst6api.drive.Drive.delete_folder">[docs]</a>    <span class="k">def</span> <span class="nf">delete_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete the folder in the PolyAnalyst&#39;s user directory.</span>
+
+<span class="sd">        :param name: the folder name</span>
+<span class="sd">        :param path: a relative path of the folder&#39;s parent directory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;folder/delete&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="Drive.delete_file"><a class="viewcode-back" href="../../index.html#polyanalyst6api.drive.Drive.delete_file">[docs]</a>    <span class="k">def</span> <span class="nf">delete_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete the file in the PolyAnalyst&#39;s user directory.</span>
+
+<span class="sd">        :param name: the filename</span>
+<span class="sd">        :param path: a relative path of the file&#39;s parent directory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;file/delete&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="Drive.download_file"><a class="viewcode-back" href="../../index.html#polyanalyst6api.drive.Drive.download_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Download the binary content of the file.</span>
+
+<span class="sd">        :param name: the filename</span>
+<span class="sd">        :param path: a relative path of the file&#39;s parent directory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;file/download&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">})</span>
+        <span class="n">resp</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="n">urljoin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="s1">&#39;/polyanalyst/download&#39;</span><span class="p">),</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;get&#39;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;uid&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;uid&#39;</span><span class="p">]}</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">content</span></div>
+
+<div class="viewcode-block" id="Drive.upload_file"><a class="viewcode-back" href="../../index.html#polyanalyst6api.drive.Drive.upload_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">IO</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Upload the file to the PolyAnalyst&#39;s user directory.</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            Make sure to create a new file or file-like object for every</span>
+<span class="sd">            :meth:`Drive.upload_file` call!</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">           Always prefer :meth:`Drive.upload` over this method.</span>
+
+<span class="sd">        :param file: the file or file-like object to upload</span>
+<span class="sd">        :param name: the filename other than `file`&#39;s name</span>
+<span class="sd">        :param path: (optional) a relative path of the file&#39;s parent directory</span>
+
+<span class="sd">        Usage::</span>
+<span class="sd">          &gt;&gt;&gt; drive = Drive(...)</span>
+<span class="sd">          &gt;&gt;&gt; with open(&#39;CarData.csv&#39;, mode=&#39;rb&#39;) as file:</span>
+<span class="sd">          ...     drive.upload_file(file, name=&#39;cars.csv&#39;, path=&#39;/data&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">tell</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;The file object&#39;s current position is not at the beginning of the file.&quot;</span>
+                <span class="s2">&quot;This will result in uploading only the part of the file!&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">file_name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">file_size</span> <span class="o">=</span> <span class="n">_get_file_size</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+        <span class="n">file_endpoint</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pytus</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">urljoin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="s1">&#39;file/upload&#39;</span><span class="p">),</span>
+            <span class="n">file_name</span><span class="p">,</span>
+            <span class="n">file_size</span><span class="p">,</span>
+            <span class="n">session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">_s</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;foldername&#39;</span><span class="p">:</span> <span class="n">path</span><span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="n">pytus</span><span class="o">.</span><span class="n">resume</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">file_endpoint</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">_s</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># free up resources on the server if file is not uploaded completely</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">offset</span> <span class="o">=</span> <span class="n">_get_offset</span><span class="p">(</span><span class="n">file_endpoint</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">_s</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">file_size</span> <span class="o">!=</span> <span class="n">offset</span><span class="p">:</span>
+                <span class="n">pytus</span><span class="o">.</span><span class="n">terminate</span><span class="p">(</span><span class="n">file_endpoint</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">_s</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">:</span>
+            <span class="k">pass</span></div></div>
+</pre></div>
+
+          </div>
+          
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, yatmanov.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/Megaputer/polyanalyst6api-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
