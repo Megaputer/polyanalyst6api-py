@@ -355,7 +355,7 @@ class Parameters:
         """
         return self.api.post(
             'parameters/clear',
-            params={'prjUUID': self.uuid, 'obj': id},
+            params={'prjUUID': self.uuid, 'obj': self.id},
             json={
                 'nodes': node_types,
                 'declareUnsync': declare_unsync,
