@@ -322,14 +322,16 @@ class Parameters:
             self,
             node_type: str,
             parameters: Dict[str, str],
+            strategies: Optional[List[int]] = None,
             declare_unsync: bool = True,
             hard_update: bool = True,
     ) -> Optional[List[str]]:
         """
-        Sets `node_type` parameters for the Parameters node.
+        Sets `node_type` parameters and strategies for the Parameters node.
 
         :param node_type: node type which parameters needs to be set
         :param parameters: node type parameters
+        :param strategies: node type strategies
         :param declare_unsync: reset status of the Parameters node. True by default.
         :param hard_update: update every child node with new parameters if True, \
             otherwise reset their statuses. Works only if declare_unsync is True.\
@@ -341,6 +343,7 @@ class Parameters:
             json={
                 'type': node_type,
                 'settings': parameters,
+                'strategies': strategies,
                 'declareUnsync': declare_unsync,
                 'hardUpdate': hard_update,
             },
