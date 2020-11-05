@@ -321,13 +321,16 @@ class Parameters:
     def set(
             self,
             node_type: str,
-            parameters: Dict[str, str],
+            parameters: Union[Dict[str, str], List[Dict[str, str]]],
             strategies: Optional[List[int]] = None,
             declare_unsync: bool = True,
             hard_update: bool = True,
     ) -> Optional[List[str]]:
         """
         Sets `node_type` parameters and strategies for the Parameters node.
+
+        If `parameters` is the list of dictionaries with parameters then
+        /configure-array endpoint is used otherwise /configure.
 
         :param node_type: node type which parameters needs to be set
         :param parameters: node type parameters
@@ -337,8 +340,14 @@ class Parameters:
             otherwise reset their statuses. Works only if declare_unsync is True.\
             True by default.
         """
+
+        if strategies is None:
+            strategies = []
+
+        method = 'configure-array' if isinstance(parameters, list) else 'configure'
+
         return self.api.post(
-            'parameters/configure',
+            f'parameters/{method}',
             params={'prjUUID': self.uuid, 'obj': self.id},
             json={
                 'type': node_type,
