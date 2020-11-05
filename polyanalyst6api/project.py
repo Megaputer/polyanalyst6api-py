@@ -315,7 +315,7 @@ class Parameters:
         self.id = id
 
     def get(self):
-        """Returns list of nodes with parameters supported by ``Parameters`` node."""
+        """Returns list of nodes with parameters and strategies supported by ``Parameters`` node."""
         return self.api.get('parameters/nodes')
 
     def set(
@@ -360,7 +360,8 @@ class Parameters:
 
     def clear(self, *node_types: List[str], declare_unsync: bool = True) -> Optional[List[str]]:
         """
-        Clears parameters of `node_types` for the Parameters node.
+        Clears parameters and strategies of `node_types` for the Parameters node.
+        If `node_types` is empty it clears parameters and strategies of all nodes.
 
         :param node_types: node types which parameters needs to be cleared
         :param declare_unsync: reset status of the Parameters node
