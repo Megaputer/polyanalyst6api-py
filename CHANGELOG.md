@@ -1,3 +1,19 @@
+0.19.0 (2020-11-05)
+===================
+
+Features
+--------
+
+- Implemented method for new endpoint /configure-array to set array of parameters (T22774)
+- Added the ability to set strategies in Parameters nodes (T23048)
+
+
+Improved Documentation
+----------------------
+
+- Updated documentation for Parameters methods (#1)
+
+
 0.18.1 (2020-10-21)
 ===================
 
