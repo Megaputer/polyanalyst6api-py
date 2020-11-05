@@ -1,6 +1,6 @@
 _type: export
 __export_format: 4
-__export_date: 2020-10-08T09:27:01.586Z
+__export_date: 2020-11-05T14:57:10.878Z
 __export_source: insomnia.desktop.app:v7.1.0
 resources:
   - _id: req_5ad271379d0d4835959fdde96f89de3d
@@ -162,7 +162,7 @@ resources:
         	"declareUnsync": true,
         	"hardUpdate": false,
         	"settings": {
-        		"Script":"print(42)"
+        		"Script":"result=pandas.DataFrame()"
         	}
         }
     created: 1584010228648
@@ -174,7 +174,7 @@ resources:
     isPrivate: false
     metaSortKey: -801002348853.5
     method: POST
-    modified: 1602004711414
+    modified: 1604414204334
     name: /parameters/configure
     parameters:
       - description: ""
@@ -202,12 +202,19 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"type": "Dataset/Python",
+        	"type": "SRLRuleSet/SRL Rule",
         	"declareUnsync": true,
         	"hardUpdate": false,
-        	"settings": {
-        		"Script":"print(42)"
-        	}
+        	"settings": [
+        		{
+        			"Name": "strZstr",
+        			"Rule": "\"aaa\""
+        		},
+        		{
+        			"Name": "int",
+        			"Rule": "1"
+        		}
+        	]
         }
     created: 1602001380136
     description: ""
@@ -218,7 +225,7 @@ resources:
     isPrivate: false
     metaSortKey: -801002348803.5
     method: POST
-    modified: 1602004713717
+    modified: 1604410558809
     name: /parameters/configure-array
     parameters:
       - description: ""
@@ -1053,21 +1060,24 @@ resources:
         domain: localhost
         extensions:
           - Version=1
+          - SameSite=Lax
         hostOnly: true
         httpOnly: true
-        id: "9389444250740218"
+        id: "000324189892397575"
         key: sid
-        lastAccessed: 2020-10-08T09:18:30.597Z
+        lastAccessed: 2020-11-03T13:37:31.382Z
         path: /
-        value: "8016918247172700035"
+        secure: true
+        value: "7813326171480753206"
       - creation: 2018-06-30T15:31:37.916Z
         domain: localhost
         extensions:
           - Version=1
+          - SameSite=Lax
         hostOnly: true
-        id: "391136650096755"
+        id: "001010430815790997"
         key: extdebug
-        lastAccessed: 2020-10-08T09:18:30.597Z
+        lastAccessed: 2020-11-03T13:37:31.383Z
         maxAge: 2147483647
         path: /
         value: "0"
@@ -1076,7 +1086,7 @@ resources:
         extensions:
           - Version=1
         hostOnly: true
-        id: "1456418082066413"
+        id: "12734781267024564"
         key: guestMode
         lastAccessed: 2019-02-24T18:04:54.970Z
         maxAge: 2147483647
@@ -1085,15 +1095,16 @@ resources:
         domain: localhost
         extensions:
           - Version=1
+          - SameSite=Lax
         hostOnly: true
-        id: "5884637419074787"
+        id: "9211453127114433"
         key: underdev
-        lastAccessed: 2020-10-08T09:18:30.597Z
+        lastAccessed: 2020-11-03T13:37:31.383Z
         maxAge: 2147483647
         path: /
         value: "1"
     created: 1560431361342
-    modified: 1602148710598
+    modified: 1604410651383
     name: Default Jar
     parentId: wrk_647e693e8cb94612bd08b724650f4ae7
     _type: cookie_jar
