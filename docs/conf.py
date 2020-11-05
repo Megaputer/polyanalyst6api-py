@@ -26,7 +26,7 @@ author = 'yatmanov'
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '0.18.0'
+release = '0.19.0'
 
 
 # -- General configuration ---------------------------------------------------
