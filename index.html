@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>API Reference &#8212; polyanalyst6api 0.18.0 documentation</title>
+    <title>API Reference &#8212; polyanalyst6api 0.19.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -839,7 +839,8 @@ completed successfully and False otherwise.</p>
 <dd><dl class="method">
 <dt id="polyanalyst6api.project.Parameters.clear">
 <code class="descname">clear</code><span class="sig-paren">(</span><em>*node_types</em>, <em>declare_unsync=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Parameters.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Parameters.clear" title="Permalink to this definition">¶</a></dt>
-<dd><p>Clears parameters of <cite>node_types</cite> for the Parameters node.</p>
+<dd><p>Clears parameters and strategies of <cite>node_types</cite> for the Parameters node.
+If <cite>node_types</cite> is empty it clears parameters and strategies of all nodes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -860,20 +861,23 @@ completed successfully and False otherwise.</p>
 <dl class="method">
 <dt id="polyanalyst6api.project.Parameters.get">
 <code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Parameters.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Parameters.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns list of nodes with parameters supported by <code class="docutils literal notranslate"><span class="pre">Parameters</span></code> node.</p>
+<dd><p>Returns list of nodes with parameters and strategies supported by <code class="docutils literal notranslate"><span class="pre">Parameters</span></code> node.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="polyanalyst6api.project.Parameters.set">
-<code class="descname">set</code><span class="sig-paren">(</span><em>node_type</em>, <em>parameters</em>, <em>declare_unsync=True</em>, <em>hard_update=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Parameters.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Parameters.set" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets <cite>node_type</cite> parameters for the Parameters node.</p>
+<code class="descname">set</code><span class="sig-paren">(</span><em>node_type</em>, <em>parameters</em>, <em>strategies=None</em>, <em>declare_unsync=True</em>, <em>hard_update=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Parameters.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Parameters.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets <cite>node_type</cite> parameters and strategies for the Parameters node.</p>
+<p>If <cite>parameters</cite> is the list of dictionaries with parameters then
+/configure-array endpoint is used otherwise /configure.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>node_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – node type which parameters needs to be set</li>
-<li><strong>parameters</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – node type parameters</li>
+<li><strong>parameters</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]]) – node type parameters</li>
+<li><strong>strategies</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]) – node type strategies</li>
 <li><strong>declare_unsync</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – reset status of the Parameters node. True by default.</li>
 <li><strong>hard_update</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – update every child node with new parameters if True,             otherwise reset their statuses. Works only if declare_unsync is True.            True by default.</li>
 </ul>
