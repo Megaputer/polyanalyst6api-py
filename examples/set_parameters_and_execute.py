@@ -33,7 +33,7 @@ with polyanalyst6api.API(server_url, username, password) as api:
 
     prj = api.project(project_id)
 
-    prj.set_parameters('Parameters (1)', 'DataSource/INET', parameters={'URL': URL})
+    prj.parameters('Parameters (1)').set('DataSource/INET', parameters={'URL': URL})
     time.sleep(0.5)
 
     prj.execute('Internet Source', wait=True)
