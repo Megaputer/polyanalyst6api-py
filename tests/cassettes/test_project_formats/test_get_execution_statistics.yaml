@@ -6,22 +6,25 @@ interactions:
       - '*/*'
       Accept-Encoding:
       - gzip, deflate
+      Authorization:
+      - Bearer e5a8c605d778fd87
       Connection:
       - keep-alive
       Cookie:
-      - extdebug=0; sid=7189801001788834022; underdev=1
+      - extdebug=0; underdev=1
       User-Agent:
-      - PolyAnalyst6API python client v0.14.0
+      - PolyAnalyst6API python client v0.20.0
     method: GET
     uri: https://localhost:5043/polyanalyst/api/v1.0/project/execution-statistics?prjUUID=bbd41a95-a45c-4cd6-bb0a-8bc472d04708
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAEALWSsU7DMBCG3+VmU9kGGjtrKyQGEAI2xGDVh2rRnpF9EQpR3h1XQSGELh26WZ/P
-        vvt+XQcUPWaoXzoIHmqlBHD7gVDDg0tuj4wpgwAqxznL7LjJheaWNtsUKXyhH3ji53B4oK5tJSur
-        zJU1VgCS/8etFuCb5DhEgloupLwswLHLyI/xs/x/oUawirsCpIC3hHiH+5jaWwoc3G5GbwJN2Drk
-        97GuUkaqX14qR9qLnxT0mMJ6aDyJoOVtpJP1rTmib5XUy6n+ciG1menrmb0+k73sX8WwDU9cxskc
-        NqVb90fv/nC9ig1xmaPvvwFAJ6MkPgIAAA==
+        H4sIAAAAAAAEALWUXUvDMBSG/4qc6zjy1Xbr7YawC0Wcd+JFWCMLbokkp0gd/e+mVNuuG357V56c
+        Jnmf5GQP1hU6QH63B1NAzhgBrJ405HCtvNpp1D4AARs/xyygwjJEGiq73nhnzYsuWu7x1jQ/sJRO
+        KRcyo4xLAtoWxzwjUJReoXEWcjqhVESgUAWNN+45zn/OOjB32wgogQev9aXeOV8trUGjtiN6YeyA
+        LUx47Op4IqToeazsaE3eLPDOwqJdeKCgwo2z344vTsZPGZXD+Mlklo3S81F4/t/hM3YQfuVKv9Z9
+        /qWNx281nrUDXxaRMpFJytKU9SJ6zrNpOhTBJownIxPja5D8ysSAvVd1BpIPm2DZpP9BJ8iZpFNJ
+        BW0NHHP5WSfQP22EUwbuSfsgrDBuI6BZx1X2B7GumuG5Ky1CLuv6FZCSCQVBBAAA
     headers:
       access-control-allow-credentials:
       - 'true'
@@ -30,11 +33,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '253'
+      - '333'
       content-type:
       - application/json; charset="utf-8"
       date:
-      - Mon, 10 Aug 2020 17:06:34 GMT
+      - Tue, 15 Dec 2020 09:11:19 GMT
       expires:
       - Thu, 31 Dec 1969 23:59:59 GMT
       pragma:
@@ -42,9 +45,14 @@ interactions:
       server:
       - PolyAnalyst/6.5
       set-cookie:
-      - sid=7189801001788834022; Path=/; Version=1; HttpOnly
-      - extdebug=0; Max-Age=2147483647; Path=/; Version=1
-      - underdev=1; Max-Age=2147483647; Path=/; Version=1
+      - extdebug=0; Max-Age=2147483647; Path=/; Version=1; SameSite=Lax
+      - underdev=1; Max-Age=2147483647; Path=/; Version=1; SameSite=Lax
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - sameorigin
+      x-session-id:
+      - e5a8c605d778fd87
     status:
       code: 200
       message: OK

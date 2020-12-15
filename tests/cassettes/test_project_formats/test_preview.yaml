@@ -6,12 +6,14 @@ interactions:
       - '*/*'
       Accept-Encoding:
       - gzip, deflate
+      Authorization:
+      - Bearer e5a8c605d778fd87
       Connection:
       - keep-alive
       Cookie:
-      - extdebug=0; sid=7189801001788834022; underdev=1
+      - extdebug=0; underdev=1
       User-Agent:
-      - PolyAnalyst6API python client v0.14.0
+      - PolyAnalyst6API python client v0.20.0
     method: GET
     uri: https://localhost:5043/polyanalyst/api/v1.0/dataset/preview?prjUUID=bbd41a95-a45c-4cd6-bb0a-8bc472d04708&name=Python&type=Dataset
   response:
@@ -27,7 +29,7 @@ interactions:
       content-type:
       - application/json; charset="utf-8"
       date:
-      - Mon, 10 Aug 2020 17:06:38 GMT
+      - Tue, 15 Dec 2020 09:11:23 GMT
       expires:
       - Thu, 31 Dec 1969 23:59:59 GMT
       pragma:
@@ -35,9 +37,14 @@ interactions:
       server:
       - PolyAnalyst/6.5
       set-cookie:
-      - sid=7189801001788834022; Path=/; Version=1; HttpOnly
-      - extdebug=0; Max-Age=2147483647; Path=/; Version=1
-      - underdev=1; Max-Age=2147483647; Path=/; Version=1
+      - extdebug=0; Max-Age=2147483647; Path=/; Version=1; SameSite=Lax
+      - underdev=1; Max-Age=2147483647; Path=/; Version=1; SameSite=Lax
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - sameorigin
+      x-session-id:
+      - e5a8c605d778fd87
     status:
       code: 200
       message: OK
