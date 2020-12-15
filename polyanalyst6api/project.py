@@ -45,7 +45,7 @@ class Project:
         return self.api.get(
             'project/nodes',
             params={'prjUUID': self.uuid},
-            headers={'sid': self.api.sid},
+            headers={'sid': self.api.sid} if self.api.sid else None,
         )['nodes']
 
     def get_execution_stats(self) -> List[Node]:
@@ -237,7 +237,7 @@ class Project:
         json = self.api.get(
             'project/nodes',
             params={'prjUUID': self.uuid},
-            headers={'sid': self.api.sid},
+            headers={'sid': self.api.sid} if self.api.sid else None,
         )
         return {node.pop('name'): node for node in json['nodes']}
 

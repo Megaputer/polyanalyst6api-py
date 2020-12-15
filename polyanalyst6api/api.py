@@ -61,7 +61,7 @@ class API:
     Usage::
 
       >>> with API(URL, USERNAME, PASSWORD) as api:
-      ...     assert api.sid
+      ...     print(api.get_server_info())
     """
 
     _api_path = '/polyanalyst/api/'
@@ -98,7 +98,7 @@ class API:
 
         self._s = requests.Session()
         self._s.headers.update({'User-Agent': self.user_agent})
-        self.sid = ''  # session identity
+        self.sid = None  # session identity
         # path to certificate file. by default ignore insecure connection warnings
         self.certfile = False
         self.drive = Drive(self)
@@ -143,7 +143,11 @@ class API:
             credentials['svr'] = self.ldap_server
 
         resp, _ = self.request('login', method='post', params=credentials)
-        self.sid = resp.cookies['sid']
+
+        try:
+            self.sid = resp.cookies['sid']
+        except KeyError:
+            self._s.headers['Authorization'] = f"Bearer {resp.headers['x-session-id']}"
 
     def logout(self) -> None:
         """Logs out current user from PolyAnalyst server."""
