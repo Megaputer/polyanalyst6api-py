@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "polyanalyst6api"
-version = "0.19.0"
+version = "0.20.0"
 description = "polyanalyst6api is a PolyAnalyst API client for Python."
 authors = ["yatmanov <yatmanov@megaputer.ru>"]
 license = "MIT"
