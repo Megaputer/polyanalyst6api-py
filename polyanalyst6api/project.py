@@ -395,6 +395,7 @@ class DataSet:
         # on purpose send wrong wrapperGuid(empty string) at first request to /dataset/* endpoints
         # to create dataset wrapper on server and retrieve its' guid by @retry_on_invalid_guid
         self.guid: str = ''
+        self._update_guid()  # temporary fix until server starts to return proper error response
 
     @retry_on_invalid_guid
     def get_info(self) -> Dict[str, Any]:
