@@ -1,3 +1,11 @@
+0.20.1 (2021-04-06)
+===================
+
+Bugfixes
+--------
+
+- Fixed iter_rows method raises ClientException: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host')) when running from different machine
+
 0.20.0 (2020-12-15)
 ===================
 
