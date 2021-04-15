@@ -37,11 +37,11 @@ def upload(target: pathlib.Path, dest_dir: str):
     if target.is_file():
         print(f'uploading file {target.name} to the {dest_dir}')
         with target.open(mode='rb') as f:
-            api.fs.upload_file(f, name=target.name, path=dest_dir)
+            api.drive.upload_file(f, name=target.name, path=dest_dir)
     elif target.is_dir():
         print(f'creating folder {target.name} in the {dest_dir}')
         try:
-            api.fs.create_folder(name=target.name, path=dest_dir)
+            api.drive.create_folder(name=target.name, path=dest_dir)
         except polyanalyst6api.APIException as exc:
             if 'Folder already exists' in exc.message:
                 pass
@@ -62,4 +62,4 @@ with polyanalyst6api.API(server_url, username, password) as api:
     if remove_dest_after_upload:
         # currently PolyAnalyst removes only records from its database
         # The folder and files in user home folder will not be deleted
-        api.fs.delete_folder(source.name, server_dest)
+        api.drive.delete_folder(source.name, server_dest)
