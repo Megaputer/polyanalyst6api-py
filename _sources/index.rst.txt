@@ -6,7 +6,7 @@
 API Reference
 =============
 
-This page contains specific information on the polyanalyst6api package classes and methods.
+This page contains specific information on the polyanalyst6api REST API client's classes and methods.
 
 .. autoclass:: polyanalyst6api.api.API
    :members:
