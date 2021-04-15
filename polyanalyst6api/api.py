@@ -20,7 +20,9 @@ from .exceptions import APIException, ClientException, _WrapperNotFound
 __all__ = ['API']
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-warnings.simplefilter('always', UserWarning)  # without this set_parameters will show warnings only once
+warnings.simplefilter(
+    'always', UserWarning
+)  # without this set_parameters will show warnings only once
 
 NodeTypes = [
     "CSV Exporter/",
@@ -225,7 +227,9 @@ class API:
             if 'are not logged in' in response.text:
                 error_msg = 'You are not logged in to PolyAnalyst Server'
             elif 'operation is limited ' in response.text:
-                error_msg = 'Access to this operation is limited to project owners and administrator'
+                error_msg = (
+                    'Access to this operation is limited to project owners and administrator'
+                )
         elif response.status_code == 500:
             with contextlib.suppress(IndexError, TypeError):
                 if json[0] == 'Error':

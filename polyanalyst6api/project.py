@@ -251,7 +251,8 @@ class Project:
            Use :meth:`Project.get_execution_stats` instead.
         """
         warnings.warn(
-            'Project.get_execution_statistics() is deprecated, use Project.get_execution_stats() instead.',
+            'Project.get_execution_statistics() is deprecated, use'
+            'Project.get_execution_stats() instead.',
             DeprecationWarning,
             stacklevel=2,
         )
@@ -276,12 +277,12 @@ class Project:
         return self.dataset(node).preview()
 
     def set_parameters(
-            self,
-            node: str,
-            node_type: str,
-            parameters: Dict[str, Any],
-            declare_unsync: bool = True,
-            hard_update: bool = True,
+        self,
+        node: str,
+        node_type: str,
+        parameters: Dict[str, Any],
+        declare_unsync: bool = True,
+        hard_update: bool = True,
     ) -> None:
         """
         Set parameters of the selected Parameters node in the project.
@@ -319,12 +320,12 @@ class Parameters:
         return self.api.get('parameters/nodes')
 
     def set(
-            self,
-            node_type: str,
-            parameters: Union[Dict[str, str], List[Dict[str, str]]],
-            strategies: Optional[List[int]] = None,
-            declare_unsync: bool = True,
-            hard_update: bool = True,
+        self,
+        node_type: str,
+        parameters: Union[Dict[str, str], List[Dict[str, str]]],
+        strategies: Optional[List[int]] = None,
+        declare_unsync: bool = True,
+        hard_update: bool = True,
     ) -> Optional[List[str]]:
         """
         Sets `node_type` parameters and strategies for the Parameters node.
@@ -372,7 +373,7 @@ class Parameters:
             json={
                 'nodes': node_types,
                 'declareUnsync': declare_unsync,
-            }
+            },
         )
 
 
@@ -384,6 +385,7 @@ def retry_on_invalid_guid(func):
         except _WrapperNotFound:
             cls._update_guid()
             return func(cls, *args, **kwargs)
+
     return wrapper
 
 
@@ -411,10 +413,16 @@ class DataSet:
         """Returns first 1000 rows with strings truncated to 250 characters."""
         return self._api.get(
             'dataset/preview',
-            params={'prjUUID': self._prj.uuid, 'name': self._node['name'], 'type': self._node['type']},
+            params={
+                'prjUUID': self._prj.uuid,
+                'name': self._node['name'],
+                'type': self._node['type'],
+            },
         )
 
-    def iter_rows(self, start: int = 0, stop: Optional[int] = None) -> Iterator[Dict[str, JSON_VAL]]:
+    def iter_rows(
+        self, start: int = 0, stop: Optional[int] = None
+    ) -> Iterator[Dict[str, JSON_VAL]]:
         """
         Iterate over rows in dataset.
 
@@ -440,7 +448,9 @@ class DataSet:
 
         # предпологается что если stop определен то пользователь в курсе количества строк в датасете
         if not 0 <= start <= stop <= max_row:
-            raise ValueError(f'start and stop arguments must be within dataset row range: (0, {max_row})')
+            raise ValueError(
+                f'start and stop arguments must be within dataset row range: (0, {max_row})'
+            )
 
         rows = self._values(stop)['table']
         get_text = self._cell_text
@@ -477,7 +487,10 @@ class DataSet:
 
     @retry_on_invalid_guid
     def _values(self, row_count: int) -> Dict[str, Union[List, Dict]]:
-        return self._api.get('dataset/values', json={'wrapperGuid': self.guid, 'rowCount': row_count})
+        return self._api.get(
+            'dataset/values',
+            json={'wrapperGuid': self.guid, 'rowCount': row_count},
+        )
 
     @retry_on_invalid_guid
     def _cell_text(self, row: int, col: int, _title) -> str:

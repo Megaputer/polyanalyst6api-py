@@ -24,7 +24,9 @@ class Drive:
     def __init__(self, api):
         self.api = api
 
-    def upload(self, source: Union[str, os.PathLike], dest: str = '', recursive: bool = True) -> None:
+    def upload(
+        self, source: Union[str, os.PathLike], dest: str = '', recursive: bool = True
+    ) -> None:
         """
         Upload file or folder to PolyAnalyst server.
 
@@ -102,7 +104,7 @@ class Drive:
         resp, _ = self.api.request(
             urljoin(self.api.url, '/polyanalyst/download'),
             method='get',
-            params={'uid': data['uid']}
+            params={'uid': data['uid']},
         )
         return resp.content
 
