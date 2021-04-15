@@ -88,7 +88,9 @@ html_theme_options = {
     'github_banner': 'true',
     'github_user': 'Megaputer',
     'github_repo': 'polyanalyst6api-python',
-    'nosidebar': True
+    'nosidebar': True,
+    'page_width': '960px',
+    'body_max_width': 'auto'
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
