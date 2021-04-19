@@ -1,0 +1,25 @@
+name: Build, test and publish documentation on github pages and python package on pypi.org
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Publish python package using poetry
+        uses: JRubics/poetry-publish@v1.5
+        with:
+          pypi_token: ${{ secrets.PYPI_TOKEN }}
+
+      - name: Sphinx to GitHub Pages
+        uses: sphinx-notes/pages@1.0
+        with:
+          documentation_path: /docs
