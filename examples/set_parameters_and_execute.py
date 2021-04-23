@@ -32,10 +32,7 @@ with polyanalyst6api.API(server_url, username, password) as api:
         )
 
     prj = api.project(project_id)
-
     prj.parameters('Parameters (1)').set('DataSource/INET', parameters={'URL': URL})
-    time.sleep(0.5)
-
     prj.execute('Internet Source', wait=True)
 
     assert prj.dataset('Internet Source').preview()[0]['URL'] == URL
