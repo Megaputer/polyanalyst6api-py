@@ -93,20 +93,34 @@ class Drive:
         """
         self._api.post('file/delete', json={'path': path, 'name': name})
 
-    def download_file(self, name: str, path: str = '') -> bytes:
+    def download_file(self, name: str, path: str = '', dest: Optional[IO] = None) -> bytes:
         """
-        Download the binary content of the file.
+        Download the binary content of the file to memory or stream to local file.
 
         :param name: the filename
         :param path: a relative path of the file's parent directory
+        :param dest: the file or file-like object to write drive's file content
+
+        Usage::
+          >>> file_content = api.drive.download_file(name='cars.csv', path='/data')
+          # The method call above downloads the whole file body into memory. If you're
+          # planning on downloading big file (more than 100 megabyte sized file),
+          # consider using the streaming download shown below.
+          >>> with open('local_file_that_doesnt_exist_yet.csv', 'wb+') as file:
+          ...     api.drive.download_file(name='cars.csv', path='/data', dest=file)
         """
         data = self._api.post('file/download', json={'path': path, 'name': name})
         resp, _ = self._api.request(
             urljoin(self._api.url, '/polyanalyst/download'),
             method='get',
             params={'uid': data['uid']},
+            stream=dest is not None,
         )
-        return resp.content
+        if not dest:
+            return resp.content
+
+        for chunk in resp.iter_content(chunk_size=8192):
+            dest.write(chunk)
 
     def upload_file(self, file: IO, name: Optional[str] = None, path: str = '') -> None:
         """
