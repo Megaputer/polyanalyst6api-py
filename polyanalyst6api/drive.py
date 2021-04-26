@@ -22,7 +22,7 @@ __all__ = ['Drive']
 
 class Drive:
     def __init__(self, api):
-        self.api = api
+        self._api = api
 
     def upload(
         self, source: Union[str, os.PathLike], dest: str = '', recursive: bool = True
@@ -33,7 +33,7 @@ class Drive:
         Pass ``recursive`` as False to just create folder on the server without
         uploading inner files and folders.
 
-        :param source: path to the file or folder
+        :param source: path to the local file or folder
         :param dest: (optional) path to the folder in the PolyAnalyst's user directory
         :param recursive: (optional) upload subdirectories recursively
 
@@ -50,10 +50,10 @@ class Drive:
         def _upload(target: pathlib.Path, dest_dir: str) -> None:
             if target.is_file():
                 with target.open(mode='rb') as f:
-                    self.api.fs.upload_file(f, name=target.name, path=dest_dir)
+                    self.upload_file(f, name=target.name, path=dest_dir)
             elif target.is_dir():
                 try:
-                    self.api.fs.create_folder(name=target.name, path=dest_dir)
+                    self.create_folder(name=target.name, path=dest_dir)
                 except APIException as exc:
                     if 'Folder already exists' in exc.message:
                         pass
@@ -73,7 +73,7 @@ class Drive:
         :param name: the folder name
         :param path: a relative path of the folder's parent directory
         """
-        self.api.post('folder/create', json={'path': path, 'name': name})
+        self._api.post('folder/create', json={'path': path, 'name': name})
 
     def delete_folder(self, name: str, path: str = '') -> None:
         """
@@ -82,7 +82,7 @@ class Drive:
         :param name: the folder name
         :param path: a relative path of the folder's parent directory
         """
-        self.api.post('folder/delete', json={'path': path, 'name': name})
+        self._api.post('folder/delete', json={'path': path, 'name': name})
 
     def delete_file(self, name: str, path: str = '') -> None:
         """
@@ -91,7 +91,7 @@ class Drive:
         :param name: the filename
         :param path: a relative path of the file's parent directory
         """
-        self.api.post('file/delete', json={'path': path, 'name': name})
+        self._api.post('file/delete', json={'path': path, 'name': name})
 
     def download_file(self, name: str, path: str = '') -> bytes:
         """
@@ -100,9 +100,9 @@ class Drive:
         :param name: the filename
         :param path: a relative path of the file's parent directory
         """
-        data = self.api.post('file/download', json={'path': path, 'name': name})
-        resp, _ = self.api.request(
-            urljoin(self.api.url, '/polyanalyst/download'),
+        data = self._api.post('file/download', json={'path': path, 'name': name})
+        resp, _ = self._api.request(
+            urljoin(self._api.url, '/polyanalyst/download'),
             method='get',
             params={'uid': data['uid']},
         )
@@ -137,20 +137,22 @@ class Drive:
         file_name = name or os.path.basename(file.name)
         file_size = _get_file_size(file)
 
+        api_session = self._api._s
+
         file_endpoint, _ = pytus.create(
-            urljoin(self.api.url, 'file/upload'),
+            urljoin(self._api.url, 'file/upload'),
             file_name,
             file_size,
-            session=self.api._s,
+            session=api_session,
             metadata={'foldername': path},
         )
 
-        pytus.resume(file, file_endpoint, session=self.api._s, offset=0)
+        pytus.resume(file, file_endpoint, session=api_session, offset=0)
 
         # free up resources on the server if file is not uploaded completely
         try:
-            offset = _get_offset(file_endpoint, session=self.api._s)
+            offset = _get_offset(file_endpoint, session=api_session)
             if file_size != offset or file_size == 0:
-                pytus.terminate(file_endpoint, session=self.api._s)
+                pytus.terminate(file_endpoint, session=api_session)
         except requests.exceptions.RequestException:
             pass
