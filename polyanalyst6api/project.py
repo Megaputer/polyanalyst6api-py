@@ -446,7 +446,7 @@ class DataSet:
         if stop is None:
             stop = max_row
 
-        # предпологается что если stop определен то пользователь в курсе количества строк в датасете
+        # предполагается что если stop определен то пользователь в курсе количества строк в датасете
         if not 0 <= start <= stop <= max_row:
             raise ValueError(
                 f'start and stop arguments must be within dataset row range: (0, {max_row})'
