@@ -14,7 +14,7 @@ import pytus
 from pytus.main import _get_offset, _get_file_size
 import requests
 
-from .exceptions import APIException
+from .exceptions import APIException, ClientException
 
 
 __all__ = ['Drive']
@@ -119,8 +119,11 @@ class Drive:
         if not dest:
             return resp.content
 
-        for chunk in resp.iter_content(chunk_size=8192):
-            dest.write(chunk)
+        try:
+            for chunk in resp.iter_content(chunk_size=8192):
+                dest.write(chunk)
+        except AttributeError as exc:
+            raise ClientException('`dest` argument should be file or file-like object') from exc
 
     def upload_file(self, file: IO, name: Optional[str] = None, path: str = '') -> None:
         """
@@ -142,14 +145,17 @@ class Drive:
           >>> with open('CarData.csv', mode='rb') as file:
           ...     drive.upload_file(file, name='cars.csv', path='/data')
         """
-        if file.tell():
-            warnings.warn(
-                "The file object's current position is not at the beginning of the file."
-                "This will result in uploading only the part of the file!"
-            )
+        try:
+            if file.tell():
+                warnings.warn(
+                    "The file object's current position is not at the beginning of the file."
+                    "This will result in uploading only the part of the file!"
+                )
 
-        file_name = name or os.path.basename(file.name)
-        file_size = _get_file_size(file)
+            file_name = name or os.path.basename(file.name)
+            file_size = _get_file_size(file)
+        except AttributeError as exc:
+            raise ClientException('`file` argument should be file or file-like object') from exc
 
         api_session = self._api._s
 
