@@ -1,3 +1,13 @@
+0.21.0 (2021-04-26)
+===================
+
+Features
+--------
+
+- Added additional argument checks to some `Drive` methods
+- Added stream download option to `Drive.download_file`
+
+
 0.20.1 (2021-04-06)
 ===================
 
