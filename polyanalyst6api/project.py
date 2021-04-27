@@ -326,6 +326,7 @@ class Parameters:
         strategies: Optional[List[int]] = None,
         declare_unsync: bool = True,
         hard_update: bool = True,
+        wait: bool = True,
     ) -> Optional[List[str]]:
         """
         Sets `node_type` parameters and strategies for the Parameters node.
@@ -340,6 +341,8 @@ class Parameters:
         :param hard_update: update every child node with new parameters if True, \
             otherwise reset their statuses. Works only if declare_unsync is True.\
             True by default.
+        :param wait: wait for this node to set parameters for each child node.\
+            True by default.
         """
 
         if strategies is None:
@@ -347,9 +350,10 @@ class Parameters:
 
         method = 'configure-array' if isinstance(parameters, list) else 'configure'
 
-        return self.api.post(
+        resp, _warnings = self._api.request(
             f'parameters/{method}',
-            params={'prjUUID': self.uuid, 'obj': self.id},
+            method='POST',
+            params={'prjUUID': self._prj.uuid, 'obj': self.id},
             json={
                 'type': node_type,
                 'settings': parameters,
@@ -358,6 +362,18 @@ class Parameters:
                 'hardUpdate': hard_update,
             },
         )
+
+        query = urlparse(resp.headers.get('location')).query
+        try:
+            wave_id = int(parse_qs(query).get('executionWave')[0])
+        except TypeError:
+            pass
+        else:
+            if wait:
+                while self._prj.is_running(wave_id):
+                    time.sleep(1)
+
+        return _warnings
 
     def clear(self, *node_types: List[str], declare_unsync: bool = True) -> Optional[List[str]]:
         """
