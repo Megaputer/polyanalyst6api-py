@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>API Reference &#8212; polyanalyst6api 0.21.0 documentation</title>
+    <title>API Reference &#8212; polyanalyst6api 0.22.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -33,7 +33,7 @@
             
   <div class="section" id="api-reference">
 <h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
-<p>This page contains specific information on the polyanalyst6api REST API client’s classes and methods.</p>
+<p>This page contains specific information on the polyanalyst6api package classes and methods.</p>
 <dl class="class">
 <dt id="polyanalyst6api.api.API">
 <em class="property">class </em><code class="descclassname">polyanalyst6api.api.</code><code class="descname">API</code><span class="sig-paren">(</span><em>url</em>, <em>username</em>, <em>password=''</em>, <em>ldap_server=None</em>, <em>version='1.0'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API" title="Permalink to this definition">¶</a></dt>
@@ -299,20 +299,38 @@
 
 <dl class="method">
 <dt id="polyanalyst6api.drive.Drive.download_file">
-<code class="descname">download_file</code><span class="sig-paren">(</span><em>name</em>, <em>path=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/drive.html#Drive.download_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.drive.Drive.download_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Download the binary content of the file.</p>
+<code class="descname">download_file</code><span class="sig-paren">(</span><em>name</em>, <em>path=''</em>, <em>dest=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/drive.html#Drive.download_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.drive.Drive.download_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download the binary content of the file to memory or stream to local file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the filename</li>
 <li><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a relative path of the file’s parent directory</li>
+<li><strong>dest</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Io</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">AnyStr</span></code>]]) – the file or file-like object to write drive’s file content</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></p>
-</td>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Usage::</dt>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file_content</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">drive</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;cars.csv&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/data&#39;</span><span class="p">)</span>
+<span class="go"># The method call above downloads the whole file body into memory. If you&#39;re</span>
+<span class="go"># planning on downloading big file (more than 100 megabyte sized file),</span>
+<span class="go"># consider using the streaming download shown below.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;local_file_that_doesnt_exist_yet.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;wb+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">api</span><span class="o">.</span><span class="n">drive</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;cars.csv&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/data&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="n">file</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -329,7 +347,7 @@ uploading inner files and folders.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>source</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PathLike</span></code>]) – path to the file or folder</li>
+<li><strong>source</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PathLike</span></code>]) – path to the local file or folder</li>
 <li><strong>dest</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (optional) path to the folder in the PolyAnalyst’s user directory</li>
 <li><strong>recursive</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – (optional) upload subdirectories recursively</li>
 </ul>
@@ -835,7 +853,7 @@ completed successfully and False otherwise.</p>
 
 <dl class="class">
 <dt id="polyanalyst6api.project.Parameters">
-<em class="property">class </em><code class="descclassname">polyanalyst6api.project.</code><code class="descname">Parameters</code><span class="sig-paren">(</span><em>api</em>, <em>uuid</em>, <em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Parameters" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">polyanalyst6api.project.</code><code class="descname">Parameters</code><span class="sig-paren">(</span><em>prj</em>, <em>_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Parameters" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="polyanalyst6api.project.Parameters.clear">
 <code class="descname">clear</code><span class="sig-paren">(</span><em>*node_types</em>, <em>declare_unsync=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Parameters.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Parameters.clear" title="Permalink to this definition">¶</a></dt>
@@ -866,7 +884,7 @@ If <cite>node_types</cite> is empty it clears parameters and strategies of all n
 
 <dl class="method">
 <dt id="polyanalyst6api.project.Parameters.set">
-<code class="descname">set</code><span class="sig-paren">(</span><em>node_type</em>, <em>parameters</em>, <em>strategies=None</em>, <em>declare_unsync=True</em>, <em>hard_update=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Parameters.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Parameters.set" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set</code><span class="sig-paren">(</span><em>node_type</em>, <em>parameters</em>, <em>strategies=None</em>, <em>declare_unsync=True</em>, <em>hard_update=True</em>, <em>wait=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Parameters.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Parameters.set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets <cite>node_type</cite> parameters and strategies for the Parameters node.</p>
 <p>If <cite>parameters</cite> is the list of dictionaries with parameters then
 /configure-array endpoint is used otherwise /configure.</p>
@@ -880,6 +898,7 @@ If <cite>node_types</cite> is empty it clears parameters and strategies of all n
 <li><strong>strategies</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]) – node type strategies</li>
 <li><strong>declare_unsync</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – reset status of the Parameters node. True by default.</li>
 <li><strong>hard_update</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – update every child node with new parameters if True,             otherwise reset their statuses. Works only if declare_unsync is True.            True by default.</li>
+<li><strong>wait</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – wait for this node to set parameters for each child node.            True by default.</li>
 </ul>
 </td>
 </tr>
