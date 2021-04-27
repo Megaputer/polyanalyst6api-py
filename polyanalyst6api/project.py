@@ -157,7 +157,7 @@ class Project:
 
         .. versionadded:: 0.18.0
         """
-        return Parameters(self.api, self.uuid, self._find_node(name)['id'])
+        return Parameters(self, self._find_node(name)['id'])
 
     def unload(self) -> None:
         """Unload the project from the memory and free system resources."""
@@ -310,14 +310,14 @@ class Project:
 
 
 class Parameters:
-    def __init__(self, api, uuid: Optional[str], id: Optional[str]):
-        self.api = api
-        self.uuid = uuid
-        self.id = id
+    def __init__(self, prj: Project, _id: Optional[str]):
+        self._prj = prj
+        self._api = prj.api
+        self.id = _id
 
     def get(self):
         """Returns list of nodes with parameters and strategies supported by ``Parameters`` node."""
-        return self.api.get('parameters/nodes')
+        return self._api.get('parameters/nodes')
 
     def set(
         self,
@@ -367,9 +367,9 @@ class Parameters:
         :param node_types: node types which parameters needs to be cleared
         :param declare_unsync: reset status of the Parameters node
         """
-        return self.api.post(
+        return self._api.post(
             'parameters/clear',
-            params={'prjUUID': self.uuid, 'obj': self.id},
+            params={'prjUUID': self._prj.uuid, 'obj': self.id},
             json={
                 'nodes': node_types,
                 'declareUnsync': declare_unsync,
