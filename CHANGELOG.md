@@ -1,3 +1,12 @@
+0.22.0 (2021-04-27)
+===================
+
+Features
+--------
+
+- Added the ability to wait for Parameters node to set parameters
+
+
 0.21.0 (2021-04-26)
 ===================
 
