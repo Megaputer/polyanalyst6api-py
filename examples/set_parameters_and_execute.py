@@ -7,7 +7,6 @@ To execute this script you need to:
   3. Add a link from Parameters to Internet Source
 """
 import sys
-import time
 
 import polyanalyst6api
 
