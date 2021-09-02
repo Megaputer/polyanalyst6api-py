@@ -1,3 +1,12 @@
+0.22.1 (2021-09-02)
+===================
+
+Bugfixes
+--------
+
+- Fixed iter_rows method returns 1e+100 and 8e+100 instead of None and inf respectively
+
+
 0.22.0 (2021-04-27)
 ===================
 
