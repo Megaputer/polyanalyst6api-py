@@ -6,6 +6,7 @@ This module contains functionality for access to PolyAnalyst Analytical Client A
 """
 import datetime
 import functools
+import math
 import time
 import warnings
 from urllib.parse import urlparse, parse_qs
@@ -488,7 +489,15 @@ class DataSet:
                         result[column['title']] = get_text(self.idx, column['id'], column['title'])
                     # elif column['type'] == 'DateTime':  # todo convert to python datetime?
                     else:
-                        result[column['title']] = rows[self.idx][column['id']]
+                        _value = rows[self.idx][column['id']]
+                        if _value == 1e+100:
+                            _value = None
+                        elif _value == 8e+100:
+                            _value = math.inf
+                        elif _value == -8e+100:
+                            _value = -math.inf
+
+                        result[column['title']] = _value
 
                 self.idx += 1
                 return result
