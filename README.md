@@ -30,11 +30,32 @@ REST API specification.
 
 ### Authentication
 
-Use `API` context manager to automatically log in and log out of PolyAnalyst server:
-```python
-from polyanalyst6api import API
+From version `0.23.0` you can use the configuration file to store your credentials. By default, its location is
+`C:\Users\_user_\.polyanalyst6api\config` (`~/.polyanalyst6api/config` in linux).
 
-with API(POLYANALIST_URL, USERNAME, PASSWORD) as api:
+At a minimum, the credentials file should specify the url and credentials keys. You may also want to add a `ldap_server`
+if you're logging in via LDAP. All other keys or sections except `DEFAULT` are ignored.
+
+```ini
+[DEFAULT]
+url=POLYANALYST_URL
+username=YOUR_USERNAME
+password=YOUR_PASSWORD
+ldap_server=LDAP
+```
+
+After creating the configuration file you can use `API` context manager to automatically log in to and log out
+from PolyAnalyst server:
+
+```python
+with polyanalyst6api.API() as api:
+    ...
+```
+
+Alternatively, you can pass an url, credentials and ldap_server when creating api client. In this case arguments
+will be used over values from the configuration file.
+```python
+with polyanalyst6api.API(POLYANALIST_URL, YOUR_USERNAME, YOUR_PASSWORD) as api:
     ...
 ```
 
