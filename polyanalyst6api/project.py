@@ -317,7 +317,7 @@ class Project:
             DeprecationWarning,
             stacklevel=2,
         )
-        warns = self.parameters(node).set(node_type, parameters, declare_unsync, hard_update)
+        warns = self.parameters(node).set(node_type, parameters, None, declare_unsync, hard_update)
         if warns:
             for msg in warns:
                 warnings.warn(msg)
