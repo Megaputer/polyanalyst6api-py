@@ -288,9 +288,6 @@ class Project:
         """
         Set parameters of the selected Parameters node in the project.
 
-        .. deprecated:: 0.18.0
-           Use :meth:`Parameters.set` instead.
-
         :param node: name of Parameters node
         :param node_type: node type, which parameters need to be set. The types \
             are listed in NodeTypes.
@@ -298,6 +295,9 @@ class Project:
         :param declare_unsync: reset the status of the Parameters node.
         :param hard_update: update every child node with new parameters if True, \
             otherwise reset their statuses. Works only if declare_unsync is True.
+
+        .. deprecated:: 0.18.0
+           Use :meth:`Parameters.set` instead.
         """
         warnings.warn(
             'Project.set_parameters() is deprecated, use Project.parameters.set() instead.',
