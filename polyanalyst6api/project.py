@@ -196,20 +196,31 @@ class Project:
 
         raise APIException(f"Node not found: name='{name_}', type='{type_}'", status_code=500)
 
-    def wait_for_completion(self, node: Union[str, Dict[str, str]]) -> bool:
-        """Waits for the node to complete the execution. Returns True if node have
-        completed successfully and False otherwise.
+    def wait_for_completion(self, node: Union[str, Dict[str, str]], wave_id: Optional[int] = None) -> bool:
+        """
+        Waits for the node in a sequence of nodes to complete. Returns `True` if
+        node have completed successfully and `False` otherwise.
+
+        Unlike `execute(..., wait=True)`, which returns only after an entire node
+        sequence has completed, this method returns immediately after the specified
+        node has completed.
+
+        :param node: Node name or dict with name and type of node that runs within execution wave
+        :param wave_id: Execution wave identifier
 
         .. deprecated:: 0.17.0
            Use :meth:`Project.is_running` instead.
 
-        :param node: node name or dict with name and type of node
+        .. changed:: 0.23.0
+           Introduced this deprecated method back. Added `wave_id` argument.
         """
-        warnings.warn(
-            'Project.wait_for_completion() is deprecated, use Project.is_running() instead.',
-            DeprecationWarning,
-            stacklevel=2,
-        )
+        if not wave_id:
+            warnings.warn(
+                'It is recommended to use `Project.wait_for_completion` with `wave_id` argument',
+                UserWarning,
+                stacklevel=2,
+            )
+
         time.sleep(0.5)  # give pa time to update node statuses
         while True:
             self._update_node_list()
@@ -217,9 +228,11 @@ class Project:
 
             if stats.get('errMsg'):
                 return False
-            if stats['status'] == 'synchronized':
+            elif stats['status'] == 'synchronized':
                 return True
-            if stats['status'] == 'incomplete':
+            elif stats['status'] == 'incomplete':
+                return False
+            elif wave_id and not self.is_running(wave_id):
                 return False
 
             time.sleep(1)
