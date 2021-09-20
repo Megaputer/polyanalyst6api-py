@@ -247,7 +247,10 @@ class API:
                 error = json['error']
                 if 'The wrapper with the given GUID is not found on the server' == error['message']:
                     raise _WrapperNotFound
-                error_msg = f"{error['title']}. Message: '{error['message']}'"
+                if error['title']:
+                    error_msg = f"{error['title']}. Message: '{error['message']}'"
+                else:
+                    error_msg = error['message']
 
         # the old error response format handling
         elif response.status_code == 403:
