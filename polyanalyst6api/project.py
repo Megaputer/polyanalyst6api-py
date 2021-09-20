@@ -211,7 +211,7 @@ class Project:
         .. deprecated:: 0.17.0
            Use :meth:`Project.is_running` instead.
 
-        .. changed:: 0.23.0
+        .. versionchanged:: 0.23.0
            Introduced this deprecated method back. Added `wave_id` argument.
         """
         if not wave_id:
