@@ -499,7 +499,7 @@ class DataSet:
                 result = {}
                 for column in info['columnsInfo']:
                     if column['flags'].get('getTextAlways'):
-                        result[column['title']] = get_text(self.idx, column['id'], column['title'])
+                        result[column['title']] = get_text(self.idx, column['id'])
                     # elif column['type'] == 'DateTime':  # todo convert to python datetime?
                     else:
                         _value = rows[self.idx][column['id']]
@@ -531,16 +531,12 @@ class DataSet:
         )
 
     @retry_on_invalid_guid
-    def _cell_text(self, row: int, col: int, _title) -> str:
+    def _cell_text(self, row: int, col: int) -> str:
         return self._api.get(
             'dataset/cell-text',
             json={
                 'wrapperGuid': self.guid,
                 'row': row,
                 'col': col,
-                # todo remove next keys
-                'colTitle': _title,
-                'offset': 0,
-                'count': 0,
             },
         )['text']
