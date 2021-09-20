@@ -4,7 +4,9 @@ polyanalyst6api.api
 
 This module contains functionality for access to PolyAnalyst API.
 """
+import configparser
 import contextlib
+import pathlib
 import warnings
 from typing import Any, Dict, List, Tuple, Union, Optional
 from urllib.parse import urljoin, urlparse
@@ -51,9 +53,9 @@ NodeTypes = [
 class API:
     """PolyAnalyst API
 
-    :param url: The scheme, host and port(if exists) of a PolyAnalyst server \
+    :param url: (optional) The scheme, host and port(if exists) of a PolyAnalyst server \
         (e.g. ``https://localhost:5043/``, ``http://example.polyanalyst.com``)
-    :param username: The username to login with
+    :param username: (optional) The username to login with
     :param password: (optional) The password for specified username
     :param ldap_server: (optional) LDAP Server address
     :param version: (optional) Choose which PolyAnalyst API version to use. Default: ``1.0``
@@ -62,7 +64,12 @@ class API:
 
     Usage::
 
-      >>> with API(URL, USERNAME, PASSWORD) as api:
+      >>> with API(POLYANALYST_URL, YOUR_USERNAME, YOUR_PASSWORD) as api:
+      ...     print(api.get_server_info())
+
+    or if you're using configuration file (New in version 0.23.0):
+
+      >>> with API() as api:
       ...     print(api.get_server_info())
     """
 
@@ -80,14 +87,31 @@ class API:
 
     def __init__(
         self,
-        url: str,
-        username: str,
-        password: str = '',
+        url: Optional[str] = None,
+        username: Optional[str] = None,
+        password: Optional[str] = None,
         ldap_server: Optional[str] = None,
         version: str = '1.0',
     ) -> None:
         if version not in self._valid_api_versions:
             raise ClientException('Valid api versions are ' + ', '.join(self._valid_api_versions))
+
+        if url is None or username is None:
+            try:
+                cfg_path = pathlib.Path.home() / '.polyanalyst6api' / 'config'
+                parser = configparser.ConfigParser(allow_no_value=True)
+                with open(cfg_path, encoding='utf8') as f:
+                    parser.read_file(f)
+                default = dict(parser['DEFAULT'])
+
+                url = default['url']
+                username = default['username']
+                password = default['password']
+                ldap_server = default.get(ldap_server)
+            except FileNotFoundError:
+                raise ClientException(f"The credentials file doesn't exist. Nor credentials passed as arguments")
+            except KeyError as exc:
+                raise ClientException(f"The credentials file doesn't contain required key: {exc}")
 
         if not url:
             raise ClientException(f'Invalid url: "{url}".')
@@ -95,7 +119,7 @@ class API:
         self.base_url = urljoin(url, self._api_path)
         self.url = urljoin(self.base_url, f'v{version}/')
         self.username = username
-        self.password = password
+        self.password = password or ''
         self.ldap_server = ldap_server
 
         self._s = requests.Session()

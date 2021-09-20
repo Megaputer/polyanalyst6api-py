@@ -1,0 +1,1 @@
+Added support of the configuration file
