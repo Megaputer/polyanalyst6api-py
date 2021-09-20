@@ -1,1 +1,0 @@
-Fixed deprecated get_parameters raises `TypeError: __init__() takes 3 positional arguments but 4 were given`

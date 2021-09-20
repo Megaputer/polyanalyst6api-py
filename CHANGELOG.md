@@ -1,3 +1,21 @@
+0.23.0 (2021-09-20)
+===================
+
+Features
+--------
+
+- Added support of the configuration file (T28739)
+- Introduced deprecated earlier `wait_for_completion` method back. Added new `wave_id` argument (T28740)
+- Better api error message formatting. For example, "APIException: . Message: 'JSON value is not an array' (500, ...)" -> "APIException: JSON value is not an array (500, ...)" (#1)
+
+
+Bugfixes
+--------
+
+- Fixed deprecated get_parameters raises `TypeError: __init__() takes 3 positional arguments but 4 were given` (#1)
+- Fixed deprecated set_parameters method raises `JSON value is not an array` error (#2)
+
+
 0.22.1 (2021-09-02)
 ===================
 

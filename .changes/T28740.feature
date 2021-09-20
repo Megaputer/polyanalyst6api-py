@@ -1,1 +1,0 @@
-Introduced deprecated earlier `wait_for_completion` method back. Added new `wave_id` argument

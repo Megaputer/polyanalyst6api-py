@@ -1,1 +1,0 @@
-Fixed deprecated set_parameters method raises `JSON value is not an array` error 
