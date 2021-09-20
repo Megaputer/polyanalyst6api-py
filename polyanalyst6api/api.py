@@ -135,7 +135,10 @@ class API:
             DeprecationWarning,
             stacklevel=2,
         )
-        return Parameters(self, None, None).get()
+
+        class ProjectStub:
+            api = self
+        return Parameters(ProjectStub(), None).get()
 
     def login(self) -> None:
         """Logs in to PolyAnalyst Server with user credentials."""
