@@ -33,19 +33,19 @@
             
   <div class="section" id="api-reference">
 <h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
-<p>This page contains specific information on the polyanalyst6api package classes and methods.</p>
+<p>This page contains specific information on the polyanalyst6api REST API client’s classes and methods.</p>
 <dl class="class">
 <dt id="polyanalyst6api.api.API">
-<em class="property">class </em><code class="descclassname">polyanalyst6api.api.</code><code class="descname">API</code><span class="sig-paren">(</span><em>url</em>, <em>username</em>, <em>password=''</em>, <em>ldap_server=None</em>, <em>version='1.0'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">polyanalyst6api.api.</code><code class="descname">API</code><span class="sig-paren">(</span><em>url=None</em>, <em>username=None</em>, <em>password=None</em>, <em>ldap_server=None</em>, <em>version='1.0'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API" title="Permalink to this definition">¶</a></dt>
 <dd><p>PolyAnalyst API</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The scheme, host and port(if exists) of a PolyAnalyst server         (e.g. <code class="docutils literal notranslate"><span class="pre">https://localhost:5043/</span></code>, <code class="docutils literal notranslate"><span class="pre">http://example.polyanalyst.com</span></code>)</li>
-<li><strong>username</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The username to login with</li>
-<li><strong>password</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (optional) The password for specified username</li>
+<li><strong>url</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – (optional) The scheme, host and port(if exists) of a PolyAnalyst server         (e.g. <code class="docutils literal notranslate"><span class="pre">https://localhost:5043/</span></code>, <code class="docutils literal notranslate"><span class="pre">http://example.polyanalyst.com</span></code>)</li>
+<li><strong>username</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – (optional) The username to login with</li>
+<li><strong>password</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – (optional) The password for specified username</li>
 <li><strong>ldap_server</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – (optional) LDAP Server address</li>
 <li><strong>version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (optional) Choose which PolyAnalyst API version to use. Default: <code class="docutils literal notranslate"><span class="pre">1.0</span></code></li>
 </ul>
@@ -55,7 +55,12 @@
 </table>
 <p>If ldap_server is provided, then login will be performed via LDAP Server.</p>
 <p>Usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">API</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">USERNAME</span><span class="p">,</span> <span class="n">PASSWORD</span><span class="p">)</span> <span class="k">as</span> <span class="n">api</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">API</span><span class="p">(</span><span class="n">POLYANALYST_URL</span><span class="p">,</span> <span class="n">YOUR_USERNAME</span><span class="p">,</span> <span class="n">YOUR_PASSWORD</span><span class="p">)</span> <span class="k">as</span> <span class="n">api</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">get_server_info</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>or if you’re using configuration file (New in version 0.23.0):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">API</span><span class="p">()</span> <span class="k">as</span> <span class="n">api</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">get_server_info</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -706,14 +711,11 @@ cutoff after 250 symbols.</p>
 <dt id="polyanalyst6api.project.Project.set_parameters">
 <code class="descname">set_parameters</code><span class="sig-paren">(</span><em>node</em>, <em>node_type</em>, <em>parameters</em>, <em>declare_unsync=True</em>, <em>hard_update=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.set_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.set_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set parameters of the selected Parameters node in the project.</p>
-<div class="deprecated">
-<p><span class="versionmodified">Deprecated since version 0.18.0: </span>Use <a class="reference internal" href="#polyanalyst6api.project.Parameters.set" title="polyanalyst6api.project.Parameters.set"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Parameters.set()</span></code></a> instead.</p>
-</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>node</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of Parameters node</li>
 <li><strong>node_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – node type, which parameters need to be set. The types             are listed in NodeTypes.</li>
 <li><strong>parameters</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]) – default parameters of the node to be set.</li>
@@ -722,8 +724,16 @@ cutoff after 250 symbols.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
-</td>
+</tbody>
+</table>
+<div class="deprecated">
+<p><span class="versionmodified">Deprecated since version 0.18.0: </span>Use <a class="reference internal" href="#polyanalyst6api.project.Parameters.set" title="polyanalyst6api.project.Parameters.set"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Parameters.set()</span></code></a> instead.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -745,19 +755,35 @@ cutoff after 250 symbols.</p>
 
 <dl class="method">
 <dt id="polyanalyst6api.project.Project.wait_for_completion">
-<code class="descname">wait_for_completion</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.wait_for_completion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.wait_for_completion" title="Permalink to this definition">¶</a></dt>
-<dd><p>Waits for the node to complete the execution. Returns True if node have
-completed successfully and False otherwise.</p>
+<code class="descname">wait_for_completion</code><span class="sig-paren">(</span><em>node</em>, <em>wave_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.wait_for_completion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.wait_for_completion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Waits for the node in a sequence of nodes to complete. Returns <cite>True</cite> if
+node have completed successfully and <cite>False</cite> otherwise.</p>
+<p>Unlike <cite>execute(…, wait=True)</cite>, which returns only after an entire node
+sequence has completed, this method returns immediately after the specified
+node has completed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>node</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – Node name or dict with name and type of node that runs within execution wave</li>
+<li><strong>wave_id</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – Execution wave identifier</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <div class="deprecated">
 <p><span class="versionmodified">Deprecated since version 0.17.0: </span>Use <a class="reference internal" href="#polyanalyst6api.project.Project.is_running" title="polyanalyst6api.project.Project.is_running"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Project.is_running()</span></code></a> instead.</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 0.23.0: </span>Introduced this deprecated method back. Added <cite>wave_id</cite> argument.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – node name or dict with name and type of node</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></td>
 </tr>
 </tbody>
 </table>
