@@ -97,6 +97,10 @@ class Project:
           ...     'Federated Search',
           ...     prj.get_node_list()[1],
           ... )
+
+        or, if you want to execute all nodes, call this method with no ``args``:
+
+          >>> prj.execute()
         """
         nodes = []
         for arg in args:
