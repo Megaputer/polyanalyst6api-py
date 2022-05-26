@@ -34,6 +34,7 @@ class Node(BaseModel):
     id: int
     name: str
     type: str
+    subtype: Optional[str]  # introduced in T31356
     status: NodeStatus
     errMsg: Optional[str]
 
@@ -41,6 +42,7 @@ class Node(BaseModel):
 class NodeStatistic(BaseModel):
     id: int
     type: str
+    subtype: Optional[str]  # introduced in T31356
     name: str
     status: NodeStatus
     errMsg: Optional[str]
