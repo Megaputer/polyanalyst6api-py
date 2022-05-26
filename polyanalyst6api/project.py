@@ -443,16 +443,33 @@ class DataSet:
         """Get dataset progress."""
         return self._api.get('dataset/progress', params={'wrapperGuid': self.guid})
 
-    def preview(self) -> _DataSet:
-        """Returns first 1000 rows with strings truncated to 250 characters."""
-        return self._api.get(
-            'dataset/preview',
-            params={
-                'prjUUID': self._prj.uuid,
-                'name': self._node['name'],
-                'type': self._node['type'],
-            },
-        )
+    def preview(self, precision: int = 6, include_blank_cells: bool = False) -> _DataSet:
+        """
+        Get dataset preview.
+
+        Contains the first 1000 rows, string/text are cut off after 250 symbols.
+        By default, numbers are rounded to 6 significant digits and blank cells are omitted.
+
+        :param precision: (optional) number of significant digits. 6 by default.
+        :param include_blank_cells: (optional) include blank cells in dataset. False by default.
+
+        :raises: APIException if non-default parameters are used with the old version of server,
+        which doesn't support them. In this case retry the method with default parameters.
+
+        .. versionadded:: 0.24.0
+        The *precision* and *include_blank_cells* parameters.
+        """
+        params = {
+            'prjUUID': self._prj.uuid,
+            'name': self._node['name'],
+            'type': self._node['type'],
+        }
+        if precision != 6:
+            params['precision'] = precision
+        if include_blank_cells is not False:
+            params['writeEmptyValues'] = include_blank_cells
+
+        return self._api.get('dataset/preview', params=params)
 
     def iter_rows(
         self, start: int = 0, stop: Optional[int] = None
