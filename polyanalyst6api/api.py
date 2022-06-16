@@ -211,10 +211,10 @@ class API:
 
         :param file_path: absolute path to the file on server file system
         :param project_space: the name of the folder in the project manager
-        where you want to import the project. The default folder is `Root`.
+            where you want to import the project. The default folder is `Root`.
         :param on_conflict: the strategy to resolve import conflict. Allowed
-        options are: Cancel, Overwrite, ChangeExistingId, ChangeImportingId.
-        By default, the import will be cancelled if the project already exist.
+            options are: Cancel, Overwrite, ChangeExistingId, ChangeImportingId.
+            By default, the import will be cancelled if the project already exist.
         :param wait: wait for project import to finish. False by default.
 
         :return: import identifier if `wait` is False and import status otherwise

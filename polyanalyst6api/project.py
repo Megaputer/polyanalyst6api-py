@@ -454,10 +454,10 @@ class DataSet:
         :param include_blank_cells: (optional) include blank cells in dataset. False by default.
 
         :raises: APIException if non-default parameters are used with the old version of server,
-        which doesn't support them. In this case retry the method with default parameters.
+            which doesn't support them. In this case retry the method with default parameters.
 
         .. versionadded:: 0.24.0
-        The *precision* and *include_blank_cells* parameters.
+            The *precision* and *include_blank_cells* parameters.
         """
         params = {
             'prjUUID': self._prj.uuid,
