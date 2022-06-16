@@ -1,6 +1,6 @@
 [![PyPI package](https://img.shields.io/pypi/v/polyanalyst6api.svg?)](https://pypi.org/project/polyanalyst6api)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/polyanalyst6api.svg?)](https://pypi.org/project/polyanalyst6api/)
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/Megaputer/polyanalyst6api-python/blob/master/LICENSE)
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/Megaputer/polyanalyst6api-py/blob/master/LICENSE)
 [![Code style](https://img.shields.io/badge/code%20style-black-black)](https://github.com/ambv/black)
 
 **_polyanalyst6api_ is a simple and easy to use client library for the PolyAnalyst API.**
@@ -19,7 +19,7 @@ pip install --upgrade polyanalyst6api
 
 ## Documentation
 
-See [API Reference](https://megaputer.github.io/polyanalyst6api-python/) for the client library methods.
+See [API Reference](https://megaputer.github.io/polyanalyst6api-py) for the client library methods.
 
 Refer to **PolyAnalyst User Manual** at **Application Programming Interfaces** > **Version 01** for REST API specification.
 
