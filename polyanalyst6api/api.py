@@ -93,7 +93,7 @@ class API:
         password: Optional[str] = None,
         ldap_server: Optional[str] = None,
         version: str = '1.0',
-    ) -> None:
+    ):
         if version not in self._valid_api_versions:
             raise ClientException('Valid api versions are ' + ', '.join(self._valid_api_versions))
 

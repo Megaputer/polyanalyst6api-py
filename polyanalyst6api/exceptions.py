@@ -20,7 +20,7 @@ class APIException(PAException):
     :param status_code: The http status code
     """
 
-    def __init__(self, msg: str, endpoint: str = None, status_code: int = None) -> None:
+    def __init__(self, msg: str, endpoint: str = None, status_code: int = None):
         self.message = msg
         self.endpoint = endpoint
         self.status_code = status_code
