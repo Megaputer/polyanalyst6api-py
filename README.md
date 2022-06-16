@@ -95,8 +95,8 @@ with open(r'C:\README.txt', mode='wb+') as local_file:
     local_file.write(content)
 ```
 
-See [polyanalyst6api-python/examples](https://github.com/Megaputer/polyanalyst6api-python/tree/master/examples) for more complex examples.
+See [polyanalyst6api-python/examples](https://github.com/Megaputer/polyanalyst6api-py/tree/master/examples) for more complex examples.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/Megaputer/polyanalyst6api-py/tree/master/LICENSE) file for details
