@@ -1,3 +1,27 @@
+0.24.0 (2022-06-16)
+===================
+Polyanalyst6Api 0.24.0 (2022-06-16)
+===================================
+
+Features
+--------
+
+- Added ability to import project from file on server file system (T24481) (import)
+- Added optional `precision` and `include_blank_cells` parameters to `project.preview` method. (T28860, T28109) (preview)
+
+
+0.24.0 (2022-06-16)
+===================
+Polyanalyst6Api 0.24.0 (2022-06-16)
+===================================
+
+Features
+--------
+
+- Added ability to import project from file on local file system (T24481) (import)
+- Added optional `precision` and `include_blank_cells` parameters to `project.preview` method. (T28860, T28109) (preview)
+
+
 0.23.0 (2021-09-20)
 ===================
 
