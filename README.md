@@ -1,30 +1,27 @@
-# polyanalyst6api
-
 [![PyPI package](https://img.shields.io/pypi/v/polyanalyst6api.svg?)](https://pypi.org/project/polyanalyst6api)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/polyanalyst6api.svg?)](https://pypi.org/project/polyanalyst6api/)
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/Megaputer/polyanalyst6api-python/blob/master/LICENSE)
+[![Code style](https://img.shields.io/badge/code%20style-black-black)](https://github.com/ambv/black)
 
-`polyanalyst6api` is a Python library for interacting with PolyAnalyst APIs.
+**_polyanalyst6api-python_ is a simple and easy to use client library for the PolyAnalyst API.**
 
-This package provides easy to use wrappers for PolyAnalyst `Analytical Client`, `Scheduler` and `Drive`.
-With it you can execute nodes, view datasets, run tasks, download/upload files and so on.
+This package provides wrappers for PolyAnalyst `Analytical Client`, `Scheduler` and `Drive`.
+Using it you can execute nodes, view datasets, run tasks, download/upload files and so on.
 
 ## Installation
 
-Python 3.6+ is required. Install, upgrade and uninstall `polyanalyst6api-python` with these commands:
+Python 3.6+ is required. Install and upgrade `polyanalyst6api-python` with these commands:
 
-```
-$ pip install polyanalyst6api
-$ pip install --upgrade polyanalyst6api
-$ pip uninstall polyanalyst6api
+```shell
+pip install polyanalyst6api
+pip install --upgrade polyanalyst6api
 ```
 
 ## Documentation
 
-See [API Reference](https://megaputer.github.io/polyanalyst6api-python/) for the library methods.
+See [API Reference](https://megaputer.github.io/polyanalyst6api-python/) for the client library methods.
 
-Refer to **PolyAnalyst User Manual** at **Application Programming Interfaces** > **Version 01** for
-REST API specification.
+Refer to **PolyAnalyst User Manual** at **Application Programming Interfaces** > **Version 01** for REST API specification.
 
 ## Usage
 
