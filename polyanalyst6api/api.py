@@ -7,9 +7,10 @@ This module contains functionality for access to PolyAnalyst API.
 import configparser
 import contextlib
 import pathlib
+import time
 import warnings
 from typing import Any, Dict, List, Tuple, Union, Optional
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin, urlparse, parse_qs
 
 import requests
 import urllib3
@@ -188,6 +189,60 @@ class API:
         :param id: the task ID
         """
         self.post('scheduler/run-task', json={'taskId': id})
+
+    def get_project_import_status(self, import_id: str) -> Dict:
+        """Get the status of project import
+
+        :param import_id: the import identifier
+
+        .. versionadded:: 0.24.0
+        """
+        return self.get('project/import/status', params={'importId': import_id})
+
+    def import_project(
+            self,
+            file_path: str,
+            project_space: str = '',
+            on_conflict: str = 'Cancel',
+            wait: bool = False,
+    ) -> Union[str, Dict]:
+        """
+        Import project from file on server file system.
+
+        :param file_path: absolute path to the file on server file system
+        :param project_space: the name of the folder in the project manager
+        where you want to import the project. The default folder is `Root`.
+        :param on_conflict: the strategy to resolve import conflict. Allowed
+        options are: Cancel, Overwrite, ChangeExistingId, ChangeImportingId.
+        By default, the import will be cancelled if the project already exist.
+        :param wait: wait for project import to finish. False by default.
+
+        :return: import identifier if `wait` is False and import status otherwise
+
+        .. versionadded:: 0.24.0
+        """
+        resp, _ = self.request(
+            'project/import',
+            method='post',
+            json={
+                'fileName': file_path,
+                'folderPath': project_space,
+                'conflictResolveMethod': on_conflict,
+            },
+        )
+        location = resp.headers.get('location')
+        qs = parse_qs(urlparse(location).query)
+        import_id = qs['importId'][0]
+
+        if not wait:
+            return import_id
+
+        while True:
+            time.sleep(1)
+            status = self.get_project_import_status(import_id)
+            # status has only empty state key when the server rebooted during the project import: T32492#776729
+            if status.get('progress', 100) == 100:
+                return status
 
     def project(self, uuid: str) -> Project:
         """Returns :class:`Project <Project>` instance with given uuid.
