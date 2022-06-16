@@ -3,14 +3,14 @@
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/Megaputer/polyanalyst6api-python/blob/master/LICENSE)
 [![Code style](https://img.shields.io/badge/code%20style-black-black)](https://github.com/ambv/black)
 
-**_polyanalyst6api-python_ is a simple and easy to use client library for the PolyAnalyst API.**
+**_polyanalyst6api_ is a simple and easy to use client library for the PolyAnalyst API.**
 
 This package provides wrappers for PolyAnalyst `Analytical Client`, `Scheduler` and `Drive`.
 Using it you can execute nodes, view datasets, run tasks, download/upload files and so on.
 
 ## Installation
 
-Python 3.6+ is required. Install and upgrade `polyanalyst6api-python` with these commands:
+Python 3.6+ is required. Install and upgrade `polyanalyst6api` with these commands:
 
 ```shell
 pip install polyanalyst6api
