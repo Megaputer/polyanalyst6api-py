@@ -41,9 +41,10 @@
 <span class="kn">import</span> <span class="nn">configparser</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urljoin</span><span class="p">,</span> <span class="n">urlparse</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urljoin</span><span class="p">,</span> <span class="n">urlparse</span><span class="p">,</span> <span class="n">parse_qs</span>
 
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">urllib3</span>
@@ -126,7 +127,7 @@
         <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">ldap_server</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;1.0&#39;</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="p">):</span>
         <span class="k">if</span> <span class="n">version</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valid_api_versions</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ClientException</span><span class="p">(</span><span class="s1">&#39;Valid api versions are &#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_valid_api_versions</span><span class="p">))</span>
 
@@ -222,6 +223,60 @@
 <span class="sd">        :param id: the task ID</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;scheduler/run-task&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;taskId&#39;</span><span class="p">:</span> <span class="nb">id</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="API.get_project_import_status"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.API.get_project_import_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_project_import_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">import_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get the status of project import</span>
+
+<span class="sd">        :param import_id: the import identifier</span>
+
+<span class="sd">        .. versionadded:: 0.24.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;project/import/status&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;importId&#39;</span><span class="p">:</span> <span class="n">import_id</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="API.import_project"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.API.import_project">[docs]</a>    <span class="k">def</span> <span class="nf">import_project</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">project_space</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">on_conflict</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Cancel&#39;</span><span class="p">,</span>
+            <span class="n">wait</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Import project from file on server file system.</span>
+
+<span class="sd">        :param file_path: absolute path to the file on server file system</span>
+<span class="sd">        :param project_space: the name of the folder in the project manager</span>
+<span class="sd">            where you want to import the project. The default folder is `Root`.</span>
+<span class="sd">        :param on_conflict: the strategy to resolve import conflict. Allowed</span>
+<span class="sd">            options are: Cancel, Overwrite, ChangeExistingId, ChangeImportingId.</span>
+<span class="sd">            By default, the import will be cancelled if the project already exist.</span>
+<span class="sd">        :param wait: wait for project import to finish. False by default.</span>
+
+<span class="sd">        :return: import identifier if `wait` is False and import status otherwise</span>
+
+<span class="sd">        .. versionadded:: 0.24.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">resp</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="s1">&#39;project/import&#39;</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="p">,</span>
+            <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;fileName&#39;</span><span class="p">:</span> <span class="n">file_path</span><span class="p">,</span>
+                <span class="s1">&#39;folderPath&#39;</span><span class="p">:</span> <span class="n">project_space</span><span class="p">,</span>
+                <span class="s1">&#39;conflictResolveMethod&#39;</span><span class="p">:</span> <span class="n">on_conflict</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
+        <span class="n">qs</span> <span class="o">=</span> <span class="n">parse_qs</span><span class="p">(</span><span class="n">urlparse</span><span class="p">(</span><span class="n">location</span><span class="p">)</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
+        <span class="n">import_id</span> <span class="o">=</span> <span class="n">qs</span><span class="p">[</span><span class="s1">&#39;importId&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">wait</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">import_id</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_project_import_status</span><span class="p">(</span><span class="n">import_id</span><span class="p">)</span>
+            <span class="c1"># status has only empty state key when the server rebooted during the project import: T32492#776729</span>
+            <span class="k">if</span> <span class="n">status</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;progress&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="o">==</span> <span class="mi">100</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">status</span></div>
 
 <div class="viewcode-block" id="API.project"><a class="viewcode-back" href="../../index.html#polyanalyst6api.api.API.project">[docs]</a>    <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Project</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns :class:`Project &lt;Project&gt;` instance with given uuid.</span>
@@ -319,7 +374,7 @@
       &copy;2018, yatmanov.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

@@ -33,7 +33,7 @@
             
   <div class="section" id="api-reference">
 <h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
-<p>This page contains specific information on the polyanalyst6api REST API client’s classes and methods.</p>
+<p>This page contains specific information on the polyanalyst6api package classes and methods.</p>
 <dl class="class">
 <dt id="polyanalyst6api.api.API">
 <em class="property">class </em><code class="descclassname">polyanalyst6api.api.</code><code class="descname">API</code><span class="sig-paren">(</span><em>url=None</em>, <em>username=None</em>, <em>password=None</em>, <em>ldap_server=None</em>, <em>version='1.0'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API" title="Permalink to this definition">¶</a></dt>
@@ -96,7 +96,32 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[~T]]]]</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>]]]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="polyanalyst6api.api.API.get_project_import_status">
+<code class="descname">get_project_import_status</code><span class="sig-paren">(</span><em>import_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.get_project_import_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.get_project_import_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the status of project import</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>import_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the import identifier</td>
+</tr>
+</tbody>
+</table>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 0.24.0.</span></p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -128,6 +153,38 @@
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="polyanalyst6api.api.API.import_project">
+<code class="descname">import_project</code><span class="sig-paren">(</span><em>file_path</em>, <em>project_space=''</em>, <em>on_conflict='Cancel'</em>, <em>wait=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.import_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.import_project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import project from file on server file system.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>file_path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – absolute path to the file on server file system</li>
+<li><strong>project_space</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the name of the folder in the project manager
+where you want to import the project. The default folder is <cite>Root</cite>.</li>
+<li><strong>on_conflict</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the strategy to resolve import conflict. Allowed
+options are: Cancel, Overwrite, ChangeExistingId, ChangeImportingId.
+By default, the import will be cancelled if the project already exist.</li>
+<li><strong>wait</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – wait for project import to finish. False by default.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>]</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">import identifier if <cite>wait</cite> is False and import status otherwise</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 0.24.0.</span></p>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -867,8 +924,29 @@ node has completed.</p>
 
 <dl class="method">
 <dt id="polyanalyst6api.project.DataSet.preview">
-<code class="descname">preview</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#DataSet.preview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.DataSet.preview" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns first 1000 rows with strings truncated to 250 characters.</p>
+<code class="descname">preview</code><span class="sig-paren">(</span><em>precision=6</em>, <em>include_blank_cells=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#DataSet.preview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.DataSet.preview" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get dataset preview.</p>
+<p>Contains the first 1000 rows, string/text are cut off after 250 symbols.
+By default, numbers are rounded to 6 significant digits and blank cells are omitted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>precision</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – (optional) number of significant digits. 6 by default.</li>
+<li><strong>include_blank_cells</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – (optional) include blank cells in dataset. False by default.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">APIException if non-default parameters are used with the old version of server,
+which doesn’t support them. In this case retry the method with default parameters.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 0.24.0: </span>The <em>precision</em> and <em>include_blank_cells</em> parameters.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -987,7 +1065,7 @@ If <cite>node_types</cite> is empty it clears parameters and strategies of all n
       &copy;2018, yatmanov.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
