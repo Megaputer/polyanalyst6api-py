@@ -1,4 +1,5 @@
 [![PyPI package](https://img.shields.io/pypi/v/polyanalyst6api.svg?)](https://pypi.org/project/polyanalyst6api)
+[![Downloads](https://pepy.tech/badge/polyanalyst6api)](https://pepy.tech/project/polyanalyst6api)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/polyanalyst6api.svg?)](https://pypi.org/project/polyanalyst6api/)
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/Megaputer/polyanalyst6api-py/blob/master/LICENSE)
 [![Code style](https://img.shields.io/badge/code%20style-black-black)](https://github.com/ambv/black)
