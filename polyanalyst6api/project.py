@@ -191,7 +191,7 @@ class Project:
 
         :param force_unload: Delete project regardless other users
 
-        By default the project will be deleted only if it's not loaded to memory.
+        By default, the project will be deleted only if it's not loaded to memory.
         To delete the project that loaded to memory (there are users working on
         this project right now) set ``force_unload`` to ``True``.
         This operation available only for project owner and administrators, and
