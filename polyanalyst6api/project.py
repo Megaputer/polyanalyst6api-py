@@ -49,12 +49,26 @@ class Project:
             headers={'sid': self.api.sid} if self.api.sid else None,
         )['nodes']
 
-    def get_execution_stats(self) -> List[Node]:
+    def get_execution_stats(self, skip_hidden: Optional[bool] = None) -> List[Node]:
         """Returns nodes execution statistics.
 
+        :param skip_hidden: Return statistics only of nodes in the project (i.e.
+            exclude publication and compound nodes).
+
         .. versionadded:: 0.15.0
+        .. versionchanged:: 0.25.0
+           Added `skip_hidden` optional parameter.
         """
-        return self.api.get('project/execution-statistics', params={'prjUUID': self.uuid})['nodes']
+        params = {'prjUUID': self.uuid}
+        if skip_hidden is not None:
+            params['skipHiddenNodes'] = 'true' if skip_hidden else 'false'
+        try:
+            return self.api.get('project/execution-statistics', params=params)['nodes']
+        except APIException as exc:
+            if 'redundant parameter in query' in str(exc):
+                raise APIException(
+                    "Current PolyAnalyst server doesn't support `skip_hidden` parameter, try again without it."
+                )
 
     def get_tasks(self) -> List[Dict[str, Any]]:
         """Returns task list info."""

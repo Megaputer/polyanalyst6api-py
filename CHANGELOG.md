@@ -1,3 +1,12 @@
+0.25.0 (2022-11-15)
+===================
+
+Features
+--------
+
+- Added optional `skip_hidden` parameter to `project.get_execution_stats` method. (T35030)
+
+
 0.24.0 (2022-06-16)
 ===================
 
