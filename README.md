@@ -1,7 +1,7 @@
-[![PyPI package](https://img.shields.io/pypi/v/polyanalyst6api.svg?)](https://pypi.org/project/polyanalyst6api)
-[![Downloads](https://pepy.tech/badge/polyanalyst6api)](https://pepy.tech/project/polyanalyst6api)
-[![Supported Python versions](https://img.shields.io/pypi/pyversions/polyanalyst6api.svg?)](https://pypi.org/project/polyanalyst6api/)
-[![MIT License](https://img.shields.io/badge/license-MIT-green)](https://github.com/Megaputer/polyanalyst6api-py/blob/master/LICENSE)
+[![PyPI package](https://img.shields.io/pypi/v/polyanalyst6api)](https://pypi.org/project/polyanalyst6api)
+[![Downloads](https://img.shields.io/pypi/dm/polyanalyst6api)](https://pepy.tech/project/polyanalyst6api)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/polyanalyst6api)](https://pypi.org/project/polyanalyst6api/)
+[![MIT License](https://img.shields.io/github/license/megaputer/polyanalyst6api-py)](https://github.com/Megaputer/polyanalyst6api-py/blob/master/LICENSE)
 
 **_polyanalyst6api_ is a simple and easy to use client library for the PolyAnalyst API.**
 
