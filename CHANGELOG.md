@@ -1,3 +1,11 @@
+0.25.1 (2023-04-19)
+===================
+
+Bugfixes
+--------
+
+- Fixed iter_rows missing `columnsInfo` key in newer versions of PolyAnalyst
+
 0.25.0 (2022-11-15)
 ===================
 
