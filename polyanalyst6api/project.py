@@ -532,7 +532,8 @@ class DataSet:
                     raise StopIteration
 
                 result = {}
-                for column in info['columnsInfo']:
+                columns = info.get('columnsInfo') or info['columns']
+                for column in columns:
                     if column['flags'].get('getTextAlways'):
                         result[column['title']] = get_text(self.idx, column['id'])
                     # elif column['type'] == 'DateTime':  # todo convert to python datetime?
