@@ -18,7 +18,7 @@ import urllib3
 from . import __version__
 from .drive import Drive
 from .project import Parameters, Project
-from .exceptions import APIException, ClientException, _WrapperNotFound
+from .exceptions import APIException, ClientException, _WrapperNotFound, PABusy
 
 __all__ = ['API']
 
@@ -293,6 +293,9 @@ class API:
             json = response.json()
         except ValueError:
             json = None
+
+        if response.status_code == 503:
+            raise PABusy('PolyAnalyst server is busy')
 
         if response.status_code in (200, 202):
             return response, json

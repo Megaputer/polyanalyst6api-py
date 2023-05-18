@@ -29,6 +29,10 @@ class APIException(PAException):
         return f'{self.message} ({self.status_code}, {self.endpoint})'
 
 
+class PABusy(APIException):
+    pass
+
+
 class ClientException(PAException):
     """Indicate errors that don't involve interaction with PolyAnalyst's API."""
 
