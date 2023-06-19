@@ -13,7 +13,6 @@ from typing import Any, Dict, List, Tuple, Union, Optional
 from urllib.parse import urljoin, urlparse, parse_qs
 
 import requests
-from requests.adapters import Retry, HTTPAdapter
 import urllib3
 
 from . import __version__
@@ -61,8 +60,6 @@ class API:
     :param password: (optional) The password for specified username
     :param ldap_server: (optional) LDAP Server address
     :param version: (optional) Choose which PolyAnalyst API version to use. Default: ``1.0``
-    :param pabusy_retries: (optional) Maximum number of retries when encountered PABusy error. \
-        Set 0 to disable. Default is 10
 
     If ldap_server is provided, then login will be performed via LDAP Server.
 
@@ -96,7 +93,6 @@ class API:
         password: Optional[str] = None,
         ldap_server: Optional[str] = None,
         version: str = '1.0',
-        pabusy_retries: int = 10,
     ):
         if version not in self._valid_api_versions:
             raise ClientException('Valid api versions are ' + ', '.join(self._valid_api_versions))
@@ -129,18 +125,6 @@ class API:
 
         self._s = requests.Session()
         self._s.headers.update({'User-Agent': self.user_agent})
-
-        retry = Retry(
-            total=pabusy_retries,
-            backoff_factor=0.1,
-            allowed_methods=["HEAD", "GET", "PUT", "DELETE", "OPTIONS", "POST"],
-            status_forcelist=[503],
-            raise_on_status=False,
-        )
-        adapter = HTTPAdapter(max_retries=retry)
-        self._s.mount('http://', adapter)
-        self._s.mount('https://', adapter)
-
         self.sid = None  # session identity
         # path to certificate file. by default ignore insecure connection warnings
         self.certfile = False
