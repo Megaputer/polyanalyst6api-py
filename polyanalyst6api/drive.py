@@ -38,7 +38,7 @@ class Drive:
         :param recursive: (optional) upload subdirectories recursively
 
         :raises: TypeError if ``source`` is not string or path-like object.\
-            ValueError if ``source`` does not exists
+            ValueError if ``source`` does not exist
         """
         if not isinstance(source, (str, os.PathLike)):
             raise TypeError('The source parameter should be either string or path-like object.')

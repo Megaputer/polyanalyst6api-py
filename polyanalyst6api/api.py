@@ -56,7 +56,7 @@ class API:
 
     :param url: (optional) The scheme, host and port(if exists) of a PolyAnalyst server \
         (e.g. ``https://localhost:5043/``, ``http://example.polyanalyst.com``)
-    :param username: (optional) The username to login with
+    :param username: (optional) The username to log in with
     :param password: (optional) The password for specified username
     :param ldap_server: (optional) LDAP Server address
     :param version: (optional) Choose which PolyAnalyst API version to use. Default: ``1.0``
