@@ -1,3 +1,24 @@
+0.26.2 (2023-07-03)
+===================
+
+Features
+--------
+
+- Added request retries to `project.unload` method to mitigate PABusy error
+
+Bugfixes
+--------
+
+- Fixed typos and other minor errors
+
+0.26.0 (2023-05-18)
+===================
+
+Features
+--------
+
+- Added PABusy exception that is raised on HTTP 503 status code
+
 0.25.1 (2023-04-19)
 ===================
 
