@@ -30,7 +30,11 @@ class APIException(PAException):
 
 
 class PABusy(APIException):
-    pass
+    def __init__(self):
+        super().__init__('')
+
+    def __str__(self):
+        return 'PolyAnalyst server is busy'
 
 
 class ClientException(PAException):

@@ -295,7 +295,7 @@ class API:
             json = None
 
         if response.status_code == 503:
-            raise PABusy('PolyAnalyst server is busy')
+            raise PABusy
 
         if response.status_code in (200, 202):
             return response, json
