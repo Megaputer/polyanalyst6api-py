@@ -36,18 +36,18 @@
 <span class="sd">polyanalyst6api.exceptions</span>
 <span class="sd">~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
-<span class="sd">This module contains polyanlyst6api specific Exception classes.</span>
+<span class="sd">This module contains polyanalyst6api specific Exception classes.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PAException&#39;</span><span class="p">,</span> <span class="s1">&#39;ClientException&#39;</span><span class="p">,</span> <span class="s1">&#39;APIException&#39;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="PAException"><a class="viewcode-back" href="../../index.html#polyanalyst6api.PAException">[docs]</a><span class="k">class</span> <span class="nc">PAException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generic error class, catch-all for most polyanalyst6api issues.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic error class, catch-all for most polyanalyst6api issues.&quot;&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="APIException"><a class="viewcode-back" href="../../index.html#polyanalyst6api.APIException">[docs]</a><span class="k">class</span> <span class="nc">APIException</span><span class="p">(</span><span class="n">PAException</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Indicate errors that involve responses from PolyAnalyst&#39;s API.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Indicate errors that involve responses from PolyAnalyst&#39;s API.</span>
 
 <span class="sd">    :param msg: The exception message</span>
 <span class="sd">    :param endpoint: The resource endpoint</span>
@@ -63,8 +63,16 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="si">}</span><span class="s1">)&#39;</span></div>
 
 
+<span class="k">class</span> <span class="nc">PABusy</span><span class="p">(</span><span class="n">APIException</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;PolyAnalyst server is busy&#39;</span>
+
+
 <div class="viewcode-block" id="ClientException"><a class="viewcode-back" href="../../index.html#polyanalyst6api.ClientException">[docs]</a><span class="k">class</span> <span class="nc">ClientException</span><span class="p">(</span><span class="n">PAException</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Indicate errors that don&#39;t involve interaction with PolyAnalyst&#39;s API.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Indicate errors that don&#39;t involve interaction with PolyAnalyst&#39;s API.&quot;&quot;&quot;</span></div>
 
 
 <span class="k">class</span> <span class="nc">_WrapperNotFound</span><span class="p">(</span><span class="n">PAException</span><span class="p">):</span>
@@ -81,7 +89,7 @@
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
     </div>
 

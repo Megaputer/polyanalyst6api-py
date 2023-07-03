@@ -44,7 +44,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>url</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – (optional) The scheme, host and port(if exists) of a PolyAnalyst server         (e.g. <code class="docutils literal notranslate"><span class="pre">https://localhost:5043/</span></code>, <code class="docutils literal notranslate"><span class="pre">http://example.polyanalyst.com</span></code>)</li>
-<li><strong>username</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – (optional) The username to login with</li>
+<li><strong>username</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – (optional) The username to log in with</li>
 <li><strong>password</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – (optional) The password for specified username</li>
 <li><strong>ldap_server</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – (optional) LDAP Server address</li>
 <li><strong>version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (optional) Choose which PolyAnalyst API version to use. Default: <code class="docutils literal notranslate"><span class="pre">1.0</span></code></li>
@@ -415,7 +415,7 @@ uploading inner files and folders.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first">TypeError if <code class="docutils literal notranslate"><span class="pre">source</span></code> is not string or path-like object.            ValueError if <code class="docutils literal notranslate"><span class="pre">source</span></code> does not exists</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first">TypeError if <code class="docutils literal notranslate"><span class="pre">source</span></code> is not string or path-like object.            ValueError if <code class="docutils literal notranslate"><span class="pre">source</span></code> does not exist</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
@@ -531,7 +531,7 @@ uploading inner files and folders.</p>
 </tr>
 </tbody>
 </table>
-<p>By default the project will be deleted only if it’s not loaded to memory.
+<p>By default, the project will be deleted only if it’s not loaded to memory.
 To delete the project that loaded to memory (there are users working on
 this project right now) set <code class="docutils literal notranslate"><span class="pre">force_unload</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.
 This operation available only for project owner and administrators, and
@@ -616,10 +616,22 @@ and the project statistics.</p>
 
 <dl class="method">
 <dt id="polyanalyst6api.project.Project.get_execution_stats">
-<code class="descname">get_execution_stats</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.get_execution_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.get_execution_stats" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_execution_stats</code><span class="sig-paren">(</span><em>skip_hidden=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.get_execution_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.get_execution_stats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns nodes execution statistics.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>skip_hidden</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]) – Return statistics only of nodes in the project (i.e.
+exclude publication and compound nodes).</td>
+</tr>
+</tbody>
+</table>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 0.15.0.</span></p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 0.25.0: </span>Added <cite>skip_hidden</cite> optional parameter.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -803,11 +815,18 @@ cutoff after 250 symbols.</p>
 <dl class="method">
 <dt id="polyanalyst6api.project.Project.unload">
 <code class="descname">unload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.unload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.unload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Unload the project from the memory and free system resources.</p>
+<dd><p>Unload the project from the memory.</p>
+<p>From version <cite>0.26.2</cite> this function ensures that the project is unloaded despite PABusy error
+by repeating requests (maximum 10) until PA either returns an ok response or
+returns an error ‘the project has not been opened’, which means project is also unloaded.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">PABusy if PABusy returned for all 10 request attempts</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">APIException if the project has been unloaded before this function was called</td>
+</tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
 </tr>
 </tbody>
@@ -1043,8 +1062,8 @@ If <cite>node_types</cite> is empty it clears parameters and strategies of all n
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>msg</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The exception message</li>
-<li><strong>endpoint</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – The resource endpoint</li>
-<li><strong>status_code</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – The http status code</li>
+<li><strong>endpoint</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The resource endpoint</li>
+<li><strong>status_code</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – The http status code</li>
 </ul>
 </td>
 </tr>
@@ -1066,7 +1085,7 @@ If <cite>node_types</cite> is empty it clears parameters and strategies of all n
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |
       <a href="_sources/index.rst.txt"
