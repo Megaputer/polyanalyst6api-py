@@ -12,7 +12,7 @@ import warnings
 from urllib.parse import urlparse, parse_qs
 from typing import Any, Dict, List, Union, Optional, Tuple, Iterator
 
-from .exceptions import APIException, _WrapperNotFound
+from .exceptions import APIException, _WrapperNotFound, PABusy
 
 __all__ = ['Project', 'Parameters', 'DataSet']
 
@@ -175,8 +175,30 @@ class Project:
         return Parameters(self, self._find_node(name)['id'])
 
     def unload(self) -> None:
-        """Unload the project from the memory and free system resources."""
-        self.api.post('project/unload', json={'prjUUID': self.uuid})
+        """
+        Unload the project from the memory.
+
+        From version `0.26.2` this function ensures that the project is unloaded despite PABusy error
+        by repeating requests (maximum 10) until PA either returns an ok response or
+        returns an error 'the project has not been opened', which means project is also unloaded.
+
+        :raises: PABusy if PABusy returned for all 10 request attempts
+        :raises: APIException if the project has been unloaded before this function was called
+        """
+        for n in range(10):
+            try:
+                self.api.post('project/unload', json={'prjUUID': self.uuid})
+                break
+            except PABusy:
+                time.sleep(0.1 * (2 ** (n - 1)))  # urllib's backoff formula
+            except APIException as e:
+                if 'has not been opened by user administrator' in str(e) and n != 0:
+                    warnings.warn(str(e))
+                    break
+                else:
+                    raise
+        else:
+            raise PABusy
 
     def repair(self) -> None:
         """Initiate the project repairing operation."""
