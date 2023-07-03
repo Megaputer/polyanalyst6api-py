@@ -43,11 +43,7 @@ class Project:
 
         .. versionadded:: 0.15.0
         """
-        return self.api.get(
-            'project/nodes',
-            params={'prjUUID': self.uuid},
-            headers={'sid': self.api.sid} if self.api.sid else None,
-        )['nodes']
+        return self.api.get('project/nodes', params={'prjUUID': self.uuid})['nodes']
 
     def get_execution_stats(self, skip_hidden: Optional[bool] = None) -> List[Node]:
         """Returns nodes execution statistics.
