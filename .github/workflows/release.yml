@@ -35,7 +35,7 @@ jobs:
         with:
           python-version: ${{ env.PY_VER }}
       - run: |
-          pip install poetry
+          pip install poetry==1.3.2
           poetry install
           poetry run make -C docs html
       - uses: s0/git-publish-subdir-action@develop
@@ -59,7 +59,7 @@ jobs:
         with:
           python-version: ${{ env.PY_VER }}
       - run: |
-          pip install poetry
+          pip install poetry==1.3.2
           poetry install
           poetry run towncrier build --yes --version=${{ github.ref_name }}
           user=$(gh api /user)
