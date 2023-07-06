@@ -1,19 +1,20 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>API Reference &#8212; polyanalyst6api 0.22.0 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
@@ -31,28 +32,24 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="api-reference">
-<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading">¶</a></h1>
 <p>This page contains specific information on the polyanalyst6api package classes and methods.</p>
-<dl class="class">
-<dt id="polyanalyst6api.api.API">
-<em class="property">class </em><code class="descclassname">polyanalyst6api.api.</code><code class="descname">API</code><span class="sig-paren">(</span><em>url=None</em>, <em>username=None</em>, <em>password=None</em>, <em>ldap_server=None</em>, <em>version='1.0'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="polyanalyst6api.api.API">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polyanalyst6api.api.</span></span><span class="sig-name descname"><span class="pre">API</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ldap_server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1.0'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.api.API" title="Permalink to this definition">¶</a></dt>
 <dd><p>PolyAnalyst API</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>url</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – (optional) The scheme, host and port(if exists) of a PolyAnalyst server         (e.g. <code class="docutils literal notranslate"><span class="pre">https://localhost:5043/</span></code>, <code class="docutils literal notranslate"><span class="pre">http://example.polyanalyst.com</span></code>)</li>
-<li><strong>username</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – (optional) The username to log in with</li>
-<li><strong>password</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – (optional) The password for specified username</li>
-<li><strong>ldap_server</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – (optional) LDAP Server address</li>
-<li><strong>version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (optional) Choose which PolyAnalyst API version to use. Default: <code class="docutils literal notranslate"><span class="pre">1.0</span></code></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – (optional) The scheme, host and port(if exists) of a PolyAnalyst server         (e.g. <code class="docutils literal notranslate"><span class="pre">https://localhost:5043/</span></code>, <code class="docutils literal notranslate"><span class="pre">http://example.polyanalyst.com</span></code>)</p></li>
+<li><p><strong>username</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – (optional) The username to log in with</p></li>
+<li><p><strong>password</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – (optional) The password for specified username</p></li>
+<li><p><strong>ldap_server</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – (optional) LDAP Server address</p></li>
+<li><p><strong>version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (optional) Choose which PolyAnalyst API version to use. Default: <code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p>If ldap_server is provided, then login will be performed via LDAP Server.</p>
 <p>Usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">API</span><span class="p">(</span><span class="n">POLYANALYST_URL</span><span class="p">,</span> <span class="n">YOUR_USERNAME</span><span class="p">,</span> <span class="n">YOUR_PASSWORD</span><span class="p">)</span> <span class="k">as</span> <span class="n">api</span><span class="p">:</span>
@@ -60,325 +57,267 @@
 </pre></div>
 </div>
 <p>or if you’re using configuration file (New in version 0.23.0):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">API</span><span class="p">()</span> <span class="k">as</span> <span class="n">api</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">API</span><span class="p">()</span> <span class="k">as</span> <span class="n">api</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">get_server_info</span><span class="p">())</span>
 </pre></div>
 </div>
-<dl class="method">
-<dt id="polyanalyst6api.api.API.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>endpoint</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.get" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.api.API.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.api.API.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut for GET requests via <a class="reference internal" href="#polyanalyst6api.api.API.request" title="polyanalyst6api.api.API.request"><code class="xref py py-meth docutils literal notranslate"><span class="pre">request</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>endpoint</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – PolyAnalyst API endpoint</li>
-<li><strong>kwargs</strong> – <code class="xref py py-func docutils literal notranslate"><span class="pre">requests.request()</span></code> keyword arguments</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endpoint</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – PolyAnalyst API endpoint</p></li>
+<li><p><strong>kwargs</strong> – <code class="xref py py-func docutils literal notranslate"><span class="pre">requests.request()</span></code> keyword arguments</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.api.API.get_parameters">
-<code class="descname">get_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.get_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.get_parameters" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.api.API.get_parameters">
+<span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.get_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.api.API.get_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns list of nodes with parameters supported by <code class="docutils literal notranslate"><span class="pre">Parameters</span></code> node.</p>
 <div class="deprecated">
-<p><span class="versionmodified">Deprecated since version 0.18.0: </span>Use <code class="xref py py-meth docutils literal notranslate"><span class="pre">Parameters.get()</span></code> instead.</p>
+<p><span class="versionmodified deprecated">Deprecated since version 0.18.0: </span>Use <code class="xref py py-meth docutils literal notranslate"><span class="pre">Parameters.get()</span></code> instead.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>]]]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>]]]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.api.API.get_project_import_status">
-<code class="descname">get_project_import_status</code><span class="sig-paren">(</span><em>import_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.get_project_import_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.get_project_import_status" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.api.API.get_project_import_status">
+<span class="sig-name descname"><span class="pre">get_project_import_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">import_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.get_project_import_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.api.API.get_project_import_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the status of project import</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>import_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the import identifier</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>import_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the import identifier</p>
+</dd>
+</dl>
 <div class="versionadded">
-<p><span class="versionmodified">New in version 0.24.0.</span></p>
+<p><span class="versionmodified added">New in version 0.24.0.</span></p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.api.API.get_server_info">
-<code class="descname">get_server_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.get_server_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.get_server_info" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.api.API.get_server_info">
+<span class="sig-name descname"><span class="pre">get_server_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.get_server_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.api.API.get_server_info" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns general server information including build number, version and commit hashes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]]]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]], <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.api.API.get_versions">
-<code class="descname">get_versions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.get_versions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.get_versions" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.api.API.get_versions">
+<span class="sig-name descname"><span class="pre">get_versions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.get_versions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.api.API.get_versions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns api versions supported by PolyAnalyst server.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.api.API.import_project">
-<code class="descname">import_project</code><span class="sig-paren">(</span><em>file_path</em>, <em>project_space=''</em>, <em>on_conflict='Cancel'</em>, <em>wait=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.import_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.import_project" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.api.API.import_project">
+<span class="sig-name descname"><span class="pre">import_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_space</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_conflict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Cancel'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.import_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.api.API.import_project" title="Permalink to this definition">¶</a></dt>
 <dd><p>Import project from file on server file system.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>file_path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – absolute path to the file on server file system</li>
-<li><strong>project_space</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the name of the folder in the project manager
-where you want to import the project. The default folder is <cite>Root</cite>.</li>
-<li><strong>on_conflict</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the strategy to resolve import conflict. Allowed
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – absolute path to the file on server file system</p></li>
+<li><p><strong>project_space</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the name of the folder in the project manager
+where you want to import the project. The default folder is <cite>Root</cite>.</p></li>
+<li><p><strong>on_conflict</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the strategy to resolve import conflict. Allowed
 options are: Cancel, Overwrite, ChangeExistingId, ChangeImportingId.
-By default, the import will be cancelled if the project already exist.</li>
-<li><strong>wait</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – wait for project import to finish. False by default.</li>
+By default, the import will be cancelled if the project already exist.</p></li>
+<li><p><strong>wait</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – wait for project import to finish. False by default.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>]</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">import identifier if <cite>wait</cite> is False and import status otherwise</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>import identifier if <cite>wait</cite> is False and import status otherwise</p>
+</dd>
+</dl>
 <div class="versionadded">
-<p><span class="versionmodified">New in version 0.24.0.</span></p>
+<p><span class="versionmodified added">New in version 0.24.0.</span></p>
 </div>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.api.API.login">
-<code class="descname">login</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.login" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.api.API.login">
+<span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.login"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.api.API.login" title="Permalink to this definition">¶</a></dt>
 <dd><p>Logs in to PolyAnalyst Server with user credentials.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.api.API.logout">
-<code class="descname">logout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.logout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.logout" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.api.API.logout">
+<span class="sig-name descname"><span class="pre">logout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.logout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.api.API.logout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Logs out current user from PolyAnalyst server.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.api.API.post">
-<code class="descname">post</code><span class="sig-paren">(</span><em>endpoint</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.post" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.api.API.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.api.API.post" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut for POST requests via <a class="reference internal" href="#polyanalyst6api.api.API.request" title="polyanalyst6api.api.API.request"><code class="xref py py-meth docutils literal notranslate"><span class="pre">request</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>endpoint</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – PolyAnalyst API endpoint</li>
-<li><strong>kwargs</strong> – <code class="xref py py-func docutils literal notranslate"><span class="pre">requests.request()</span></code> keyword arguments</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endpoint</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – PolyAnalyst API endpoint</p></li>
+<li><p><strong>kwargs</strong> – <code class="xref py py-func docutils literal notranslate"><span class="pre">requests.request()</span></code> keyword arguments</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.api.API.project">
-<code class="descname">project</code><span class="sig-paren">(</span><em>uuid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.project" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.api.API.project">
+<span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.api.API.project" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns <code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code> instance with given uuid.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uuid</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The project uuid</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#polyanalyst6api.project.Project" title="polyanalyst6api.project.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uuid</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The project uuid</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#polyanalyst6api.project.Project" title="polyanalyst6api.project.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.api.API.request">
-<code class="descname">request</code><span class="sig-paren">(</span><em>url</em>, <em>method</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.request" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.api.API.request">
+<span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.api.API.request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends <code class="docutils literal notranslate"><span class="pre">method</span></code> request to <code class="docutils literal notranslate"><span class="pre">endpoint</span></code> and returns tuple of
 <code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Response</span></code> and json-encoded content of a response.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – url or PolyAnalyst API endpoint</li>
-<li><strong>method</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – request method (e.g. GET, POST)</li>
-<li><strong>kwargs</strong> – <code class="xref py py-func docutils literal notranslate"><span class="pre">requests.request()</span></code> keyword arguments</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – url or PolyAnalyst API endpoint</p></li>
+<li><p><strong>method</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – request method (e.g. GET, POST)</p></li>
+<li><p><strong>kwargs</strong> – <code class="xref py py-func docutils literal notranslate"><span class="pre">requests.request()</span></code> keyword arguments</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.api.API.run_task">
-<code class="descname">run_task</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.run_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.api.API.run_task" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.api.API.run_task">
+<span class="sig-name descname"><span class="pre">run_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/api.html#API.run_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.api.API.run_task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initiates scheduler task execution.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – the task ID</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – the task ID</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="class">
-<dt id="polyanalyst6api.drive.Drive">
-<em class="property">class </em><code class="descclassname">polyanalyst6api.drive.</code><code class="descname">Drive</code><span class="sig-paren">(</span><em>api</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/drive.html#Drive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.drive.Drive" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="polyanalyst6api.drive.Drive.create_folder">
-<code class="descname">create_folder</code><span class="sig-paren">(</span><em>name</em>, <em>path=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/drive.html#Drive.create_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.drive.Drive.create_folder" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="polyanalyst6api.drive.Drive">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polyanalyst6api.drive.</span></span><span class="sig-name descname"><span class="pre">Drive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/drive.html#Drive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.drive.Drive" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.drive.Drive.create_folder">
+<span class="sig-name descname"><span class="pre">create_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/drive.html#Drive.create_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.drive.Drive.create_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new folder inside the PolyAnalyst’s user directory.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the folder name</li>
-<li><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a relative path of the folder’s parent directory</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the folder name</p></li>
+<li><p><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a relative path of the folder’s parent directory</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.drive.Drive.delete_file">
-<code class="descname">delete_file</code><span class="sig-paren">(</span><em>name</em>, <em>path=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/drive.html#Drive.delete_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.drive.Drive.delete_file" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.drive.Drive.delete_file">
+<span class="sig-name descname"><span class="pre">delete_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/drive.html#Drive.delete_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.drive.Drive.delete_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete the file in the PolyAnalyst’s user directory.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the filename</li>
-<li><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a relative path of the file’s parent directory</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the filename</p></li>
+<li><p><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a relative path of the file’s parent directory</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.drive.Drive.delete_folder">
-<code class="descname">delete_folder</code><span class="sig-paren">(</span><em>name</em>, <em>path=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/drive.html#Drive.delete_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.drive.Drive.delete_folder" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.drive.Drive.delete_folder">
+<span class="sig-name descname"><span class="pre">delete_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/drive.html#Drive.delete_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.drive.Drive.delete_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete the folder in the PolyAnalyst’s user directory.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the folder name</li>
-<li><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a relative path of the folder’s parent directory</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the folder name</p></li>
+<li><p><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a relative path of the folder’s parent directory</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.drive.Drive.download_file">
-<code class="descname">download_file</code><span class="sig-paren">(</span><em>name</em>, <em>path=''</em>, <em>dest=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/drive.html#Drive.download_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.drive.Drive.download_file" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.drive.Drive.download_file">
+<span class="sig-name descname"><span class="pre">download_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/drive.html#Drive.download_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.drive.Drive.download_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download the binary content of the file to memory or stream to local file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the filename</li>
-<li><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a relative path of the file’s parent directory</li>
-<li><strong>dest</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Io</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">AnyStr</span></code>]]) – the file or file-like object to write drive’s file content</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the filename</p></li>
+<li><p><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a relative path of the file’s parent directory</p></li>
+<li><p><strong>dest</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">IO</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – the file or file-like object to write drive’s file content</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="docutils">
-<dt>Usage::</dt>
-<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file_content</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">drive</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;cars.csv&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/data&#39;</span><span class="p">)</span>
+</dd>
+</dl>
+<dl>
+<dt>Usage::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file_content</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">drive</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;cars.csv&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/data&#39;</span><span class="p">)</span>
 <span class="go"># The method call above downloads the whole file body into memory. If you&#39;re</span>
 <span class="go"># planning on downloading big file (more than 100 megabyte sized file),</span>
 <span class="go"># consider using the streaming download shown below.</span>
@@ -388,192 +327,157 @@ By default, the import will be cancelled if the project already exist.</li>
 </div>
 </dd>
 </dl>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.drive.Drive.upload">
-<code class="descname">upload</code><span class="sig-paren">(</span><em>source</em>, <em>dest=''</em>, <em>recursive=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/drive.html#Drive.upload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.drive.Drive.upload" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.drive.Drive.upload">
+<span class="sig-name descname"><span class="pre">upload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/drive.html#Drive.upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.drive.Drive.upload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upload file or folder to PolyAnalyst server.</p>
 <p>Pass <code class="docutils literal notranslate"><span class="pre">recursive</span></code> as False to just create folder on the server without
 uploading inner files and folders.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>source</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PathLike</span></code>]) – path to the local file or folder</li>
-<li><strong>dest</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (optional) path to the folder in the PolyAnalyst’s user directory</li>
-<li><strong>recursive</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – (optional) upload subdirectories recursively</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PathLike</span></code>]) – path to the local file or folder</p></li>
+<li><p><strong>dest</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (optional) path to the folder in the PolyAnalyst’s user directory</p></li>
+<li><p><strong>recursive</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – (optional) upload subdirectories recursively</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first">TypeError if <code class="docutils literal notranslate"><span class="pre">source</span></code> is not string or path-like object.            ValueError if <code class="docutils literal notranslate"><span class="pre">source</span></code> does not exist</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>TypeError if <code class="docutils literal notranslate"><span class="pre">source</span></code> is not string or path-like object.            ValueError if <code class="docutils literal notranslate"><span class="pre">source</span></code> does not exist</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.drive.Drive.upload_file">
-<code class="descname">upload_file</code><span class="sig-paren">(</span><em>file</em>, <em>name=None</em>, <em>path=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/drive.html#Drive.upload_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.drive.Drive.upload_file" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.drive.Drive.upload_file">
+<span class="sig-name descname"><span class="pre">upload_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/drive.html#Drive.upload_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.drive.Drive.upload_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upload the file to the PolyAnalyst’s user directory.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Make sure to create a new file or file-like object for every
+<p class="admonition-title">Warning</p>
+<p>Make sure to create a new file or file-like object for every
 <a class="reference internal" href="#polyanalyst6api.drive.Drive.upload_file" title="polyanalyst6api.drive.Drive.upload_file"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Drive.upload_file()</span></code></a> call!</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Always prefer <a class="reference internal" href="#polyanalyst6api.drive.Drive.upload" title="polyanalyst6api.drive.Drive.upload"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Drive.upload()</span></code></a> over this method.</p>
+<p class="admonition-title">Note</p>
+<p>Always prefer <a class="reference internal" href="#polyanalyst6api.drive.Drive.upload" title="polyanalyst6api.drive.Drive.upload"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Drive.upload()</span></code></a> over this method.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>file</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Io</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">AnyStr</span></code>]) – the file or file-like object to upload</li>
-<li><strong>name</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – the filename other than <cite>file</cite>’s name</li>
-<li><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (optional) a relative path of the file’s parent directory</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">IO</span></code>) – the file or file-like object to upload</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – the filename other than <cite>file</cite>’s name</p></li>
+<li><p><strong>path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (optional) a relative path of the file’s parent directory</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="docutils">
-<dt>Usage::</dt>
-<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drive</span> <span class="o">=</span> <span class="n">Drive</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</dd>
+</dl>
+<dl>
+<dt>Usage::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drive</span> <span class="o">=</span> <span class="n">Drive</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;CarData.csv&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">drive</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;cars.csv&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/data&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd>
 </dl>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="class">
-<dt id="polyanalyst6api.project.Project">
-<em class="property">class </em><code class="descclassname">polyanalyst6api.project.</code><code class="descname">Project</code><span class="sig-paren">(</span><em>api</em>, <em>uuid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polyanalyst6api.project.</span></span><span class="sig-name descname"><span class="pre">Project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class maintains all operations with the PolyAnalyst’s project and nodes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>api</strong> – An instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">API</span></code> class</li>
-<li><strong>uuid</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The uuid of the project you want to interact with</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>api</strong> – An instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">API</span></code> class</p></li>
+<li><p><strong>uuid</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The uuid of the project you want to interact with</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="polyanalyst6api.project.Project.abort">
-<code class="descname">abort</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.abort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.abort" title="Permalink to this definition">¶</a></dt>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project.abort">
+<span class="sig-name descname"><span class="pre">abort</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.abort"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project.abort" title="Permalink to this definition">¶</a></dt>
 <dd><p>Aborts the execution of all nodes in the project.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Project.dataset">
-<code class="descname">dataset</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.dataset" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project.dataset">
+<span class="sig-name descname"><span class="pre">dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project.dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get dataset wrapper object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – node name or dict with name and type of the node</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>node</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – node name or dict with name and type of the node</p>
+</dd>
+</dl>
 <div class="versionadded">
-<p><span class="versionmodified">New in version 0.16.0.</span></p>
+<p><span class="versionmodified added">New in version 0.16.0.</span></p>
 </div>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Project.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>force_unload=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.delete" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force_unload</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete the project from server.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>force_unload</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Delete project regardless other users</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>force_unload</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Delete project regardless other users</p>
+</dd>
+</dl>
 <p>By default, the project will be deleted only if it’s not loaded to memory.
 To delete the project that loaded to memory (there are users working on
 this project right now) set <code class="docutils literal notranslate"><span class="pre">force_unload</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.
 This operation available only for project owner and administrators, and
 cannot be undone.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Project.execute">
-<code class="descname">execute</code><span class="sig-paren">(</span><em>*args</em>, <em>wait=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.execute" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project.execute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initiates execution of nodes and returns execution wave identifier.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>args</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – node names and/or dicts with name and type of nodes</li>
-<li><strong>wait</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – wait for nodes execution to complete</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – node names and/or dicts with name and type of nodes</p></li>
+<li><p><strong>wait</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – wait for nodes execution to complete</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p>Usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wave_id</span> <span class="o">=</span> <span class="n">prj</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;Internet Source&#39;</span><span class="p">,</span> <span class="s1">&#39;Python&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>use <code class="docutils literal notranslate"><span class="pre">wait=True</span></code> to wait for the passed nodes execution to complete.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prj</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;Export to MS Word&#39;</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prj</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;Export to MS Word&#39;</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>or, if there are several nodes in the project with the same name, pass
 them as dicts with <cite>name</cite> and <cite>type</cite> keys (and because of this, you can
 also pass items of <a class="reference internal" href="#polyanalyst6api.project.Project.get_node_list" title="polyanalyst6api.project.Project.get_node_list"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Project.get_node_list()</span></code></a>)</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prj</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prj</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Example node&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;DataSource&#39;</span><span class="p">},</span>
 <span class="gp">... </span>    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Example node&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;Dataset&#39;</span><span class="p">},</span>
 <span class="gp">... </span>    <span class="s1">&#39;Federated Search&#39;</span><span class="p">,</span>
@@ -582,345 +486,282 @@ also pass items of <a class="reference internal" href="#polyanalyst6api.project.
 </pre></div>
 </div>
 <p>or, if you want to execute all nodes, call this method with no <code class="docutils literal notranslate"><span class="pre">args</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prj</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prj</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Project.get_execution_statistics">
-<code class="descname">get_execution_statistics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.get_execution_statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.get_execution_statistics" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project.get_execution_statistics">
+<span class="sig-name descname"><span class="pre">get_execution_statistics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.get_execution_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project.get_execution_statistics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the execution statistics for nodes in the project.</p>
 <p>Similar to <a class="reference internal" href="#polyanalyst6api.project.Project.get_nodes" title="polyanalyst6api.project.Project.get_nodes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Project.get_nodes()</span></code></a> but nodes contains extra information
 and the project statistics.</p>
 <div class="deprecated">
-<p><span class="versionmodified">Deprecated since version 0.15.0: </span>Use <a class="reference internal" href="#polyanalyst6api.project.Project.get_execution_stats" title="polyanalyst6api.project.Project.get_execution_stats"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Project.get_execution_stats()</span></code></a> instead.</p>
+<p><span class="versionmodified deprecated">Deprecated since version 0.15.0: </span>Use <a class="reference internal" href="#polyanalyst6api.project.Project.get_execution_stats" title="polyanalyst6api.project.Project.get_execution_stats"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Project.get_execution_stats()</span></code></a> instead.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]], <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]], <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Project.get_execution_stats">
-<code class="descname">get_execution_stats</code><span class="sig-paren">(</span><em>skip_hidden=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.get_execution_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.get_execution_stats" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project.get_execution_stats">
+<span class="sig-name descname"><span class="pre">get_execution_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skip_hidden</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.get_execution_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project.get_execution_stats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns nodes execution statistics.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>skip_hidden</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]) – Return statistics only of nodes in the project (i.e.
-exclude publication and compound nodes).</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>skip_hidden</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – Return statistics only of nodes in the project (i.e.
+exclude publication and compound nodes).</p>
+</dd>
+</dl>
 <div class="versionadded">
-<p><span class="versionmodified">New in version 0.15.0.</span></p>
+<p><span class="versionmodified added">New in version 0.15.0.</span></p>
 </div>
 <div class="versionchanged">
-<p><span class="versionmodified">Changed in version 0.25.0: </span>Added <cite>skip_hidden</cite> optional parameter.</p>
+<p><span class="versionmodified changed">Changed in version 0.25.0: </span>Added <cite>skip_hidden</cite> optional parameter.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Project.get_node_list">
-<code class="descname">get_node_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.get_node_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.get_node_list" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project.get_node_list">
+<span class="sig-name descname"><span class="pre">get_node_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.get_node_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project.get_node_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of project nodes.</p>
 <div class="versionadded">
-<p><span class="versionmodified">New in version 0.15.0.</span></p>
+<p><span class="versionmodified added">New in version 0.15.0.</span></p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Project.get_nodes">
-<code class="descname">get_nodes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.get_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.get_nodes" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project.get_nodes">
+<span class="sig-name descname"><span class="pre">get_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.get_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project.get_nodes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a dictionary of project’s nodes information.</p>
 <div class="deprecated">
-<p><span class="versionmodified">Deprecated since version 0.15.0: </span>Use <a class="reference internal" href="#polyanalyst6api.project.Project.get_node_list" title="polyanalyst6api.project.Project.get_node_list"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Project.get_node_list()</span></code></a> instead.</p>
+<p><span class="versionmodified deprecated">Deprecated since version 0.15.0: </span>Use <a class="reference internal" href="#polyanalyst6api.project.Project.get_node_list" title="polyanalyst6api.project.Project.get_node_list"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Project.get_node_list()</span></code></a> instead.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Project.get_tasks">
-<code class="descname">get_tasks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.get_tasks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.get_tasks" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project.get_tasks">
+<span class="sig-name descname"><span class="pre">get_tasks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.get_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project.get_tasks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns task list info.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Project.is_running">
-<code class="descname">is_running</code><span class="sig-paren">(</span><em>wave_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.is_running"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.is_running" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project.is_running">
+<span class="sig-name descname"><span class="pre">is_running</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wave_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.is_running"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project.is_running" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks that execution wave is still running in the project.</p>
 <p>If <cite>wave_id</cite> is <cite>-1</cite> then the project is checked against any active
 execution, saving, publishing operations.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>wave_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Execution wave identifier</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>wave_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Execution wave identifier</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Project.parameters">
-<code class="descname">parameters</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.parameters" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project.parameters">
+<span class="sig-name descname"><span class="pre">parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project.parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters wrapper object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Parameters node name</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Parameters node name</p>
+</dd>
+</dl>
 <div class="versionadded">
-<p><span class="versionmodified">New in version 0.18.0.</span></p>
+<p><span class="versionmodified added">New in version 0.18.0.</span></p>
 </div>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Project.preview">
-<code class="descname">preview</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.preview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.preview" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project.preview">
+<span class="sig-name descname"><span class="pre">preview</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.preview"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project.preview" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns first 1000 rows of data from <code class="docutils literal notranslate"><span class="pre">node</span></code>, texts and strings are
 cutoff after 250 symbols.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – node name or dict with name and type of node</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>node</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – node name or dict with name and type of node</p>
+</dd>
+</dl>
 <div class="deprecated">
-<p><span class="versionmodified">Deprecated since version 0.16.0: </span>Use <code class="xref py py-meth docutils literal notranslate"><span class="pre">Dataset.preview()</span></code> instead.</p>
+<p><span class="versionmodified deprecated">Deprecated since version 0.16.0: </span>Use <code class="xref py py-meth docutils literal notranslate"><span class="pre">Dataset.preview()</span></code> instead.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Project.repair">
-<code class="descname">repair</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.repair"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.repair" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project.repair">
+<span class="sig-name descname"><span class="pre">repair</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.repair"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project.repair" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initiate the project repairing operation.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Project.save">
-<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.save" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initiates saving of all changes that have been made in the project.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Project.set_parameters">
-<code class="descname">set_parameters</code><span class="sig-paren">(</span><em>node</em>, <em>node_type</em>, <em>parameters</em>, <em>declare_unsync=True</em>, <em>hard_update=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.set_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.set_parameters" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project.set_parameters">
+<span class="sig-name descname"><span class="pre">set_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">declare_unsync</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hard_update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.set_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project.set_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set parameters of the selected Parameters node in the project.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>node</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of Parameters node</li>
-<li><strong>node_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – node type, which parameters need to be set. The types             are listed in NodeTypes.</li>
-<li><strong>parameters</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]) – default parameters of the node to be set.</li>
-<li><strong>declare_unsync</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – reset the status of the Parameters node.</li>
-<li><strong>hard_update</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – update every child node with new parameters if True,             otherwise reset their statuses. Works only if declare_unsync is True.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of Parameters node</p></li>
+<li><p><strong>node_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – node type, which parameters need to be set. The types             are listed in NodeTypes.</p></li>
+<li><p><strong>parameters</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]) – default parameters of the node to be set.</p></li>
+<li><p><strong>declare_unsync</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – reset the status of the Parameters node.</p></li>
+<li><p><strong>hard_update</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – update every child node with new parameters if True,             otherwise reset their statuses. Works only if declare_unsync is True.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="deprecated">
-<p><span class="versionmodified">Deprecated since version 0.18.0: </span>Use <a class="reference internal" href="#polyanalyst6api.project.Parameters.set" title="polyanalyst6api.project.Parameters.set"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Parameters.set()</span></code></a> instead.</p>
+<p><span class="versionmodified deprecated">Deprecated since version 0.18.0: </span>Use <a class="reference internal" href="#polyanalyst6api.project.Parameters.set" title="polyanalyst6api.project.Parameters.set"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Parameters.set()</span></code></a> instead.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Project.unload">
-<code class="descname">unload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.unload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.unload" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project.unload">
+<span class="sig-name descname"><span class="pre">unload</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.unload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project.unload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unload the project from the memory.</p>
 <p>From version <cite>0.26.2</cite> this function ensures that the project is unloaded despite PABusy error
 by repeating requests (maximum 10) until PA either returns an ok response or
 returns an error ‘the project has not been opened’, which means project is also unloaded.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">PABusy if PABusy returned for all 10 request attempts</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">APIException if the project has been unloaded before this function was called</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PABusy if PABusy returned for all 10 request attempts</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>APIException if the project has been unloaded before this function was called</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Project.wait_for_completion">
-<code class="descname">wait_for_completion</code><span class="sig-paren">(</span><em>node</em>, <em>wave_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.wait_for_completion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Project.wait_for_completion" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Project.wait_for_completion">
+<span class="sig-name descname"><span class="pre">wait_for_completion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Project.wait_for_completion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Project.wait_for_completion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Waits for the node in a sequence of nodes to complete. Returns <cite>True</cite> if
 node have completed successfully and <cite>False</cite> otherwise.</p>
 <p>Unlike <cite>execute(…, wait=True)</cite>, which returns only after an entire node
 sequence has completed, this method returns immediately after the specified
 node has completed.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>node</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – Node name or dict with name and type of node that runs within execution wave</li>
-<li><strong>wave_id</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – Execution wave identifier</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – Node name or dict with name and type of node that runs within execution wave</p></li>
+<li><p><strong>wave_id</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – Execution wave identifier</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="deprecated">
-<p><span class="versionmodified">Deprecated since version 0.17.0: </span>Use <a class="reference internal" href="#polyanalyst6api.project.Project.is_running" title="polyanalyst6api.project.Project.is_running"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Project.is_running()</span></code></a> instead.</p>
+<p><span class="versionmodified deprecated">Deprecated since version 0.17.0: </span>Use <a class="reference internal" href="#polyanalyst6api.project.Project.is_running" title="polyanalyst6api.project.Project.is_running"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Project.is_running()</span></code></a> instead.</p>
 </div>
 <div class="versionchanged">
-<p><span class="versionmodified">Changed in version 0.23.0: </span>Introduced this deprecated method back. Added <cite>wave_id</cite> argument.</p>
+<p><span class="versionmodified changed">Changed in version 0.23.0: </span>Introduced this deprecated method back. Added <cite>wave_id</cite> argument.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="class">
-<dt id="polyanalyst6api.project.DataSet">
-<em class="property">class </em><code class="descclassname">polyanalyst6api.project.</code><code class="descname">DataSet</code><span class="sig-paren">(</span><em>prj</em>, <em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#DataSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.DataSet" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="polyanalyst6api.project.DataSet.get_info">
-<code class="descname">get_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#DataSet.get_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.DataSet.get_info" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="polyanalyst6api.project.DataSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polyanalyst6api.project.</span></span><span class="sig-name descname"><span class="pre">DataSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#DataSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.DataSet" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.DataSet.get_info">
+<span class="sig-name descname"><span class="pre">get_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#DataSet.get_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.DataSet.get_info" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get information about dataset.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.DataSet.get_progress">
-<code class="descname">get_progress</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#DataSet.get_progress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.DataSet.get_progress" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.DataSet.get_progress">
+<span class="sig-name descname"><span class="pre">get_progress</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#DataSet.get_progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.DataSet.get_progress" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get dataset progress.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.DataSet.iter_rows">
-<code class="descname">iter_rows</code><span class="sig-paren">(</span><em>start=0</em>, <em>stop=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#DataSet.iter_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.DataSet.iter_rows" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.DataSet.iter_rows">
+<span class="sig-name descname"><span class="pre">iter_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#DataSet.iter_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.DataSet.iter_rows" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over rows in dataset.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>start</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – </li>
-<li><strong>stop</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – </li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – </p></li>
+<li><p><strong>stop</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – </p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">ValueError if <cite>start</cite> or <cite>stop</cite> is out of datasets’ row range</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>ValueError if <cite>start</cite> or <cite>stop</cite> is out of datasets’ row range</p>
+</dd>
+</dl>
 <p>Usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># download first 10 rows</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">head</span> <span class="o">=</span> <span class="p">[]</span>
@@ -931,148 +772,126 @@ node has completed.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>]]]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]]]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.DataSet.preview">
-<code class="descname">preview</code><span class="sig-paren">(</span><em>precision=6</em>, <em>include_blank_cells=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#DataSet.preview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.DataSet.preview" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.DataSet.preview">
+<span class="sig-name descname"><span class="pre">preview</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_blank_cells</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#DataSet.preview"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.DataSet.preview" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get dataset preview.</p>
 <p>Contains the first 1000 rows, string/text are cut off after 250 symbols.
 By default, numbers are rounded to 6 significant digits and blank cells are omitted.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>precision</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – (optional) number of significant digits. 6 by default.</li>
-<li><strong>include_blank_cells</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – (optional) include blank cells in dataset. False by default.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>precision</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – (optional) number of significant digits. 6 by default.</p></li>
+<li><p><strong>include_blank_cells</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – (optional) include blank cells in dataset. False by default.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">APIException if non-default parameters are used with the old version of server,
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>APIException if non-default parameters are used with the old version of server,
 which doesn’t support them. In this case retry the method with default parameters.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="versionadded">
-<p><span class="versionmodified">New in version 0.24.0: </span>The <em>precision</em> and <em>include_blank_cells</em> parameters.</p>
+<p><span class="versionmodified added">New in version 0.24.0: </span>The <em>precision</em> and <em>include_blank_cells</em> parameters.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]]</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="class">
-<dt id="polyanalyst6api.project.Parameters">
-<em class="property">class </em><code class="descclassname">polyanalyst6api.project.</code><code class="descname">Parameters</code><span class="sig-paren">(</span><em>prj</em>, <em>_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Parameters" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="polyanalyst6api.project.Parameters.clear">
-<code class="descname">clear</code><span class="sig-paren">(</span><em>*node_types</em>, <em>declare_unsync=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Parameters.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Parameters.clear" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Parameters">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polyanalyst6api.project.</span></span><span class="sig-name descname"><span class="pre">Parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Parameters.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">node_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">declare_unsync</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Parameters.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Parameters.clear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clears parameters and strategies of <cite>node_types</cite> for the Parameters node.
 If <cite>node_types</cite> is empty it clears parameters and strategies of all nodes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>node_types</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – node types which parameters needs to be cleared</li>
-<li><strong>declare_unsync</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – reset status of the Parameters node</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node_types</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – node types which parameters needs to be cleared</p></li>
+<li><p><strong>declare_unsync</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – reset status of the Parameters node</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>], <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Parameters.get">
-<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Parameters.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Parameters.get" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Parameters.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Parameters.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Parameters.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns list of nodes with parameters and strategies supported by <code class="docutils literal notranslate"><span class="pre">Parameters</span></code> node.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="polyanalyst6api.project.Parameters.set">
-<code class="descname">set</code><span class="sig-paren">(</span><em>node_type</em>, <em>parameters</em>, <em>strategies=None</em>, <em>declare_unsync=True</em>, <em>hard_update=True</em>, <em>wait=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Parameters.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.project.Parameters.set" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="polyanalyst6api.project.Parameters.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">declare_unsync</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hard_update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/project.html#Parameters.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.project.Parameters.set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets <cite>node_type</cite> parameters and strategies for the Parameters node.</p>
 <p>If <cite>parameters</cite> is the list of dictionaries with parameters then
 /configure-array endpoint is used otherwise /configure.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>node_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – node type which parameters needs to be set</li>
-<li><strong>parameters</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]]) – node type parameters</li>
-<li><strong>strategies</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]) – node type strategies</li>
-<li><strong>declare_unsync</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – reset status of the Parameters node. True by default.</li>
-<li><strong>hard_update</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – update every child node with new parameters if True,             otherwise reset their statuses. Works only if declare_unsync is True.            True by default.</li>
-<li><strong>wait</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – wait for this node to set parameters for each child node.            True by default.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – node type which parameters needs to be set</p></li>
+<li><p><strong>parameters</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]]) – node type parameters</p></li>
+<li><p><strong>strategies</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>], <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – node type strategies</p></li>
+<li><p><strong>declare_unsync</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – reset status of the Parameters node. True by default.</p></li>
+<li><p><strong>hard_update</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – update every child node with new parameters if True,             otherwise reset their statuses. Works only if declare_unsync is True.            True by default.</p></li>
+<li><p><strong>wait</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – wait for this node to set parameters for each child node.            True by default.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>], <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-<div class="section" id="exceptions">
-<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
-<dl class="exception">
-<dt id="polyanalyst6api.PAException">
-<em class="property">exception </em><code class="descclassname">polyanalyst6api.</code><code class="descname">PAException</code><a class="reference internal" href="_modules/polyanalyst6api/exceptions.html#PAException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.PAException" title="Permalink to this definition">¶</a></dt>
+<section id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this heading">¶</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="polyanalyst6api.PAException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polyanalyst6api.</span></span><span class="sig-name descname"><span class="pre">PAException</span></span><a class="reference internal" href="_modules/polyanalyst6api/exceptions.html#PAException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.PAException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generic error class, catch-all for most polyanalyst6api issues.</p>
 </dd></dl>
 
-<dl class="exception">
-<dt id="polyanalyst6api.ClientException">
-<em class="property">exception </em><code class="descclassname">polyanalyst6api.</code><code class="descname">ClientException</code><a class="reference internal" href="_modules/polyanalyst6api/exceptions.html#ClientException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.ClientException" title="Permalink to this definition">¶</a></dt>
+<dl class="py exception">
+<dt class="sig sig-object py" id="polyanalyst6api.ClientException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polyanalyst6api.</span></span><span class="sig-name descname"><span class="pre">ClientException</span></span><a class="reference internal" href="_modules/polyanalyst6api/exceptions.html#ClientException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.ClientException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indicate errors that don’t involve interaction with PolyAnalyst’s API.</p>
 </dd></dl>
 
-<dl class="exception">
-<dt id="polyanalyst6api.APIException">
-<em class="property">exception </em><code class="descclassname">polyanalyst6api.</code><code class="descname">APIException</code><span class="sig-paren">(</span><em>msg</em>, <em>endpoint=None</em>, <em>status_code=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/exceptions.html#APIException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polyanalyst6api.APIException" title="Permalink to this definition">¶</a></dt>
+<dl class="py exception">
+<dt class="sig sig-object py" id="polyanalyst6api.APIException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">polyanalyst6api.</span></span><span class="sig-name descname"><span class="pre">APIException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polyanalyst6api/exceptions.html#APIException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#polyanalyst6api.APIException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indicate errors that involve responses from PolyAnalyst’s API.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>msg</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The exception message</li>
-<li><strong>endpoint</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The resource endpoint</li>
-<li><strong>status_code</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – The http status code</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The exception message</p></li>
+<li><p><strong>endpoint</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – The resource endpoint</p></li>
+<li><p><strong>status_code</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]) – The http status code</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -1084,7 +903,7 @@ If <cite>node_types</cite> is empty it clears parameters and strategies of all n
       &copy;2018, yatmanov.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |
