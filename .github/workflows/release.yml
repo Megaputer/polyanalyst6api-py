@@ -37,7 +37,7 @@ jobs:
       - run: |
           pip install --upgrade pip
           pip install poetry==1.3.2
-          poetry install --with docs
+          poetry install --only docs
           poetry run make -C docs html
       - uses: s0/git-publish-subdir-action@develop
         env:
@@ -62,7 +62,7 @@ jobs:
       - run: |
           pip install --upgrade pip
           pip install poetry==1.3.2
-          poetry install --with docs
+          poetry install --only docs
           poetry run towncrier build --yes --version=${{ github.ref_name }}
           user=$(gh api /user)
           user_name=$(jq -r '.login' <<<"$user")
