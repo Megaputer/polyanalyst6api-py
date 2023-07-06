@@ -22,16 +22,20 @@ requests = "^2.27"
 pytus = "^0.2.1"
 
 [tool.poetry.dev-dependencies]
+black = "^20.8b1"
+
+[tool.poetry.group.test.dependencies]
 pytest = "^3.0"
-sphinx = "^1.8"
-sphinx-autodoc-typehints = "1.6.0"
-towncrier = "^19.2"
 vcrpy = "^4.1.0"
 pytest-recording = "^0.8.1"
 jsonschema = "^3.2.0"
 pydantic = "^1.6.1"
 pytest-ordering = "^0.6"
-black = "^20.8b1"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^5.3"
+sphinx-autodoc-typehints = "1.6.0"
+towncrier = "^21.9"
 
 [tool.towncrier]
 package = "polyanalyst6api"
