@@ -5,6 +5,9 @@ on:
     tags:
       - 0.*[0-9].*[0-9]
 
+env:
+  PY_VER: '3.11'
+
 jobs:
   publish:
     name: Publish distribution to PyPI
