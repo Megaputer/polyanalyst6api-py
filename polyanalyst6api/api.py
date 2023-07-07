@@ -23,9 +23,7 @@ from .exceptions import APIException, ClientException, _WrapperNotFound, PABusy
 __all__ = ['API']
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-warnings.simplefilter(
-    'always', UserWarning
-)  # without this set_parameters will show warnings only once
+warnings.simplefilter('always', UserWarning)  # without this set_parameters will show warnings only once
 
 NodeTypes = [
     "CSV Exporter/",
@@ -127,8 +125,9 @@ class API:
 
         if version is not None:
             warnings.warn(
-                '"version" parameter is not in use.  The client now works only with `1.0` API version',
-                DeprecationWarning, 2
+                '"version" parameter is not in use. The client now works only with `1.0` API version',
+                DeprecationWarning,
+                2,
             )
 
     @property
@@ -164,6 +163,7 @@ class API:
 
         class ProjectStub:
             api = self
+
         return Parameters(ProjectStub(), None).get()
 
     def login(self) -> None:
@@ -201,11 +201,11 @@ class API:
         return self.get('project/import/status', params={'importId': import_id})
 
     def import_project(
-            self,
-            file_path: str,
-            project_space: str = '',
-            on_conflict: str = 'Cancel',
-            wait: bool = False,
+        self,
+        file_path: str,
+        project_space: str = '',
+        on_conflict: str = 'Cancel',
+        wait: bool = False,
     ) -> Union[str, Dict]:
         """
         Import project from file on server file system.
@@ -316,9 +316,7 @@ class API:
             if 'are not logged in' in response.text:
                 error_msg = 'You are not logged in to PolyAnalyst Server'
             elif 'operation is limited ' in response.text:
-                error_msg = (
-                    'Access to this operation is limited to project owners and administrator'
-                )
+                error_msg = 'Access to this operation is limited to project owners and administrator'
         elif response.status_code == 500:
             with contextlib.suppress(IndexError, TypeError):
                 if json[0] == 'Error':

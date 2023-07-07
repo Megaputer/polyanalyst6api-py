@@ -301,8 +301,7 @@ class Project:
            Use :meth:`Project.get_execution_stats` instead.
         """
         warnings.warn(
-            'Project.get_execution_statistics() is deprecated, use'
-            'Project.get_execution_stats() instead.',
+            'Project.get_execution_statistics() is deprecated, use' 'Project.get_execution_stats() instead.',
             DeprecationWarning,
             stacklevel=2,
         )
@@ -503,9 +502,7 @@ class DataSet:
 
         return self._api.get('dataset/preview', params=params)
 
-    def iter_rows(
-        self, start: int = 0, stop: Optional[int] = None
-    ) -> Iterator[Dict[str, JSON_VAL]]:
+    def iter_rows(self, start: int = 0, stop: Optional[int] = None) -> Iterator[Dict[str, JSON_VAL]]:
         """
         Iterate over rows in dataset.
 
@@ -531,9 +528,7 @@ class DataSet:
 
         # предполагается что если stop определен то пользователь в курсе количества строк в датасете
         if not 0 <= start <= stop <= max_row:
-            raise ValueError(
-                f'start and stop arguments must be within dataset row range: (0, {max_row})'
-            )
+            raise ValueError(f'start and stop arguments must be within dataset row range: (0, {max_row})')
 
         rows = self._values(stop)['table']
         get_text = self._cell_text
@@ -557,11 +552,11 @@ class DataSet:
                     # elif column['type'] == 'DateTime':  # todo convert to python datetime?
                     else:
                         _value = rows[self.idx][column['id']]
-                        if _value == 1e+100:
+                        if _value == 1e100:
                             _value = None
-                        elif _value == 8e+100:
+                        elif _value == 8e100:
                             _value = math.inf
-                        elif _value == -8e+100:
+                        elif _value == -8e100:
                             _value = -math.inf
 
                         result[column['title']] = _value
