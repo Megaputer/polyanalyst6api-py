@@ -9,6 +9,9 @@ readme = "README.md"
 repository = "https://github.com/Megaputer/polyanalyst6api-py"
 documentation = "https://megaputer.github.io/polyanalyst6api-py"
 
+[tool.poetry.urls]
+"Changelog" = "https://github.com/Megaputer/polyanalyst6api-py/blob/master/CHANGELOG.md"
+
 keywords = ["megaputer", "polyanalyst", "polyanalyst6api", "api"]
 
 classifiers = [
