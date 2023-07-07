@@ -59,7 +59,7 @@ class API:
     :param username: (optional) The username to log in with
     :param password: (optional) The password for specified username
     :param ldap_server: (optional) LDAP Server address
-    :param version: (optional) Choose which PolyAnalyst API version to use. Default: ``1.0``
+    :param version: (optional) Deprecated. Was conceived to select API version
 
     If ldap_server is provided, then login will be performed via LDAP Server.
 
@@ -74,8 +74,6 @@ class API:
       ...     print(api.get_server_info())
     """
 
-    _api_path = '/polyanalyst/api/'
-    _valid_api_versions = ['1.0']
     user_agent = f'PolyAnalyst6API python client v{__version__}'
 
     def __enter__(self) -> 'API':
@@ -92,11 +90,8 @@ class API:
         username: Optional[str] = None,
         password: Optional[str] = None,
         ldap_server: Optional[str] = None,
-        version: str = '1.0',
+        version=None,
     ):
-        if version not in self._valid_api_versions:
-            raise ClientException('Valid api versions are ' + ', '.join(self._valid_api_versions))
-
         if url is None or username is None:
             try:
                 cfg_path = pathlib.Path.home() / '.polyanalyst6api' / 'config'
@@ -117,7 +112,7 @@ class API:
         if not url:
             raise ClientException(f'Invalid url: "{url}".')
 
-        self.base_url = urljoin(url, self._api_path)
+        self.base_url = urljoin(url, '/polyanalyst/api/')
         self.url = urljoin(self.base_url, f'v{version}/')
         self.username = username
         self.password = password or ''
@@ -129,6 +124,12 @@ class API:
         # path to certificate file. by default ignore insecure connection warnings
         self.certfile = False
         self.drive = Drive(self)
+
+        if version is not None:
+            warnings.warn(
+                '"version" parameter is not in use.  The client now works only with `1.0` API version',
+                DeprecationWarning, 2
+            )
 
     @property
     def fs(self):
