@@ -52,9 +52,9 @@ NodeTypes = [
 class API:
     """PolyAnalyst API
 
-    :param url: (optional) The scheme, host and port(if exists) of a PolyAnalyst server \
+    :param url: The scheme, host and port(if exists) of a PolyAnalyst server \
         (e.g. ``https://localhost:5043/``, ``http://example.polyanalyst.com``)
-    :param username: (optional) The username to log in with
+    :param username: The username to log in with
     :param password: (optional) The password for specified username
     :param ldap_server: (optional) LDAP Server address
     :param version: (optional) Deprecated. Was conceived to select API version
@@ -64,11 +64,6 @@ class API:
     Usage::
 
       >>> with API(POLYANALYST_URL, YOUR_USERNAME, YOUR_PASSWORD) as api:
-      ...     print(api.get_server_info())
-
-    or if you're using configuration file (New in version 0.23.0):
-
-      >>> with API() as api:
       ...     print(api.get_server_info())
     """
 
@@ -91,6 +86,12 @@ class API:
         version=None,
     ):
         if url is None or username is None:
+            warnings.warn(
+                'Either the Polyanalyst URL or credentials are not provided.'
+                'Getting missing data from the credentials file, use of which is deprecated and planned for removal',
+                DeprecationWarning,
+                2,
+            )
             try:
                 cfg_path = pathlib.Path.home() / '.polyanalyst6api' / 'config'
                 parser = configparser.ConfigParser(allow_no_value=True)
