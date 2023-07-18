@@ -24,7 +24,8 @@ jobs:
           poetry publish --build
 
   buildingdocs:
-    name: "Triggering ReadTheDocs server build"
+    name: Triggering ReadTheDocs server build
+    needs: publish
     runs-on: ubuntu-latest
     steps:
       - name: Trigger RTDs build
