@@ -2,6 +2,7 @@
 version: 2
 
 # Set the version of Python and other tools you might need
+# https://github.com/python-poetry/poetry/issues/754#issuecomment-1111871973
 build:
   os: ubuntu-22.04
   tools:
@@ -12,7 +13,7 @@ build:
       - pip install poetry
       - poetry config virtualenvs.create false
     post_install:
-      - poetry install
+      - poetry install --with docs
 
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
