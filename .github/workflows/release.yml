@@ -23,28 +23,16 @@ jobs:
           poetry version ${{ github.ref_name }}
           poetry publish --build
 
-  document:
-    name: Update documentation on Github Pages
-    needs: publish
+  buildingdocs:
+    name: "Triggering ReadTheDocs server build"
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
+      - name: Trigger RTDs build
+        uses: dfm/rtds-action@v1
         with:
-          python-version: ${{ env.PY_VER }}
-      - run: |
-          pip install --upgrade pip
-          pip install poetry==1.3.2
-          poetry install --without test
-          poetry run make -C docs html
-      - uses: s0/git-publish-subdir-action@develop
-        env:
-          REPO: self
-          BRANCH: gh-pages
-          FOLDER: docs/_build/html
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          webhook_url: ${{ secrets.RTDS_WEBHOOK_URL }}
+          webhook_token: ${{ secrets.RTDS_WEBHOOK_TOKEN }}
+          commit_ref: ${{ github.ref }}
 
   changelog:
     name: Update CHANGELOG.md
