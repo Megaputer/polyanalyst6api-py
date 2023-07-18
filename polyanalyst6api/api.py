@@ -25,29 +25,6 @@ __all__ = ['API']
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 warnings.simplefilter('always', UserWarning)  # without this set_parameters will show warnings only once
 
-NodeTypes = [
-    "CSV Exporter/",
-    "DataSource/CSV",
-    "DataSource/EXCEL",
-    "DataSource/FILES",
-    "DataSource/INET",
-    "DataSource/ODBC",
-    "DataSource/RSS",
-    "DataSource/XML",
-    "Dataset/Biased",
-    "Dataset/ExtractTerms",
-    "Dataset/Python",
-    "Dataset/R",
-    "Dataset/ReplaceTerms",
-    "ODBC Exporter/",
-    "PA6TaxonomyResult/TaxonomyResult",
-    "SRLRuleSet/Filter Rows",
-    "SRLRuleSet/SRL Rule",
-    "TmlEntityExtractor/FEX",
-    "Sentiment Analysis",
-    "TmlLinkTerms/",
-]
-
 
 class API:
     """PolyAnalyst API
@@ -63,7 +40,7 @@ class API:
 
     Usage::
 
-      >>> with API(POLYANALYST_URL, YOUR_USERNAME, YOUR_PASSWORD) as api:
+      >>> with API(POLYANALYST_URL, USERNAME, PASSWORD) as api:
       ...     print(api.get_server_info())
     """
 
@@ -109,7 +86,7 @@ class API:
                 raise ClientException(f"The credentials file doesn't contain required key: {exc}")
 
         if not url:
-            raise ClientException(f'Invalid url: "{url}".')
+            raise ClientException('The PolyAnalyst URL is empty')
 
         self.base_url = urljoin(url, '/polyanalyst/api/')
         self.url = urljoin(self.base_url, f'v{version}/')
@@ -131,41 +108,13 @@ class API:
                 2,
             )
 
-    @property
-    def fs(self):
-        warnings.warn('"fs" attribute has been renamed "drive"', DeprecationWarning, 2)
-        return self.drive
-
     def get_versions(self) -> List[str]:
         """Returns api versions supported by PolyAnalyst server."""
-        # the 'versions' endpoint was added in the 2191 polyanalyst's version
-        try:
-            return self.request(urljoin(self.base_url, 'versions'), method='get')[1]
-        except APIException:
-            return ['1.0']
+        return self.request(urljoin(self.base_url, 'versions'), method='get')[1]
 
     def get_server_info(self) -> Optional[Dict[str, Union[int, str, Dict[str, str]]]]:
         """Returns general server information including build number, version and commit hashes."""
-        _, data = self.request(urljoin(self.url, 'server/info'), method='get')
-        return data
-
-    def get_parameters(self) -> List[Dict[str, Union[str, List]]]:
-        """
-        Returns list of nodes with parameters supported by ``Parameters`` node.
-
-        .. deprecated:: 0.18.0
-            Use :meth:`Parameters.get` instead.
-        """
-        warnings.warn(
-            'API.get_parameters() is deprecated, use Parameters.get() instead.',
-            DeprecationWarning,
-            stacklevel=2,
-        )
-
-        class ProjectStub:
-            api = self
-
-        return Parameters(ProjectStub(), None).get()
+        return self.request(urljoin(self.url, 'server/info'), method='get')[1]
 
     def login(self) -> None:
         """Logs in to PolyAnalyst Server with user credentials."""
@@ -332,3 +281,30 @@ class API:
             raise APIException(error_msg, response.url, response.status_code)
 
         return response, None
+
+    @property
+    def fs(self):
+        warnings.warn('"fs" attribute has been renamed "drive"', DeprecationWarning, 2)
+        return self.drive
+
+    def get_parameters(self) -> List[Dict[str, Union[str, List]]]:
+        """
+        Returns list of nodes with parameters supported by ``Parameters`` node.
+
+        .. deprecated:: 0.18.0
+            Use :meth:`Parameters.get` instead.
+        """
+        warnings.warn(
+            'API.get_parameters() is deprecated, use Parameters.get() instead.',
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
+        class ProjectStub:
+            api = self
+
+        return Parameters(ProjectStub(), None).get()
+
+
+# deprecated, use Parameters.get instead
+NodeTypes = []

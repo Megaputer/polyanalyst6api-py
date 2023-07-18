@@ -337,8 +337,7 @@ class Project:
         Set parameters of the selected Parameters node in the project.
 
         :param node: name of Parameters node
-        :param node_type: node type, which parameters need to be set. The types \
-            are listed in NodeTypes.
+        :param node_type: node type, which parameters need to be set.
         :param parameters: default parameters of the node to be set.
         :param declare_unsync: reset the status of the Parameters node.
         :param hard_update: update every child node with new parameters if True, \
