@@ -7,7 +7,7 @@ license = "MIT"
 readme = "README.md"
 
 repository = "https://github.com/Megaputer/polyanalyst6api-py"
-documentation = "https://megaputer.github.io/polyanalyst6api-py"
+documentation = "https://polyanalyst6api-py.rtfd.io/"
 
 keywords = ["megaputer", "polyanalyst", "polyanalyst6api", "api"]
 
