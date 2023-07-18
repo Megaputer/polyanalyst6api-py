@@ -1,0 +1,1 @@
+Removed an option to set API version in `API` class. The client now works only with `1.0` API version.

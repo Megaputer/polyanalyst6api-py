@@ -1,13 +1,3 @@
-0.26.13 (2023-07-18)
-====================
-
-Deprecations and Removals
--------------------------
-
-- Removed an option to set API version in `API` class. The client now works only with `1.0` API version. (apiversion)
-- Deprecated the use of credential file (cred file)
-
-
 0.26.11 (2023-07-07)
 ====================
 
