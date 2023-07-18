@@ -21,7 +21,7 @@ pip install --upgrade polyanalyst6api
 
 ## Documentation
 
-See [API Reference](polyanalyst6api-py.rtfd.io) for the client library methods.
+See [API Reference](https://polyanalyst6api-py.rtfd.io) for the client library methods.
 
 Refer to **PolyAnalyst User Manual** at **Application Programming Interfaces** > **Version 01** for REST API specification.
 
