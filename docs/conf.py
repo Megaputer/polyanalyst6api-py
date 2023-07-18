@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath('.'))
 # -- Project information -----------------------------------------------------
 
 project = 'polyanalyst6api'
-copyright = '2018, yatmanov'
+copyright = '2023, yatmanov'
 author = 'yatmanov'
 
 # The short X.Y version
