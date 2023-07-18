@@ -1,3 +1,4 @@
+![Build status](https://github.com/Megaputer/polyanalyst6api-py/actions/workflows/ci.yml/badge.svg)
 [![PyPI package](https://img.shields.io/pypi/v/polyanalyst6api)](https://pypi.org/project/polyanalyst6api)
 [![Downloads](https://static.pepy.tech/badge/polyanalyst6api)](https://pepy.tech/project/polyanalyst6api)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/polyanalyst6api)](https://pypi.org/project/polyanalyst6api/)
