@@ -89,7 +89,7 @@ class API:
             raise ClientException('The PolyAnalyst URL is empty')
 
         self.base_url = urljoin(url, '/polyanalyst/api/')
-        self.url = urljoin(self.base_url, f'v{version}/')
+        self.url = urljoin(self.base_url, 'v1.0/')
         self.username = username
         self.password = password or ''
         self.ldap_server = ldap_server
