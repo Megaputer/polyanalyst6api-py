@@ -1,3 +1,12 @@
+0.26.25 (2023-07-19)
+====================
+
+Bugfixes
+--------
+
+- Fixed 'Not Found for url' error when version arg is None (version)
+
+
 0.26.24 (2023-07-18)
 ====================
 
