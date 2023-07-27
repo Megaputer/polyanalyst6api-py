@@ -1,3 +1,19 @@
+0.26.2 (2023-07-27)
+===================
+
+### Features
+
+- Turned ssl verification on by default. Added possibility to disable it for tests through passing `verify=False` to `API` call (sslon)
+
+### Bugfixes
+
+- Fixed ssl verification setting is not applied to pytus library (drive)
+
+### Deprecations and Removals
+
+- Removed `certfile` attribute and `version` argument of `API` class because of no longer use (certfile)
+
+
 0.26.25 (2023-07-19)
 ====================
 

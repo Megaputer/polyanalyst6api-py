@@ -1,1 +1,0 @@
-Turned ssl verification on by default. Added possibility to disable it for tests through passing `verify=False` to `API` call
