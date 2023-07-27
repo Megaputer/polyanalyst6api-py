@@ -11,7 +11,7 @@ Using it you can execute nodes, view datasets, run tasks, download/upload files 
 
 ## Installation
 
-Python 3.6+ is required. Install and upgrade `polyanalyst6api` with these commands:
+Python 3.7+ is required. Install and upgrade `polyanalyst6api` with these commands:
 
 ```shell
 pip install polyanalyst6api
