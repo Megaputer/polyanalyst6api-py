@@ -1,7 +1,6 @@
 ![Build status](https://github.com/Megaputer/polyanalyst6api-py/actions/workflows/ci.yml/badge.svg)
-[![Documentation Status](https://readthedocs.org/projects/polyanalyst6api-py/badge/?version=latest)](https://polyanalyst6api-py.readthedocs.io/en/latest/?badge=latest)
 [![PyPI package](https://img.shields.io/pypi/v/polyanalyst6api)](https://pypi.org/project/polyanalyst6api)
-[![Downloads](https://static.pepy.tech/badge/polyanalyst6api)](https://pepy.tech/project/polyanalyst6api)
+[![Downloads](https://static.pepy.tech/badge/polyanalyst6api/month)](https://pepy.tech/project/polyanalyst6api)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/polyanalyst6api)](https://pypi.org/project/polyanalyst6api/)
 [![MIT License](https://img.shields.io/github/license/megaputer/polyanalyst6api-py)](https://github.com/Megaputer/polyanalyst6api-py/blob/master/LICENSE)
 
