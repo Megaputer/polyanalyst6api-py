@@ -34,7 +34,6 @@ class API:
     :param username: The username to log in with
     :param password: (optional) The password for specified username
     :param ldap_server: (optional) LDAP Server address
-    :param version: (optional) Deprecated. Was conceived to select API version
 
     If ldap_server is provided, then login will be performed via LDAP Server.
 
@@ -60,7 +59,7 @@ class API:
         username: Optional[str] = None,
         password: Optional[str] = None,
         ldap_server: Optional[str] = None,
-        version=None,
+        **kwargs,
     ):
         if url is None or username is None:
             warnings.warn(
@@ -95,18 +94,10 @@ class API:
         self.ldap_server = ldap_server
 
         self._s = requests.Session()
+        self._s.verify = kwargs.get('verify', True)
         self._s.headers.update({'User-Agent': self.user_agent})
         self.sid = None  # session identity
-        # path to certificate file. by default ignore insecure connection warnings
-        self.certfile = False
         self.drive = Drive(self)
-
-        if version is not None:
-            warnings.warn(
-                '"version" parameter is not in use. The client now works only with `1.0` API version',
-                DeprecationWarning,
-                2,
-            )
 
     def get_versions(self) -> List[str]:
         """Returns api versions supported by PolyAnalyst server."""
@@ -230,7 +221,6 @@ class API:
         """
         if not urlparse(url).netloc:
             url = urljoin(self.url, url)
-        kwargs['verify'] = self.certfile
         try:
             resp = self._s.request(method, url, **kwargs)
         except requests.RequestException as exc:

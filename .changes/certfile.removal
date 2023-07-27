@@ -1,0 +1,1 @@
+Removed `certfile` attribute and `version` argument of `API` class because of no longer use
