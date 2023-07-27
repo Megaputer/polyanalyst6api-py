@@ -87,8 +87,8 @@ pygments_style = None
 html_theme_options = {
     'github_banner': 'true',
     'github_user': 'Megaputer',
-    'github_repo': 'polyanalyst6api-python',
-    'nosidebar': True,
+    'github_repo': 'polyanalyst6api-py',
+    'nosidebar': False,
     'page_width': '960px',
     'body_max_width': 'auto'
 }
