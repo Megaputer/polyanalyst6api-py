@@ -340,6 +340,71 @@ class Project:
             for msg in warns:
                 warnings.warn(msg)
 
+    def _get_export_status(self, export_id: str) -> Dict[str, Any]:
+        """Get the status of project export
+
+        :param export_id: the export identifier
+
+        .. versionadded:: 0.27.1
+        """
+        return self.api.get('project/export/status', params={'exportId': export_id})
+
+
+    def export(self, params: Dict[str, Any], wait: bool = False) -> Union[str, Dict[str, Any]]:
+        """
+        Export a project from the Analytical Client to a drive.
+            :param params: export parameters
+                fileName: str Path to the exported project on the Drive,\
+                    for example: '@administrator@/example.pa6'
+                compressionLevel: str Compression level: Store = '0', Fastest = '1', Fast = '3',\
+                    Normal = '5' (by default), Maximum = '7', Ultra = '9'.
+                keepBackups: bool Keep backup versions. True by default.
+                keepMacrosAndVars: bool Keep user and server macros and variables. True by default.
+                keepSliceStatistics: bool Keep slice usage statistics. False by default.
+                usePAGridFormat: bool: Make the exported project file compatible with the PaGrid.\
+                    False by default.
+                overwriteExisting: bool: Allow overwriting an existing file. True by default.
+                dicts: dict: include a descriptions of the project dictionaries. Empty by default.
+                usedDicts: dict: include descriptions of server-side non-embedded dictionaries.\
+                    Empty by default.
+                usedParsers: list: include the parsers used. Empty by default.
+            :param wait: wait until the project export is completed. False by default.
+
+        :return: export identifier if `wait` is False and export status otherwise
+
+        .. versionadded:: 0.27.1
+        """
+
+        params['ids'] = params.get('ids', [self.uuid]) # export project id
+        params['compressionLevel'] = params.get('compressionLevel', '5')
+        params['keepBackups'] = params.get('keepBackups', True)
+        params['keepMacrosAndVars'] = params.get('keepMacrosAndVars', True)
+        params['keepSliceStatistics'] = params.get('keepSliceStatistics', False)
+        params['usePAGridFormat'] = params.get('usePAGridFormat', False)
+        params['overwriteExisting'] = params.get('overwriteExisting', True)
+        params['dicts'] = params.get('dicts', dict())
+        params['usedDicts'] = params.get('usedDicts', dict())
+        params['usedParsers'] = params.get('usedParsers', list())
+
+        # this parameters will be deprecated soon
+        params['withND'] = params.get('withND', True) # include the source data
+        params['multi'] = params.get('multi', False) # use the *.paar6 forma
+
+        resp, _ = self.api.request('project/export', method='post', json=params)
+        location = resp.headers.get('location')
+        qs = parse_qs(urlparse(location).query)
+        export_id = qs['exportId'][0]
+
+        if not wait:
+            return export_id
+
+        while True:
+            time.sleep(1)
+            status = self._get_export_status(export_id)
+            # status has only empty state key when the server rebooted during the project export
+            if status.get('progress', 100) == 100:
+                return status
+
 
 class Parameters:
     def __init__(self, prj: Project, _id: Optional[str]):
