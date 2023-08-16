@@ -403,7 +403,7 @@ class Project:
             time.sleep(1)
             status = self.get_export_status(export_id)
             # status has only empty state key when the server rebooted during the project export
-            if status.get('progress', 100) == 100:
+            if status['state'] in ('Exported', 'Error'):
                 return status
 
 
