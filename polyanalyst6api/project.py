@@ -8,6 +8,7 @@ import datetime
 import functools
 import math
 import os
+import pathlib
 import time
 import warnings
 from urllib.parse import urlparse, parse_qs
@@ -355,21 +356,24 @@ class Project:
     def export(self, file_path: str, params: Optional[Dict] = None, wait: bool = False) -> Union[str, Dict[str, Any]]:
         """
         Export project to a file system.
-            :param file_path: str: Absolute path to the exported project. Also project can be exported on the Drive,\
-                for example: '@administrator@/example.pa6'. Possible extensions are 'ps6', 'pa6', 'psar6', 'paar6', 'pagridar6'
-            :param params: (optional) parameters:
-                ids: List[str]:  Ids of projects to export. Use it for 'psar6', 'paar6', 'pagridar6' formats to add other projects to the export file.
-                compressionLevel: str: Compression level. Possible values are 'Store', 'Fastest', 'Fast', 'Normal'(by default), 'Maximum', 'Ultra'
-                keepBackups: bool: Keep backup versions. True by default.
-                keepMacrosAndVars: bool: Keep user and server macros and variables. True by default.
-                keepSliceStatistics: bool: Keep slice usage statistics. False by default.
-                overwriteExisting: bool: Allow overwriting an existing file. False by default.
-                dicts: dict: Include a descriptions of the project dictionaries. Empty by default.
-                usedDicts: dict: Include descriptions of server-side non-embedded dictionaries. Empty by default.
-                usedParsers: list: Include the parsers used. Empty by default.
-            :param wait: wait until the project export is completed. False by default.
 
-        :return: export identifier if `wait` is False and export status otherwise
+        :param file_path: The folder location, name and extension of the destination file. The location can be absolute path or PolyAnalyst alias,\
+            i.e. Open access folder or User home folder. The file extension defines project format: ps6, pa6, psar6, paar6, pagridar6. For example,\
+                'D:/projects/example.pa6' or '@administrator@/example.pagridar6'
+        :param params: (optional) Parameters:
+            ids: A list of projects IDs to export. Use it for 'psar6', 'paar6', 'pagridar6' formats to export 2 or more projects to the file.
+            compressionLevel: Compression level of the exported project. Possible values are 'Store', 'Fastest', 'Fast', 'Normal', 'Maximum', 'Ultra'.\
+                The parameter defaults to 'Normal'.
+            keepBackups: Keep backup versions. The parameter defaults to True.
+            keepMacrosAndVars: Keep user and server macros and variables. The parameter defaults to True.
+            keepSliceStatistics: Keep slice usage statistics. The parameter defaults to False.
+            overwriteExisting: Allow overwriting an existing file. The parameter defaults to False.
+            dicts: A dictionary of project dictionaries descriptions. The parameter defaults to {}.
+            usedDicts: A dictionary that includes descriptions of server-side non-embedded dictionaries. The parameter defaults to {}.
+            usedParsers: A list of used parsers to include. The parameter defaults to [].
+        :param wait: Wait until the project export is completed. The parameter defaults to False.
+
+        :return: Returns the export identifier if the `wait` parameter is False and returns the export status otherwise.
 
         .. versionadded:: 0.28.0
         """
@@ -377,21 +381,21 @@ class Project:
         if params is None:
             params = {}
 
-        _, file_format = os.path.splitext(file_path)
-        params.update((('fileName', file_path), ('fileFormat', file_format[1::])))
-        params['ids'] =  [self.uuid] + params.get('ids', [])
+        file_format = pathlib.Path(file_path).suffix
+        params.update({'fileName': file_path, 'fileFormat': file_format[1::]})
+        params['ids'] =  params.get('ids', [self.uuid])
         
-        compressionLevel = params.get('compressionLevel', 'Normal')
-        compressionLevel_dict = {'Store': 0, 'Fastest': 1, 'Fast': 3, 'Normal': 5, 'Maximum': 7, 'Ultra': 9}
-        params['compressionLevel'] = compressionLevel_dict[compressionLevel]
+        compression_level = params.get('compressionLevel', 'Normal')
+        compression_levels = {'Store': 0, 'Fastest': 1, 'Fast': 3, 'Normal': 5, 'Maximum': 7, 'Ultra': 9}
+        params['compressionLevel'] = compression_levels[compression_level]
         
         params['keepBackups'] = params.get('keepBackups', True)
         params['keepMacrosAndVars'] = params.get('keepMacrosAndVars', True)
         params['keepSliceStatistics'] = params.get('keepSliceStatistics', False)
         params['overwriteExisting'] = params.get('overwriteExisting', False)
-        params['dicts'] = params.get('dicts', dict())
-        params['usedDicts'] = params.get('usedDicts', dict())
-        params['usedParsers'] = params.get('usedParsers', list())
+        params['dicts'] = params.get('dicts', {})
+        params['usedDicts'] = params.get('usedDicts', {})
+        params['usedParsers'] = params.get('usedParsers', [])
 
         resp, _ = self.api.request('project/export', method='post', json=params) # returns an APIException if the value of 'overwriteExisting' is False
         location = resp.headers.get('location')
