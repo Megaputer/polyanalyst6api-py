@@ -7,10 +7,11 @@ This module contains functionality for access to PolyAnalyst Analytical Client A
 import datetime
 import functools
 import math
+import os
 import time
 import warnings
 from urllib.parse import urlparse, parse_qs
-from typing import Any, Dict, List, Literal, Union, Optional, Tuple, Iterator
+from typing import Any, Dict, List, Union, Optional, Tuple, Iterator
 
 from .exceptions import APIException, _WrapperNotFound
 
@@ -351,13 +352,13 @@ class Project:
         return self.api.get('project/export/status', params={'exportId': export_id})
 
 
-    def export(self, filepath: str, fileformat: str, params: Optional[Dict] = None, wait: bool = False) -> Union[str, Dict[str, Any]]:
+    def export(self, file_path: str, params: Optional[Dict] = None, wait: bool = False) -> Union[str, Dict[str, Any]]:
         """
         Export project to a file system.
-            :param filepath: str: Path to the exported project on the Drive, for example: '@administrator@/example.pa6'
-            :param fileformat: str: Project export format. Possible values are 'ps6', 'pa6', 'psar6', 'paar6', 'pagridar6'
+            :param file_path: str: Absolute path to the exported project. Also project can be exported on the Drive,\
+                for example: '@administrator@/example.pa6'. Possible extensions are 'ps6', 'pa6', 'psar6', 'paar6', 'pagridar6'
             :param params: (optional) parameters:
-                ids: List[str]:  Ids of projects to export.
+                ids: List[str]:  Ids of projects to export. Use it for 'psar6', 'paar6', 'pagridar6' formats to add other projects to the export file.
                 compressionLevel: str: Compression level. Possible values are 'Store', 'Fastest', 'Fast', 'Normal'(by default), 'Maximum', 'Ultra'
                 keepBackups: bool: Keep backup versions. True by default.
                 keepMacrosAndVars: bool: Keep user and server macros and variables. True by default.
@@ -374,13 +375,14 @@ class Project:
         """
 
         if params is None:
-            params = dict()
+            params = {}
 
-        params.update((('fileName', filepath), ('fileFormat', fileformat)))
-        params['ids'] = params.get('ids', [self.uuid])
+        _, file_format = os.path.splitext(file_path)
+        params.update((('fileName', file_path), ('fileFormat', file_format[1::])))
+        params['ids'] =  [self.uuid] + params.get('ids', [])
         
-        compressionLevel: Literal['Store', 'Fastest', 'Fast', 'Normal', 'Maximum', 'Ultra'] = params.get('compressionLevel', 'Normal')
-        compressionLevel_dict = dict((('Store', 0), ('Fastest', 1), ('Fast', 3), ('Normal', 5), ('Maximum', 7), ('Ultra', 9)))
+        compressionLevel = params.get('compressionLevel', 'Normal')
+        compressionLevel_dict = {'Store': 0, 'Fastest': 1, 'Fast': 3, 'Normal': 5, 'Maximum': 7, 'Ultra': 9}
         params['compressionLevel'] = compressionLevel_dict[compressionLevel]
         
         params['keepBackups'] = params.get('keepBackups', True)
@@ -403,7 +405,7 @@ class Project:
             time.sleep(1)
             status = self.get_export_status(export_id)
             # status has only empty state key when the server rebooted during the project export
-            if status['state'] in ('Exported', 'Error'):
+            if status.get('state') in ('Exported', 'Error'):
                 return status
 
 
