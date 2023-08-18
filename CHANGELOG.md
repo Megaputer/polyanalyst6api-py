@@ -1,3 +1,15 @@
+0.28.0 (2023-08-18)
+===================
+
+### Features
+
+- Added support for exporting a project to the file system (export)
+
+### Deprecations and Removals
+
+- Dropped support of python 3.6 (#2)
+
+
 0.27.0 (2023-07-27)
 ===================
 
