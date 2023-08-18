@@ -7,6 +7,7 @@ This module contains functionality for access to PolyAnalyst Analytical Client A
 import datetime
 import functools
 import math
+import os
 import time
 import warnings
 from urllib.parse import urlparse, parse_qs
@@ -273,7 +274,9 @@ class Project:
 
             time.sleep(1)
 
-    def export(self, file_path: str, options: Optional[Dict] = None, wait: bool = False) -> Union[str, Dict[str, Any]]:
+    def export(
+        self, file_path: Union[str, os.PathLike], options: Optional[Dict] = None, wait: bool = False
+    ) -> Union[str, Dict[str, Any]]:
         """
         Export project to a server file system.
 
@@ -317,8 +320,8 @@ class Project:
         if options is None:
             options = {}
 
-        options['fileName'] = file_path
-        options['fileFormat'] = file_path.split('.')[-1]
+        options['fileName'] = str(file_path)
+        options['fileFormat'] = str(file_path).split('.')[-1]
         options['ids'] = options.get('ids', [self.uuid])
 
         cmpr = options.get('compressionLevel')

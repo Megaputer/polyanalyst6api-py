@@ -6,6 +6,7 @@ This module contains functionality for access to PolyAnalyst API.
 """
 import configparser
 import contextlib
+import os
 import pathlib
 import time
 import warnings
@@ -143,7 +144,7 @@ class API:
 
     def import_project(
         self,
-        file_path: str,
+        file_path: Union[str, os.PathLike],
         project_space: str = '',
         on_conflict: str = 'Cancel',
         wait: bool = False,
@@ -167,7 +168,7 @@ class API:
             'project/import',
             method='post',
             json={
-                'fileName': file_path,
+                'fileName': str(file_path),
                 'folderPath': project_space,
                 'conflictResolveMethod': on_conflict,
             },

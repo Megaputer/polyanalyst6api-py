@@ -64,34 +64,34 @@ class Drive:
 
         _upload(source, dest)
 
-    def create_folder(self, name: str, path: str = '') -> None:
+    def create_folder(self, name: str, path: Union[str, os.PathLike] = '') -> None:
         """
         Create a new folder inside the PolyAnalyst's user directory.
 
         :param name: the folder name
         :param path: a relative path of the folder's parent directory
         """
-        self._api.post('folder/create', json={'path': path, 'name': name})
+        self._api.post('folder/create', json={'path': str(path), 'name': name})
 
-    def delete_folder(self, name: str, path: str = '') -> None:
+    def delete_folder(self, name: str, path: Union[str, os.PathLike] = '') -> None:
         """
         Delete the folder in the PolyAnalyst's user directory.
 
         :param name: the folder name
         :param path: a relative path of the folder's parent directory
         """
-        self._api.post('folder/delete', json={'path': path, 'name': name})
+        self._api.post('folder/delete', json={'path': str(path), 'name': name})
 
-    def delete_file(self, name: str, path: str = '') -> None:
+    def delete_file(self, name: str, path: Union[str, os.PathLike] = '') -> None:
         """
         Delete the file in the PolyAnalyst's user directory.
 
         :param name: the filename
         :param path: a relative path of the file's parent directory
         """
-        self._api.post('file/delete', json={'path': path, 'name': name})
+        self._api.post('file/delete', json={'path': str(path), 'name': name})
 
-    def download_file(self, name: str, path: str = '', dest: Optional[IO] = None) -> bytes:
+    def download_file(self, name: str, path: Union[str, os.PathLike] = '', dest: Optional[IO] = None) -> bytes:
         """
         Download the binary content of the file to memory or stream to local file.
 
@@ -107,7 +107,7 @@ class Drive:
           >>> with open('local_file_that_doesnt_exist_yet.csv', 'wb+') as file:
           ...     api.drive.download_file(name='cars.csv', path='/data', dest=file)
         """
-        data = self._api.post('file/download', json={'path': path, 'name': name})
+        data = self._api.post('file/download', json={'path': str(path), 'name': name})
         resp, _ = self._api.request(
             urljoin(self._api.url, '/polyanalyst/download'),
             method='get',
@@ -123,7 +123,7 @@ class Drive:
         except AttributeError as exc:
             raise ClientException('`dest` argument should be file or file-like object') from exc
 
-    def upload_file(self, file: IO, name: Optional[str] = None, path: str = '') -> None:
+    def upload_file(self, file: IO, name: Optional[str] = None, path: Union[str, os.PathLike] = '') -> None:
         """
         Upload the file to the PolyAnalyst's user directory.
 
@@ -162,7 +162,7 @@ class Drive:
             file_name,
             file_size,
             session=api_session,
-            metadata={'foldername': path},
+            metadata={'foldername': str(path)},
         )
 
         pytus.resume(file, file_endpoint, session=api_session, offset=0)
