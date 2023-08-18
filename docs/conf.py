@@ -23,10 +23,11 @@ project = 'polyanalyst6api'
 copyright = '2023, yatmanov'
 author = 'yatmanov'
 
+# The version is defined by git tags. Don't set it there
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '0.22.0'
+release = ''
 
 
 # -- General configuration ---------------------------------------------------
