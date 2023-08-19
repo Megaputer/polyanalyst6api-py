@@ -58,14 +58,9 @@ class Project:
         """
         params = {'prjUUID': self.uuid}
         if skip_hidden is not None:
+            # to allow using older PA's that don't have this arg and return 'redundant parameter in query' error
             params['skipHiddenNodes'] = 'true' if skip_hidden else 'false'
-        try:
-            return self.api.get('project/execution-statistics', params=params)['nodes']
-        except APIException as exc:
-            if 'redundant parameter in query' in str(exc):
-                raise APIException(
-                    "Current PolyAnalyst server doesn't support `skip_hidden` parameter, try again without it."
-                )
+        return self.api.get('project/execution-statistics', params=params)['nodes']
 
     def get_tasks(self) -> List[Dict[str, Any]]:
         """Returns task list info."""
