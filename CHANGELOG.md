@@ -1,3 +1,11 @@
+0.29.1 (2023-08-19)
+===================
+
+### Bugfixes
+
+- Fixed possible issue with using os.PathLike args(replaced str with os.fspath) (fspath)
+
+
 0.29.0 (2023-08-18)
 ===================
 
