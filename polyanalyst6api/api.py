@@ -168,7 +168,7 @@ class API:
             'project/import',
             method='post',
             json={
-                'fileName': str(file_path),
+                'fileName': os.fspath(file_path),
                 'folderPath': project_space,
                 'conflictResolveMethod': on_conflict,
             },

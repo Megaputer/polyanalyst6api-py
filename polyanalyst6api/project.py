@@ -320,8 +320,8 @@ class Project:
         if options is None:
             options = {}
 
-        options['fileName'] = str(file_path)
-        options['fileFormat'] = str(file_path).split('.')[-1]
+        options['fileName'] = os.fspath(file_path)
+        options['fileFormat'] = os.fspath(file_path).split('.')[-1]
         options['ids'] = options.get('ids', [self.uuid])
 
         cmpr = options.get('compressionLevel')

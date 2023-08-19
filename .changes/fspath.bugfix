@@ -1,0 +1,1 @@
+Fixed possible issue with using os.PathLike args(replaced str with os.fspath)

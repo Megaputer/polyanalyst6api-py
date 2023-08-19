@@ -71,7 +71,7 @@ class Drive:
         :param name: the folder name
         :param path: a relative path of the folder's parent directory
         """
-        self._api.post('folder/create', json={'path': str(path), 'name': name})
+        self._api.post('folder/create', json={'path': os.fspath(path), 'name': name})
 
     def delete_folder(self, name: str, path: Union[str, os.PathLike] = '') -> None:
         """
@@ -80,7 +80,7 @@ class Drive:
         :param name: the folder name
         :param path: a relative path of the folder's parent directory
         """
-        self._api.post('folder/delete', json={'path': str(path), 'name': name})
+        self._api.post('folder/delete', json={'path': os.fspath(path), 'name': name})
 
     def delete_file(self, name: str, path: Union[str, os.PathLike] = '') -> None:
         """
@@ -89,7 +89,7 @@ class Drive:
         :param name: the filename
         :param path: a relative path of the file's parent directory
         """
-        self._api.post('file/delete', json={'path': str(path), 'name': name})
+        self._api.post('file/delete', json={'path': os.fspath(path), 'name': name})
 
     def download_file(self, name: str, path: Union[str, os.PathLike] = '', dest: Optional[IO] = None) -> bytes:
         """
@@ -107,7 +107,7 @@ class Drive:
           >>> with open('local_file_that_doesnt_exist_yet.csv', 'wb+') as file:
           ...     api.drive.download_file(name='cars.csv', path='/data', dest=file)
         """
-        data = self._api.post('file/download', json={'path': str(path), 'name': name})
+        data = self._api.post('file/download', json={'path': os.fspath(path), 'name': name})
         resp, _ = self._api.request(
             urljoin(self._api.url, '/polyanalyst/download'),
             method='get',
@@ -162,7 +162,7 @@ class Drive:
             file_name,
             file_size,
             session=api_session,
-            metadata={'foldername': str(path)},
+            metadata={'foldername': os.fspath(path)},
         )
 
         pytus.resume(file, file_endpoint, session=api_session, offset=0)
