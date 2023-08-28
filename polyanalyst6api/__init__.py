@@ -1,6 +1,4 @@
-import pkg_resources
-
-__version__ = pkg_resources.get_distribution(__name__).version
+__version__ = '0.29.4'
 
 from .api import *
 from .exceptions import *
