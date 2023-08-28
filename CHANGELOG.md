@@ -1,3 +1,11 @@
+0.29.2 (2023-08-28)
+===================
+
+### Bugfixes
+
+- Fixed APIExceptions are suppressed in `Project.get_execution_stats` method (exec_stats)
+
+
 0.29.1 (2023-08-19)
 ===================
 
