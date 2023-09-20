@@ -19,6 +19,7 @@ import urllib3
 from . import __version__
 from .drive import Drive
 from .project import Parameters, Project
+from .report import Report
 from .exceptions import APIException, ClientException, _WrapperNotFound, PABusy
 
 __all__ = ['API']
@@ -195,6 +196,14 @@ class API:
         prj = Project(self, uuid)
         prj._update_node_list()  # check that the project with given uuid exists
         return prj
+
+    def report(self, reportUUID: str) -> Report:
+        """Returns :class:`Report <Report>` instance with given reportUUID.
+
+        :param reportUUID: The report uuid
+        """
+        rprt = Report(self, reportUUID)
+        return rprt
 
     def get(self, endpoint: str, **kwargs) -> Any:
         """Shortcut for GET requests via :meth:`request <API.request>`
