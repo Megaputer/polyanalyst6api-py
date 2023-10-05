@@ -197,13 +197,14 @@ class API:
         prj._update_node_list()  # check that the project with given uuid exists
         return prj
 
-    def report(self, reportUUID: str) -> Report:
-        """Returns :class:`Report <Report>` instance with given reportUUID.
+    def report(self, uuid: str) -> Report:
+        """Returns :class:`Report <Report>` instance with given report uuid.
 
-        :param reportUUID: The report uuid
+        :param uuid: The report uuid
+
+        .. versionadded:: 0.30.0
         """
-        rprt = Report(self, reportUUID)
-        return rprt
+        return Report(self, uuid)
 
     def get(self, endpoint: str, **kwargs) -> Any:
         """Shortcut for GET requests via :meth:`request <API.request>`
