@@ -47,7 +47,10 @@ class Project:
         return self.api.get('project/nodes', params={'prjUUID': self.uuid})['nodes']
 
     def get_report_list(self) -> List[Dict[str, str]]:
-        """Returns a list of project nodes."""
+        """Returns a list of project reports. 
+
+        .. versionadded:: 0.30.0
+        """
         return self.api.get('project/reports', params={'prjUUID': self.uuid})
 
     def get_execution_stats(self, skip_hidden: Optional[bool] = None) -> List[Node]:
