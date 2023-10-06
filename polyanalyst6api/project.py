@@ -144,6 +144,36 @@ class Project:
 
         return wave_id
 
+    def execute_to(self, node: Union[str, Dict[str, str]], wait: bool = False) -> Optional[int]:
+        """
+        Execute a sequence of nodes to the given node.
+
+        Similar to :meth:`Project.execute`, except for two differences:
+          - accepts only one node
+          - execution of a sequence of nodes stops at the given node and does not continue further
+
+        :param node: node name or a dict with node name and type
+        :param wait: wait until node is executed
+
+        :return: execution task identifier if `wait` is False else None
+
+        .. versionadded:: 0.30.0
+        """
+        resp, _ = self.api.request(
+            'project/execute-to-node',
+            method='post',
+            json={'prjUUID': self.uuid, 'nodes': [self._find_node(node)]},
+        )
+        location = resp.headers.get('location')
+        query = urlparse(location).query
+        wave_id = int(parse_qs(query).get('executionWave')[0])
+
+        if not wait:
+            return wave_id
+
+        while self.is_running(wave_id):
+            time.sleep(1)
+
     def is_running(self, wave_id: int) -> bool:
         """
         Checks that execution wave is still running in the project.
