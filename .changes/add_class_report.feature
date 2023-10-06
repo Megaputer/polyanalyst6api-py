@@ -1,1 +1,0 @@
-Added `Report` class and `API.report` method for working with reports.

@@ -1,3 +1,14 @@
+0.30.0 (2023-10-06)
+===================
+
+### Features
+
+- Added `Report` class and `API.report` method for working with reports. (add_class_report)
+- Added `Project.get_report_list` method to return a list of project reports. (add_method_to_get_reports)
+- Added `Project.execute_to` method for executing a sequence of nodes until the given node (T40052) (execute_to)
+- Added force_unload parameter to `Project.unload` (T40061) (force_unload)
+
+
 0.29.4 (2023-08-28)
 ===================
 
