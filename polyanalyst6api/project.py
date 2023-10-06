@@ -207,7 +207,7 @@ class Project:
         """
         return Parameters(self, self._find_node(name)['id'])
 
-    def unload(self) -> None:
+    def unload(self, force_unload: bool = False) -> None:
         """
         Unload the project from the memory.
 
@@ -217,10 +217,17 @@ class Project:
 
         :raises: PABusy if PABusy returned for all 10 request attempts
         :raises: APIException if the project has been unloaded before this function was called
+
+        .. versionchanged:: 0.30.0
+           Added `force_unload` parameter, which when used allows server to unload a project even with running nodes
         """
+        data = {'prjUUID': self.uuid}
+        if force_unload:
+            data['forceUnload'] = True
+
         for n in range(10):
             try:
-                self.api.post('project/unload', json={'prjUUID': self.uuid})
+                self.api.post('project/unload', json=data)
                 break
             except PABusy:
                 time.sleep(0.1 * (2 ** (n - 1)))  # urllib's backoff formula
