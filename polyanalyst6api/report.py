@@ -9,7 +9,7 @@ Component = Dict[str, Union[str, int, List[int]]]
 SliceStatistics = Dict[str, Dict[str, Union[str, Any]]]
 
 
-class Report():
+class Report:
     """This class maintains all operations with the PolyAnalyst's report.
 
     :param api: An instance of :class:`API <API>` class

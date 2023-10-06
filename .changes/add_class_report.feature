@@ -1,2 +1,1 @@
-Added `Report` class to mantain operations with the PolyAnalyst's report.
-Added `report` method to `API` class.
+Added `Report` class and `API.report` method for working with reports.
