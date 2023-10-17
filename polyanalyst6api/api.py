@@ -143,6 +143,15 @@ class API:
         """
         return self.get('project/import/status', params={'importId': import_id})
 
+    def get_projects_list(self) -> List[Optional[Dict[str, Union[str, int, bool]]]]:
+        """Get a list of projects.
+
+        :raises: APIException if version of Polyanalyst older than 2815
+
+        .. versionadded:: 0.31
+        """
+        return self.get('projects')
+
     def import_project(
         self,
         file_path: Union[str, os.PathLike],
@@ -188,13 +197,16 @@ class API:
             if status.get('progress', 100) == 100:
                 return status
 
-    def project(self, uuid: str) -> Project:
+    def project(self, uuid: str, wait: bool = True) -> Project:
         """Returns :class:`Project <Project>` instance with given uuid.
 
         :param uuid: The project uuid
+
+        .. versionchanged:: 0.31
+            Added loading of the project when calling the method: use the `wait`
+            parameter to wait for the project to load. Defaults to ``False``.
         """
-        prj = Project(self, uuid)
-        prj._update_node_list()  # check that the project with given uuid exists
+        prj = Project(self, uuid, wait)
         return prj
 
     def report(self, uuid: str) -> Report:
