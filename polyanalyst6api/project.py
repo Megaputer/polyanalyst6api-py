@@ -29,15 +29,27 @@ class Project:
 
     :param api: An instance of :class:`API <API>` class
     :param uuid: The uuid of the project you want to interact with
+
+    .. versionchanged:: 0.31
+           Added project loading while initializing the class if Polyanalyst
+           version is not older than 2815.
     """
 
     def __repr__(self):
         return f'<Project [{self.uuid}]>'
 
-    def __init__(self, api, uuid: str):
+    def __init__(self, api, uuid: str, wait: bool = False):
         self.api = api
         self.uuid = uuid
         self._node_list: List[Node] = []
+
+        try:
+            self.load(wait)
+        except APIException as exc:
+            if exc.status_code == 404: # returns if Polyanalyst version is older than 2815
+                pass
+            else:
+                raise exc
 
     def get_node_list(self) -> List[Node]:
         """Returns a list of project nodes.
@@ -206,6 +218,45 @@ class Project:
         .. versionadded:: 0.18.0
         """
         return Parameters(self, self._find_node(name)['id'])
+
+    def _get_load_status(self, load_id: int) -> Dict[str, Any]:
+        """Get the status of project load.
+
+        :param load_id: the load identifier
+        :raises: APIException if bad load_id or version of Polyanalyst older than 2815
+
+        :return: project loading status
+
+        .. versionadded:: 0.31
+        """
+
+        return self.api.get('project/load/status', params={'asyncOperationId': load_id})
+
+    def load(self, wait: bool = False) -> Union[str, Dict[str, Any]]:
+        """Load project to the memory.
+
+        :param wait: wait until the project loading is completed. Defaults to ``False``.
+        :raises: APIException if version of Polyanalyst older than 2815
+
+        :return: load identifier if `wait` is False and load status otherwise
+
+        .. versionadded:: 0.31
+        """
+        resp, _ = self.api.request('project/load', method='post', json={'prjUUID': self.uuid})
+        location = resp.headers.get('location')
+        qs = parse_qs(urlparse(location).query)
+        load_id = qs['asyncOperationId'][0]
+
+        if not wait:
+            return load_id
+
+        while True:
+            time.sleep(1)
+            status = self._get_load_status(load_id)
+            if status.get('status') not in ('Processing'):
+                if status.get('status') in ('Error'):
+                    raise ClientException(f"Failed to load project: {status.get('message')}")
+                return status
 
     def status(self):
         """Get project status.
