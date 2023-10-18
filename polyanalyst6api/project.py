@@ -207,6 +207,17 @@ class Project:
         """
         return Parameters(self, self._find_node(name)['id'])
 
+    def status(self):
+        """Get project status.
+
+        :raises: APIException if version of Polyanalyst older than 2815
+
+        :return: project status
+
+        .. versionadded:: 0.30.1
+        """
+        return self.api.get('project/status', params={'prjUUID': self.uuid})
+
     def unload(self, force_unload: bool = False) -> None:
         """
         Unload the project from the memory.
