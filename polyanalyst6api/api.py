@@ -143,6 +143,15 @@ class API:
         """
         return self.get('project/import/status', params={'importId': import_id})
 
+    def get_projects_list(self) -> List[Optional[Dict[str, Union[str, int, bool]]]]:
+        """Get a list of projects.
+
+        :raises: APIException if version of Polyanalyst older than 2815
+
+        .. versionadded:: 0.30.1
+        """
+        return self.get('projects')
+
     def import_project(
         self,
         file_path: Union[str, os.PathLike],
