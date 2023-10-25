@@ -148,7 +148,7 @@ class API:
 
         :raises: APIException if version of Polyanalyst older than 2815
 
-        .. versionadded:: 0.30.1
+        .. versionadded:: 0.31
         """
         return self.get('projects')
 
