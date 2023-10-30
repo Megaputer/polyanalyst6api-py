@@ -214,7 +214,7 @@ class Project:
 
         :return: project status
 
-        .. versionadded:: 0.30.1
+        .. versionadded:: 0.31
         """
         return self.api.get('project/status', params={'prjUUID': self.uuid})
 
