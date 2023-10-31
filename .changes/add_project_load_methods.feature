@@ -1,1 +1,0 @@
-Added Project.load, Project._get_load_status methods and edited Project.__init__, API.project methods.

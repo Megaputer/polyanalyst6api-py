@@ -1,3 +1,13 @@
+0.31.0 (2023-10-31)
+===================
+
+### Features
+
+- Added API.get_projects_list method. (add_get_list_of_projects)
+- Added Project.status method. (add_get_status)
+- Added Project.load, Project._get_load_status methods and edited Project.__init__, API.project methods. (add_project_load_methods)
+
+
 0.30.0 (2023-10-06)
 ===================
 
