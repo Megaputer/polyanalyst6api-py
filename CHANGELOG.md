@@ -3,14 +3,7 @@
 
 ### Bugfixes
 
-- 
 - Fixed 'Node not found' error while initalizing project instance (node_not_found)
-
-
-0.31.1 (2023-10-31)
-===================
-
-No significant changes.
 
 
 0.31.0 (2023-10-31)
