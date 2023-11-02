@@ -207,6 +207,7 @@ class API:
             parameter to wait for the project to load. Defaults to ``False``.
         """
         prj = Project(self, uuid, wait)
+        prj._update_node_list()
         return prj
 
     def report(self, uuid: str) -> Report:
