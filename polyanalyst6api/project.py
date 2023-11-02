@@ -41,7 +41,7 @@ class Project:
     def __init__(self, api, uuid: str, wait: bool = False):
         self.api = api
         self.uuid = uuid
-        self._node_list: List[Node] = []
+        self._node_list: List[Node] = self.get_node_list()
 
         try:
             self.load(wait)
