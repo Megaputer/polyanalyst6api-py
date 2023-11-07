@@ -18,7 +18,7 @@ This page contains specific information on the polyanalyst6api package classes a
    :members:
 .. autoclass:: polyanalyst6api.project.Parameters
    :members:
-.. autoclass:: polyanalyst6api.project.Report
+.. autoclass:: polyanalyst6api.report.Report
    :members:
 
 Exceptions
