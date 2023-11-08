@@ -197,16 +197,12 @@ class API:
             if status.get('progress', 100) == 100:
                 return status
 
-    def project(self, uuid: str, wait: bool = True) -> Project:
+    def project(self, uuid: str) -> Project:
         """Returns :class:`Project <Project>` instance with given uuid.
 
         :param uuid: The project uuid
-
-        .. versionchanged:: 0.31
-            Added loading of the project when calling the method: use the `wait`
-            parameter to wait for the project to load. Defaults to ``False``.
         """
-        prj = Project(self, uuid, wait)
+        prj = Project(self, uuid)
         return prj
 
     def report(self, uuid: str) -> Report:

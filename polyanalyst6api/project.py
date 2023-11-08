@@ -30,26 +30,17 @@ class Project:
     :param api: An instance of :class:`API <API>` class
     :param uuid: The uuid of the project you want to interact with
 
-    .. versionchanged:: 0.31
-           Added project loading while initializing the class if Polyanalyst
-           version is not older than 2815.
+    .. versionchanged:: 0.32
+           Added nodes list updating while initializing the class
     """
 
     def __repr__(self):
         return f'<Project [{self.uuid}]>'
 
-    def __init__(self, api, uuid: str, wait: bool = False):
+    def __init__(self, api, uuid: str):
         self.api = api
         self.uuid = uuid
-        self._node_list: List[Node] = self.get_node_list()
-
-        try:
-            self.load(wait)
-        except APIException as exc:
-            if exc.status_code == 404: # returns if Polyanalyst version is older than 2815
-                pass
-            else:
-                raise exc
+        self._node_list: List[Node] = self.get_node_list() # automatically loads a project
 
     def get_node_list(self) -> List[Node]:
         """Returns a list of project nodes.
