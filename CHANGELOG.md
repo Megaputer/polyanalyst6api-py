@@ -1,3 +1,11 @@
+0.32.1 (2023-11-14)
+===================
+
+### Features
+
+- Added an ability to autoselect LDAP server when login using it
+
+
 0.32.0 (2023-11-08)
 ===================
 
