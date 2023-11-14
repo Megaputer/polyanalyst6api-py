@@ -110,9 +110,13 @@ class API:
         return self.request(urljoin(self.url, 'server/info'), method='get')[1]
 
     def login(self) -> None:
-        """Logs in to PolyAnalyst Server with user credentials."""
+        """Logs in to PolyAnalyst Server with user credentials.
+
+        .. versionchanged:: 0.32.1
+                Use self.ldap_server = '' to autoselect LDAP server
+        """
         credentials = {'uname': self.username, 'pwd': self.password}
-        if self.ldap_server:
+        if self.ldap_server is not None:
             credentials['useLDAP'] = '1'
             credentials['svr'] = self.ldap_server
 
