@@ -30,7 +30,7 @@ class Project:
     :param api: An instance of :class:`API <API>` class
     :param uuid: The uuid of the project you want to interact with
 
-    .. versionchanged:: 0.32
+    .. versionchanged:: 0.31.0
            Added nodes list updating while initializing the class
     """
 
