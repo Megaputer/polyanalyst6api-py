@@ -1,6 +1,12 @@
 0.33.0 (2023-11-16)
 ===================
 
+No significant changes.
+
+
+0.33.0 (2023-11-16)
+===================
+
 ### Features
 
 - Added the ability to select the physical space for project import
