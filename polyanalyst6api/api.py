@@ -152,23 +152,35 @@ class API:
 
         :raises: APIException if version of Polyanalyst older than 2815
 
-        .. versionadded:: 0.31
+        .. versionadded:: 0.31.0
         """
         return self.get('projects')
+
+    def _get_project_spaces(self) -> List[Optional[Dict[str, Union[str, int, bool]]]]:
+        """Get a list of project spaces.
+
+        :raises: APIException if version of Polyanalyst older than 2817
+
+        .. versionadded:: 0.33.0
+        """
+        return self.get('project/spaces')
 
     def import_project(
         self,
         file_path: Union[str, os.PathLike],
-        project_space: str = '',
+        project_location: str = '',
+        project_space: Optional[str] = None,
         on_conflict: str = 'Cancel',
-        wait: bool = False,
-    ) -> Union[str, Dict]:
+        wait: bool = False
+        ) -> Union[str, Dict]:
         """
         Import project from file on server file system.
 
         :param file_path: absolute path to the file on server file system
-        :param project_space: the name of the folder in the project manager
+        :param project_location: the name of the folder in the project manager
             where you want to import the project. The default folder is `Root`.
+        :param project_space: the name of the physical location in the project manager
+            where you want to import the project. The default space is `Projects & reports`.
         :param on_conflict: the strategy to resolve import conflict. Allowed
             options are: Cancel, Overwrite, ChangeExistingId, ChangeImportingId.
             By default, the import will be cancelled if the project already exist.
@@ -177,15 +189,32 @@ class API:
         :return: import identifier if `wait` is False and import status otherwise
 
         .. versionadded:: 0.24.0
+        .. versionchanged:: 0.33.0
+                Added parameter `project_space` to select project physical location
+
         """
+        json_data = {
+                    'fileName': os.fspath(file_path),
+                    'folderPath': project_location,
+                    'conflictResolveMethod': on_conflict
+                }
+
+        if project_space not in (None, ''):
+            prj_spaces = self._get_project_spaces()
+            location_id = None
+            for space in prj_spaces:
+                if space['name'] == project_space:
+                    location_id = space['id']
+
+            if location_id is None:
+                raise ClientException(f'The project space r{repr(project_space)} isn\'t found')
+
+            json_data['spaceId'] = location_id
+
         resp, _ = self.request(
             'project/import',
             method='post',
-            json={
-                'fileName': os.fspath(file_path),
-                'folderPath': project_space,
-                'conflictResolveMethod': on_conflict,
-            },
+            json=json_data
         )
         location = resp.headers.get('location')
         qs = parse_qs(urlparse(location).query)
