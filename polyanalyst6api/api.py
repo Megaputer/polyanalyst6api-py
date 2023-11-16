@@ -191,7 +191,6 @@ class API:
         .. versionadded:: 0.24.0
         .. versionchanged:: 0.33.0
                 Added parameter `project_space` to select project physical location
-
         """
         json_data = {
                     'fileName': os.fspath(file_path),
@@ -207,7 +206,7 @@ class API:
                     location_id = space['id']
 
             if location_id is None:
-                raise ClientException(f'The project space r{repr(project_space)} isn\'t found')
+                raise ClientException(f'The project space {repr(project_space)} isn\'t exist or disabled')
 
             json_data['spaceId'] = location_id
 
