@@ -1,3 +1,11 @@
+0.33.0 (2023-11-16)
+===================
+
+### Features
+
+- Added the ability to select the physical space for project import
+- Renamed parameter in API.import_project: project_space -> project_location
+
 0.32.1 (2023-11-14)
 ===================
 
