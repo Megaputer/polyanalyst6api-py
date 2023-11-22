@@ -1,4 +1,10 @@
-0.33.0 (2023-11-16)
+0.33.2 (2023-11-23)
+===================
+
+- Fix waiting state when importing a project.
+
+
+0.33.1 (2023-11-16)
 ===================
 
 No significant changes.
