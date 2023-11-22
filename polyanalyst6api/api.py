@@ -139,7 +139,7 @@ class API:
         self.post('scheduler/run-task', json={'taskId': id})
 
     def get_project_import_status(self, import_id: str) -> Dict:
-        """Get the status of project import
+        """Get the status of project import. The status contains UUIDs of projects after import is completed.
 
         :param import_id: the import identifier
 
@@ -226,7 +226,7 @@ class API:
             time.sleep(1)
             status = self.get_project_import_status(import_id)
             # status has only empty state key when the server rebooted during the project import: T32492#776729
-            if status.get('progress', 100) == 100:
+            if status.get('state') in ('Error', 'Imported'):
                 return status
 
     def project(self, uuid: str) -> Project:
