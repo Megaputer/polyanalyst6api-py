@@ -88,12 +88,18 @@ class Project:
         """Aborts the execution of all nodes in the project."""
         self.api.post('project/global-abort', json={'prjUUID': self.uuid})
 
-    def execute(self, *args: Union[str, Dict[str, str]], wait: bool = False) -> Optional[int]:
+    def execute(
+            self, *args: Union[str, Dict[str, str]], wait: bool = False, ignore_first_n_pabusy: int = 0
+    ) -> Optional[int]:
         """
         Initiates execution of nodes and returns execution wave identifier.
 
         :param args: node names and/or dicts with name and type of nodes
         :param wait: wait for nodes execution to complete
+        :param ignore_first_n_pabusy: when waiting for execution to complete skip the first specified numbers of PABusy
+
+        .. versionchanged:: 0.34.0
+           Added `ignore_first_n_pabusy` parameter
 
         Usage::
 
@@ -123,11 +129,7 @@ class Project:
             node = self._find_node(arg)
             nodes.append({'name': node['name'], 'type': node['type']})
 
-        resp, _ = self.api.request(
-            'project/execute',
-            method='post',
-            json={'prjUUID': self.uuid, 'nodes': nodes},
-        )
+        resp, _ = self.api.request('project/execute', 'POST', json={'prjUUID': self.uuid, 'nodes': nodes})
 
         location = resp.headers.get('location')
         query = urlparse(location).query
@@ -142,8 +144,15 @@ class Project:
                     self.wait_for_completion(node)  # type: ignore
                 return
 
-            while self.is_running(wave_id):
+            while True:
                 time.sleep(1)
+                try:
+                    if not self.is_running(wave_id):
+                        break
+                except PABusy:
+                    ignore_first_n_pabusy -= 1
+                    if ignore_first_n_pabusy <= 0:
+                        raise
 
         return wave_id
 
