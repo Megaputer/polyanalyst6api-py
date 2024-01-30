@@ -1,3 +1,8 @@
+0.34.0 (2024-01-30)
+===================
+
+- Added a new parameter to prj.execute to ignore the first specified number of PABusy errors
+
 0.33.2 (2023-11-23)
 ===================
 
