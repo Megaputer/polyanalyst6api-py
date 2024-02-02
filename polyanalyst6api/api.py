@@ -98,6 +98,8 @@ class API:
         self._s = requests.Session()
         self._s.verify = kwargs.get('verify', True)
         self._s.headers.update({'User-Agent': self.user_agent})
+        self.timeout = 60  # default timeout for all requests
+
         self.sid = None  # session identity
         self.drive = Drive(self)
 
@@ -272,6 +274,7 @@ class API:
         """
         if not urlparse(url).netloc:
             url = urljoin(self.url, url)
+        kwargs.setdefault('timeout', self.timeout)
         try:
             resp = self._s.request(method, url, **kwargs)
         except requests.RequestException as exc:
