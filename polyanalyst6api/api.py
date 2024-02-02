@@ -65,7 +65,7 @@ class API:
     ):
         if url is None or username is None:
             warnings.warn(
-                'Either the Polyanalyst URL or credentials are not provided.'
+                'Either the PolyAnalyst URL or credentials are not provided.'
                 'Getting missing data from the credentials file, use of which is deprecated and planned for removal',
                 DeprecationWarning,
                 2,
@@ -152,7 +152,7 @@ class API:
     def get_projects_list(self) -> List[Optional[Dict[str, Union[str, int, bool]]]]:
         """Get a list of projects.
 
-        :raises: APIException if version of Polyanalyst older than 2815
+        :raises: APIException if version of PolyAnalyst older than 2815
 
         .. versionadded:: 0.31.0
         """
@@ -161,7 +161,7 @@ class API:
     def _get_project_spaces(self) -> List[Optional[Dict[str, Union[str, int, bool]]]]:
         """Get a list of project spaces.
 
-        :raises: APIException if version of Polyanalyst older than 2817
+        :raises: APIException if version of PolyAnalyst older than 2817
 
         .. versionadded:: 0.33.0
         """

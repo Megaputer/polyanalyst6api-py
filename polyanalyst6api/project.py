@@ -223,7 +223,7 @@ class Project:
         """Get the status of project load.
 
         :param load_id: the load identifier
-        :raises: APIException if bad load_id or version of Polyanalyst older than 2815
+        :raises: APIException if bad load_id or version of PolyAnalyst older than 2815
 
         :return: project loading status
 
@@ -236,7 +236,7 @@ class Project:
         """Load project to the memory.
 
         :param wait: wait until the project loading is completed. Defaults to ``False``.
-        :raises: APIException if version of Polyanalyst older than 2815
+        :raises: APIException if version of PolyAnalyst older than 2815
 
         :return: load identifier if `wait` is False and load status otherwise
 
@@ -261,7 +261,7 @@ class Project:
     def status(self):
         """Get project status.
 
-        :raises: APIException if version of Polyanalyst older than 2815
+        :raises: APIException if version of PolyAnalyst older than 2815
 
         :return: project status
 
