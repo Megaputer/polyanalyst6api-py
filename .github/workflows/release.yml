@@ -34,3 +34,31 @@ jobs:
           webhook_url: ${{ secrets.RTDS_WEBHOOK_URL }}
           webhook_token: ${{ secrets.RTDS_WEBHOOK_TOKEN }}
           commit_ref: ${{ github.ref }}
+
+  changelog:
+    name: Update CHANGELOG.md
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.PAT }}
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PY_VER }}
+      - run: |
+          pip install --upgrade pip
+          pip install poetry==1.3.2
+          poetry install --without test
+          poetry run towncrier build --yes --version=${{ github.ref_name }}
+          user=$(gh api /user)
+          user_name=$(jq -r '.login' <<<"$user")
+          user_email=$(jq -r ".email | \"$user_name@users.noreply.github.com\"" <<<"$user")
+          git config user.name "$user_name"
+          git config user.email "$user_email"
+          git commit -m "Update changelog"
+          git push origin HEAD:master
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
