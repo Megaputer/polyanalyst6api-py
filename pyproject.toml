@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "polyanalyst6api"
-version = "0.34.0"
+version = "0.35.0"
 description = "polyanalyst6api is a PolyAnalyst API client for Python."
 authors = ["yatmanov <yatmanov@megaputer.ru>"]
 license = "MIT"
@@ -23,6 +23,10 @@ classifiers = [
 python = "^3.7"
 requests = "^2.28"
 pytus = "^0.2.1"
+urllib3 = [
+    {version = "1.26.18", python = "3.7"},
+    {version = "*", python = ">=3.8"}
+]
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.4.0"
