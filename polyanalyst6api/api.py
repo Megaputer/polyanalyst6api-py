@@ -39,9 +39,10 @@ class API:
 
     :param url: The scheme, host and port(if exists) of a PolyAnalyst server \
         (e.g. ``https://localhost:5043/``, ``http://example.polyanalyst.com``)
-    :param username: The username to log in with
+    :param username: (optional) The username to log in with
     :param password: (optional) The password for specified username
     :param ldap_server: (optional) LDAP Server address
+    :param token: (optional) API Token
 
     If ldap_server is provided, then login will be performed via LDAP Server.
 
@@ -54,11 +55,13 @@ class API:
     user_agent = f'PolyAnalyst6API python client v{__version__}'
 
     def __enter__(self) -> 'API':
-        self.login()
+        if not self._token:
+            self.login()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.logout()
+        if not self._token:
+            self.logout()
         self._s.__exit__()
 
     def __init__(
@@ -67,9 +70,11 @@ class API:
         username: Optional[str] = None,
         password: Optional[str] = None,
         ldap_server: Optional[str] = None,
+        *,
+        token: Optional[str] = None,
         **kwargs,
     ):
-        if url is None or username is None:
+        if not any([url, username, password, ldap_server]):
             warnings.warn(
                 'Either the PolyAnalyst URL or credentials are not provided.'
                 'Getting missing data from the credentials file, use of which is deprecated and planned for removal',
@@ -95,8 +100,12 @@ class API:
         if not url:
             raise ClientException('The PolyAnalyst URL is empty')
 
+        if token and username:
+            raise ClientException('Can\'t use both Token-Based and Username & Password authentications')
+
         self.base_url = urljoin(url, '/polyanalyst/api/')
         self.url = urljoin(self.base_url, 'v1.0/')
+
         self.username = username
         self.password = password or ''
         self.ldap_server = ldap_server
@@ -109,6 +118,11 @@ class API:
         self._s.mount('https://', adapter)
         self._s.verify = kwargs.get('verify', True)
         self._s.headers.update({'User-Agent': self.user_agent})
+
+        self._token = token
+        if token:
+            self._s.headers['x-api-key'] = token
+
         self.timeout = 60  # default timeout for all requests
 
         self.sid = None  # session identity
@@ -128,6 +142,9 @@ class API:
         .. versionchanged:: 0.32.1
                 Use self.ldap_server = '' to autoselect LDAP server
         """
+        if self._token:
+            return
+
         credentials = {'uname': self.username, 'pwd': self.password}
         if self.ldap_server is not None:
             credentials['useLDAP'] = '1'
