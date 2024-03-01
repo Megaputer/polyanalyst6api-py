@@ -137,10 +137,10 @@ class API:
         return self.request(urljoin(self.url, 'server/info'), method='get')[1]
 
     def login(self) -> None:
-        """Logs in to PolyAnalyst Server with user credentials.
+        """Logs in to PolyAnalyst with user credentials.
 
         .. versionchanged:: 0.32.1
-                Use self.ldap_server = '' to autoselect LDAP server
+                Use self.ldap_server = '' to auto select LDAP server
         """
         if self._token:
             return
@@ -158,11 +158,11 @@ class API:
             self._s.headers['Authorization'] = f"Bearer {resp.headers['x-session-id']}"
 
     def logout(self) -> None:
-        """Logs out current user from PolyAnalyst server."""
+        """Logs out current user from PolyAnalyst"""
         self.get('logout')
 
     def run_task(self, id: int) -> None:
-        """Initiates scheduler task execution.
+        """Starts scheduler task execution.
 
         :param id: the task ID
         """
@@ -264,8 +264,7 @@ class API:
 
         :param uuid: The project uuid
         """
-        prj = Project(self, uuid)
-        return prj
+        return Project(self, uuid)
 
     def report(self, uuid: str) -> Report:
         """Returns :class:`Report <Report>` instance with given report uuid.
