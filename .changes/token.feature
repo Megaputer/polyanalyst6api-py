@@ -1,1 +1,0 @@
-Added support of Token-Based authentication

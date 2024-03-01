@@ -1,3 +1,21 @@
+0.35.0 (2024-03-01)
+===================
+
+### Features
+
+- Added connection timeout to API requests (fixes hangs when pa server doesn't respond) (T41932)
+- Added retries to requests with linear backoff for PABusy error. Deprecated ignore_first_n_pabusy parameters in `Project.execute` method (pabusy)
+- Added support of Token-Based authentication (token)
+
+### Bugfixes
+
+- Fixed urllib3 import error when using polyanalyst6api in python 3.7 (py37import)
+
+### Improved Documentation
+
+- Fixed typos in documentation (doc)
+
+
 0.34.0 (2024-01-30)
 ===================
 

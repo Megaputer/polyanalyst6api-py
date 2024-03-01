@@ -1,1 +1,0 @@
-Added connection timeout to API requests (fixes hangs when pa server doesn't respond)
