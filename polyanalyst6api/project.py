@@ -96,7 +96,8 @@ class Project:
 
         :param args: node names and/or dicts with name and type of nodes
         :param wait: wait for nodes execution to complete
-        :param ignore_first_n_pabusy: when waiting for execution to complete skip the first specified numbers of PABusy
+        :param ignore_first_n_pabusy: (deprecated) when waiting for execution to complete skip the first specified
+            numbers of PABusy
 
         .. versionchanged:: 0.34.0
            Added `ignore_first_n_pabusy` parameter
@@ -124,6 +125,14 @@ class Project:
 
           >>> prj.execute()
         """
+
+        if ignore_first_n_pabusy:
+            warnings.warn(
+                'ignore_first_n_pabusy is deprecated, use pabusy_timeout parameter in API class instead.',
+                DeprecationWarning,
+                stacklevel=2,
+            )
+
         nodes = []
         for arg in args:
             node = self._find_node(arg)

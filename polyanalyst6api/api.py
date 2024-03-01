@@ -15,6 +15,7 @@ from urllib.parse import urljoin, urlparse, parse_qs
 
 import requests
 import urllib3
+from requests.adapters import HTTPAdapter
 
 from . import __version__
 from .drive import Drive
@@ -26,6 +27,11 @@ __all__ = ['API']
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 warnings.simplefilter('always', UserWarning)  # without this set_parameters will show warnings only once
+
+
+class _RetryLinearBackoff(urllib3.util.Retry):
+    def get_backoff_time(self):
+        return 1
 
 
 class API:
@@ -96,6 +102,11 @@ class API:
         self.ldap_server = ldap_server
 
         self._s = requests.Session()
+        adapter = HTTPAdapter(
+            max_retries=_RetryLinearBackoff(total=kwargs.get('pabusy_timeout', 10), status_forcelist=[503])
+        )
+        self._s.mount('http://', adapter)
+        self._s.mount('https://', adapter)
         self._s.verify = kwargs.get('verify', True)
         self._s.headers.update({'User-Agent': self.user_agent})
         self.timeout = 60  # default timeout for all requests
