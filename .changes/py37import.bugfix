@@ -1,0 +1,1 @@
+Fixed urllib3 import error when using polyanalyst6api in python 3.7
