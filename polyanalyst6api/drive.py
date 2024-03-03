@@ -8,7 +8,7 @@ import os
 import pathlib
 import warnings
 from urllib.parse import urljoin
-from typing import Optional, Union, IO
+from typing import Optional, Union, IO, List
 
 import pytus
 from pytus.main import _get_offset, _get_file_size
@@ -63,6 +63,18 @@ class Drive:
                         _upload(child, f'{dest_dir}/{target.name}')
 
         _upload(source, dest)
+
+    def list(self, path: str = '/', mask: str = '|*.*') -> List:
+        """
+        Get a list of files and subdirectories in the PolyAnalyst's user directory.
+
+        :param path: a relative path from user's home folder
+        :param mask: a file name and mask divided by '|'. For example, '|*.*' - get all(by default), or '|.ps6|README.txt'
+        :return: a list of dictionaries with `name`, `lastModified` and `size`(only for files) values
+
+        .. versionadded:: 0.36.0
+        """
+        return self._api.post('folder/list', json={'path': os.fspath(path), 'mask': mask})['items']
 
     def create_folder(self, name: str, path: Union[str, os.PathLike] = '') -> None:
         """
