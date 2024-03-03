@@ -74,7 +74,7 @@ class Drive:
 
         .. versionadded:: 0.36.0
         """
-        return self._api.post('folder/list', json={'path': os.fspath(path), 'mask': mask})['items']
+        return self._api.get('folder/list', json={'path': os.fspath(path), 'mask': mask})['items']
 
     def create_folder(self, name: str, path: Union[str, os.PathLike] = '') -> None:
         """
