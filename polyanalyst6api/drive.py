@@ -69,8 +69,8 @@ class Drive:
         Get a list of files and subdirectories in the PolyAnalyst's user directory.
 
         :param path: a relative path from user's home folder
-        :param mask: a file name and mask divided by '|'. For example, '|*.*' - get all(by default), or '|.ps6|README.txt'
-        :return: a list of dictionaries with `name`, `lastModified` and `size`(only for files) values
+        :param mask: a file name and mask divided by ``|``. For example, ``|*.*`` - get all(by default), or ``|.ps6|README.txt``
+        :return: a list of dictionaries with 'name', 'lastModified' and 'size'(only for files) values
 
         .. versionadded:: 0.36.0
         """
