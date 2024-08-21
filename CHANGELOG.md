@@ -1,3 +1,11 @@
+0.35.1 (2024-08-21)
+===================
+
+### Bugfixes
+
+- Fixed Drive.download_file method to use Rest API endpoint
+
+
 0.35.0 (2024-03-01)
 ===================
 
