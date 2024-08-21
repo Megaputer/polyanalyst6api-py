@@ -121,7 +121,7 @@ class Drive:
         """
         data = self._api.post('file/download', json={'path': os.fspath(path), 'name': name})
         resp, _ = self._api.request(
-            urljoin(self._api.url, '/polyanalyst/download'),
+            'download',
             method='get',
             params={'uid': data['uid']},
             stream=dest is not None,
