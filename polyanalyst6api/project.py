@@ -31,16 +31,25 @@ class Project:
     :param uuid: The uuid of the project you want to interact with
 
     .. versionchanged:: 0.31.0
-           Added nodes list updating while initializing the class
+        Added nodes list updating while initializing the class
+    .. versionchanged:: 0.35.2
+        Auto repair a broken project
     """
 
     def __repr__(self):
         return f'<Project [{self.uuid}]>'
 
-    def __init__(self, api, uuid: str):
+    def __init__(self, api, uuid: str, auto_repair: bool = False):
         self.api = api
         self.uuid = uuid
-        self._node_list: List[Node] = self.get_node_list() # automatically loads a project
+        try:
+            self._node_list: List[Node] = self.get_node_list() # automatically loads a project
+        except APIException as exc:
+            if auto_repair == True and "You can repair the child project" in repr(exc):
+                self.repair()
+                self._node_list: List[Node] = self.get_node_list()
+            else:
+                raise exc
 
     def get_node_list(self) -> List[Node]:
         """Returns a list of project nodes.

@@ -259,12 +259,12 @@ class API:
             if status.get('state') in ('Error', 'Imported'):
                 return status
 
-    def project(self, uuid: str) -> Project:
+    def project(self, uuid: str, **kwargs) -> Project:
         """Returns :class:`Project <Project>` instance with given uuid.
 
         :param uuid: The project uuid
         """
-        return Project(self, uuid)
+        return Project(self, uuid, **kwargs)
 
     def report(self, uuid: str) -> Report:
         """Returns :class:`Report <Report>` instance with given report uuid.
