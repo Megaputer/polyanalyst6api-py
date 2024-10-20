@@ -1,1 +1,0 @@
-Added a method to get list of files and subdirectories in PolyAnalyst's user home directory
