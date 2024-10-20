@@ -6,15 +6,14 @@
 
 Welcome to the official Python client library for the PolyAnalyst REST API.
 
-This package provides wrappers for PolyAnalyst `Analytical Client`, `Scheduler` and `Drive`.
-Using it you can execute nodes, view datasets, run tasks, download/upload files and so on.
+This package provides python wrappers for PolyAnalyst applications, such as *Analytical Client*, *Scheduler*, *Drive*.
+Using `polyanalyst6api` you can access and edit projects, publications, files and more.
 
 ## Installation
 
 ```shell
 pip install -u polyanalyst6api
 ```
-> [!NOTE]  
 > Python 3.7 or later is required.
 
 ## Documentation
