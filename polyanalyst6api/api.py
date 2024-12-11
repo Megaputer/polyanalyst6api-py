@@ -116,6 +116,8 @@ class API:
         )
         self._s.mount('http://', adapter)
         self._s.mount('https://', adapter)
+        # do not retry SSLError. without this login takes ~30 seconds to throw an error
+        self._s.mount('https://', HTTPAdapter(max_retries=urllib3.util.Retry(0, status_forcelist=[495])))
         self._s.verify = kwargs.get('verify', True)
         self._s.headers.update({'User-Agent': self.user_agent})
 
