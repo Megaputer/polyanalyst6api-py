@@ -1,3 +1,11 @@
+0.35.2 (2024-12-11)
+===================
+
+### Bugfixes
+
+- Removed retries on SSLError to quickly surface certificate issues during login
+
+
 0.35.1 (2024-08-21)
 ===================
 
