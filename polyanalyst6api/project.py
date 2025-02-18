@@ -84,6 +84,35 @@ class Project:
         """Initiates saving of all changes that have been made in the project."""
         self.api.post('project/save', json={'prjUUID': self.uuid})
 
+    def spaces(self) -> List[Dict]:
+        """This operation returns a list of project spaces.
+        
+        :return: project spaces
+        """
+        return self.api.get('project/spaces')
+    
+    def rename(self, new_name: Optional[str] = None, new_description: Optional[str] = None) -> None:
+        """
+        :raises: ValueError if no parameter is set
+
+        This operation allows users to rename a project and to give it a new description. 
+        The operation is available only for project owners and administrators and can not be undone.
+        """
+        if not new_name and not new_description:
+            raise ValueError("Must be specify one of the 'name' or 'description' parameters'")
+    
+        payload = {'prjUUID': self.uuid}
+    
+        if new_name:
+            payload['name'] = new_name
+        if new_description:
+            payload['description'] = new_description
+    
+        self.api.post('project/rename', json=payload)
+
+    def get_project_list(self) -> List[Dict[str, Any]]:
+        return self.api.get('projects')
+
     def abort(self) -> None:
         """Aborts the execution of all nodes in the project."""
         self.api.post('project/global-abort', json={'prjUUID': self.uuid})
@@ -285,7 +314,6 @@ class Project:
         """
         return self.api.get('project/info', params={'prjUUID': self.uuid})
         
-
     def unload(self, force_unload: bool = False) -> None:
         """
         Unload the project from the memory.
