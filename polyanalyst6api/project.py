@@ -277,6 +277,14 @@ class Project:
         .. versionadded:: 0.31
         """
         return self.api.get('project/status', params={'prjUUID': self.uuid})
+    
+    def info(self):
+        """This operation returns information about a project.
+        
+        :return: project information
+        """
+        return self.api.get('project/info', params={'prjUUID': self.uuid})
+        
 
     def unload(self, force_unload: bool = False) -> None:
         """
