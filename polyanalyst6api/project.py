@@ -84,6 +84,71 @@ class Project:
         """Initiates saving of all changes that have been made in the project."""
         self.api.post('project/save', json={'prjUUID': self.uuid})
 
+    def get_save_status(self, save_id: int) -> Dict[str, Any]:
+        """Get the status of project save
+        
+        :param save_id: the save identifier
+        
+        :return: project save status
+        """
+        return self.api.get('project/save/status', params={'asyncOperationId': save_id})
+
+    def duplicate(self, name: str, folder_path: str = "", spaceId: str = None):
+        """This operation allows users to duplicate a project. 
+        The operation is available only for project owners and administrators and can not be undone.
+        
+        :param name: sets the name for the project copy
+        :param folder_path: 
+        """
+        if not folder_path:
+            folder_path = ""
+
+        request_body = {
+            "prjUUID": self.uuid,
+            "name": name,
+            "folderPath": folder_path,
+            "spaceId": spaceId
+        }
+
+        request_body = {k: v for k, v in request_body.items() if v is not None}
+        self.api.post('project/duplicate', json=request_body)
+
+    def get_duplicating_status(self, duplicate_id: int) -> Dict[str, Any]:
+        """Get the status of project duplicate
+        
+        :param duplicate_id: the duplicate identifier
+
+        :return: project duplicate status
+        """
+        return self.api.get('project/duplicate/status', params={'asyncOperationId': duplicate_id})
+
+    def move(self, folder_path: str) -> None:
+        """This operation moves a project to a specified folder"""
+        if folder_path == "":
+            folder_path = "/" 
+        payload = {
+            'ids': [self.uuid],
+            'folderPath': folder_path
+        } 
+        self.api.post('project/move', json=payload)
+
+    def dependencies(self) -> Dict:
+        """This operation returns a list of project dependencies."""
+        payload = {
+            'ids': [self.uuid]
+        }
+        return self.api.get('project/dependencies', json=payload)
+    
+    def get_project_config(self, prefix: str = "") -> List[Dict]:
+        responce = self.api.get('project/config', json={'prjUUID': self.uuid, 'prefix': prefix})
+        config_data = responce.json()
+
+        if prefix:
+            filtered_config = {key: value for key, value in config_data.items() if key.startswith(prefix)}
+        else:
+            filtered_config = config_data
+        return filtered_config
+
     def spaces(self) -> List[Dict]:
         """This operation returns a list of project spaces.
         
@@ -93,6 +158,9 @@ class Project:
     
     def rename(self, new_name: Optional[str] = None, new_description: Optional[str] = None) -> None:
         """
+        :param new_name: sets a new project name
+        :param new_description: sets a new project description
+
         :raises: ValueError if no parameter is set
 
         This operation allows users to rename a project and to give it a new description. 
@@ -111,6 +179,10 @@ class Project:
         self.api.post('project/rename', json=payload)
 
     def get_project_list(self) -> List[Dict[str, Any]]:
+        """This operation returns a list of projects of the server
+        
+        :return: list of projects
+        """
         return self.api.get('projects')
 
     def abort(self) -> None:
