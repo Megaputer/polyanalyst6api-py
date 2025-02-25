@@ -93,12 +93,123 @@ class Project:
         """
         return self.api.get('project/save/status', params={'asyncOperationId': save_id})
 
+    def folder_list(self) -> List[Dict]:
+        """Gets the list of folders
+        
+        :return: list of folders
+        """
+        return self.api.get('project/folders')
+    
+    def create_folder(self, name: str, folder_path: str = "", description: str = "") -> None:
+        """This operation creates a folder in the Project manager
+        
+        param name: folderName is a name of the folder to create
+        param folder_path: path to a parent folder
+        param description: the description field is used to set a folder description
+        """ 
+        self.api.post('project/folder/create', json={'folderName': name, 'parentPath': folder_path, "description": description})
+
+    def delete_folder(self, folder_path: str, recursive: bool = False) -> None:
+        """This operation deletes a folder from the Project manager
+        
+        param folder_path: path to a user is folder
+        param recursive: flag to delete subfolders and projects inside the folder.
+        """
+        self.api.post('project/folder/delete', json={'folderPath': folder_path, 'recursive': recursive})
+
+    def rename_folder(self, folder_path: str, new_name: str, description: str = "") -> None:
+        """This operation renames a folder in the Project manager and sets a description for the folder
+        
+        param folder_path: path to a user is folder
+        param new_name: sets a new name
+        param description: sets a new description
+        """
+        self.api.post('project/folder/rename', json={'folderPath': folder_path, 'name': new_name, 'description': description})
+
+    def project_import(self, abs_path_file: str, folder_path: str, conflict_method: str) -> None:
+        """This operation allows users to import a project onto the server
+
+        param abs_path_file: The fileName parameter is used to specify a path to a project file
+        param folder_path: The folderPath parameter denotes a folder where a project is being imported into
+        """
+        self.api.post('project/import', json={'fileName': abs_path_file, 'folderPath': folder_path, 'conflictResolveMethod': conflict_method})
+
+    def project_import_status(self, prj_uuid: str) -> List[Dict[str, Any]]:
+        """Checking the status of the import operation
+        
+        :return: project import status
+        """
+        return self.api.get('project/import/status', params={'importId': prj_uuid})
+    
+    def project_export(self, file_name: str, file_format: str, ids: list, compression_level: int = 5, multi: bool = False, 
+                       keep_slice_statistics: bool = False, keep_backups: bool = False, keep_macros_and_vars: bool = False, 
+                       overwrite_existing: bool = False) -> None:
+        """This operation allows users to export a project from the server
+
+        param file_name: name of the project
+        param file_format: format to export
+        param ids: IDs of the project
+        param compression_level: level of compression
+        param multi: flag to show there are several projects to export
+        param keep_slice_statistics: flag to keep slice usage statistics
+        param keep_backups: flag to keep backup versions
+        param keep_macros_and_vars: flag to keep user and server macros and variables
+        param overwrite_existing: flag to overwrite the existing file
+
+        :raises ValueError if there are no arguments "file_name", "file_format", "ids"
+        :raises ValueError if ids is not a list or invalid "file_format"
+        """
+        if not file_name or not file_format or not ids:
+            raise ValueError("file_name, file_format and ids parameters are required")
+    
+        if not isinstance(ids, list):
+            raise ValueError("ids must be an array of strings")
+    
+        valid_formats = ['pa6', 'ps6', 'paar6', 'psar6', 'pagridar6']
+        if file_format not in valid_formats:
+            raise ValueError("Invalid file_format. Must be one of: pa6, ps6, paar6, psar6, pagridar6")
+    
+        request_body = {
+            "fileName": file_name,
+            "fileFormat": file_format,
+            "ids": ids,
+            "compressionLevel": compression_level,
+            "multi": multi,
+            "keepSliceStatistics": keep_slice_statistics,
+            "keepBackups": keep_backups,
+            "keepMacrosAndVars": keep_macros_and_vars,
+            "overwriteExisting": overwrite_existing
+        }
+    
+        self.api.post('project/export', json=request_body)
+
+    def project_export_status(self):
+        """Checking the status of the export operation
+        
+        :return: A status of the export operation will be returned
+        """
+        return self.api.get('project/export/status', params={'exportId': self.uuid})
+        
+    def project_config_set(self, prj_uuid: str, actions: list) -> None:
+        """This operation updates the project configuration 
+        Note that appropriate project rights are needed to perform the operation
+        
+        param prj_uuid: ID of the project
+        param actions: parameters to be changed
+        """
+        request_body = {
+            "prjUUID": prj_uuid,
+            "actions": actions
+        }
+
+        self.api.post('project/config/update', json=request_body)
+
     def duplicate(self, name: str, folder_path: str = "", spaceId: str = None):
         """This operation allows users to duplicate a project. 
         The operation is available only for project owners and administrators and can not be undone.
         
         :param name: sets the name for the project copy
-        :param folder_path: 
+        :param folder_path: parameter is a folder in which a project duplicate must be created
         """
         if not folder_path:
             folder_path = ""
@@ -133,22 +244,25 @@ class Project:
         self.api.post('project/move', json=payload)
 
     def dependencies(self) -> Dict:
-        """This operation returns a list of project dependencies."""
+        """This operation returns a list of project dependencies.
+        
+        :return: list of project dependencies
+        """
         payload = {
             'ids': [self.uuid]
         }
         return self.api.get('project/dependencies', json=payload)
     
-    def get_project_config(self, prefix: str = "") -> List[Dict]:
-        responce = self.api.get('project/config', json={'prjUUID': self.uuid, 'prefix': prefix})
-        config_data = responce.json()
+    def get_project_config(self, prj_uuid: str, prefix: str = "") -> List[Dict]:
+        """This operation returns a list of the project settings
+        
+        :return: list of the project configuration
 
-        if prefix:
-            filtered_config = {key: value for key, value in config_data.items() if key.startswith(prefix)}
-        else:
-            filtered_config = config_data
-        return filtered_config
-
+        :param prj_uuid: ID of the project
+        :param prefix: The parameter allows to get only a part of the project configuration
+        """
+        return self.api.get('project/config', params={'prjUUID': prj_uuid, 'prefix': prefix})
+     
     def spaces(self) -> List[Dict]:
         """This operation returns a list of project spaces.
         
