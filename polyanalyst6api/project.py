@@ -1015,3 +1015,113 @@ class DataSet:
                 'col': col,
             },
         )['text']
+
+    @retry_on_invalid_guid
+    def statistics_tab(self, col: int) -> List:
+        """This operation returns data on the statistics of the dataset
+        
+        param col: ID of the column to get statistics for
+        """
+        return self._api.post('dataset/statistics', json={'wrapperGuid': self.guid, 'columnId': col})
+    
+    @retry_on_invalid_guid
+    def distinct(self, col_id: int, col_name: str = "", col_type: str = "") -> List:
+        """This operation returns the GUID of the wrapper table of unique records of the dataset
+        
+        param col_id: ID of the column for which you need to get a table wrapper of unique records
+        param col_name: name of the column
+        param col_type: type of the column
+        """
+        return self._api.post('dataset/distinct', json={'wrapperGuid': self.guid, 'columnId': col_id, 'columnName': col_name, 'columnType': col_type})
+
+    @retry_on_invalid_guid
+    def search(self, col_id: int, col_name: str = "", col_type: str = "", search_from: int = 0, search_how: int = 0, str_value: str = "", 
+               double_value: float = 0, match_case: bool = False, search_up: bool = False,
+               use_regex: bool = False, unique_id: str = "", use_pdl: bool = False) -> List:
+        """This operation searches for values in the selected dataset
+        
+        
+        """
+        request_body = {
+            'wrapperGuid': self.guid, 
+            'doubleValue': double_value, 
+            'strValue': str_value,
+            'columnId': col_id,
+            'searchFrom': search_from,
+            'searchUp': search_up,
+            'columnName': col_name,
+            'columnType': col_type,
+            'uniqueId': unique_id,
+            'searchHow': search_how,
+            'matchCase': match_case,
+            'useRegEx': use_regex,
+            'usePDL': use_pdl
+        }
+        return self._api.post('dataset/search', json=request_body)
+    
+    @retry_on_invalid_guid
+    def sort_dataset(self, col: list) -> List:
+        """This operation sorts the values of a dataset
+        
+        param col: array of column parameters
+        """
+        return self._api.post('dataset/sort', json={'wrapperGuid': self.guid, 'columns': col})
+    
+    @retry_on_invalid_guid
+    def filter_dataset(self, action: int, how_search: int, col_id: int = 0, value: int = 0,
+                       str_value: str = "", match_case: bool = False, use_regex: bool = False, use_pdl: bool = False, col_name: str = "",
+                       col_type: str = "", day: int = 0, month: int = 0, year: int = 0) -> List:
+        """This operation filters a dataset by specified values
+        
+        param col_id: ID of the column to filter
+        param action: The way to filter a dataset
+        param value: Value to filter a dataset
+        param how_search: The way to search a value
+        param match_case: Flag to enable case-sensitive filtration
+        param use_regex: Flat to use regular expressions to filter
+        param use_pdl: Flag to use PDL to filter
+        param col_name: Name of the column to filter
+        param col_type: Type of the column to filter
+        param day: Day value to filter when working with the date/time column
+        param month: Month value to filter when working with the date/time column
+        param year: Year value to filter when working with the date/time column
+        """
+        massive = [0, 1, 2, 3, 4, 5]
+        if action not in massive or how_search not in massive[:3]:
+            raise ValueError("action can accept numbers from 1 to 5, how_search from 0 to 2")
+        request_body = {
+            'wrapperGuid': self.guid,
+            'columnId': col_id,
+            'action': action,
+            'value': value,
+            'strValue': str_value,
+            'howsearch': how_search,
+            'matchCase': match_case,
+            'useRegEx': use_regex,
+            'usePDL': use_pdl,
+            'columnName': col_name,
+            'columnType': col_type,
+            'day': day,
+            'month': month,
+            'year': year
+        }
+        return self._api.post('dataset/filter', json=request_body)
+    
+    @retry_on_invalid_guid
+    def get_binary(self, key: str, file_name: str = "content"):
+        """This operation returns the binary content of the dataset
+        
+        param key: ID of the column containing binary data
+        param file_name: name of the file to be returned
+        """
+        return self._api.get('dataset/get-binary-content', params={'wrapperGuid': self.guid, 'key': key, 'fileName': file_name})
+
+    @retry_on_invalid_guid
+    def dataset_export(self, type: str, file_name: str) -> List:
+        """This operation allows you to export a dataset to a file
+        
+        param type: a file type you want to export your data to ("csv", "xls", "html", "xml", "xlsx", "json")
+        param file_name: name of the file
+        """
+        return self._api.post("dataset/export", json={'wrapperGuid': self.guid, 'type': type, 'fileName': file_name})
+    
