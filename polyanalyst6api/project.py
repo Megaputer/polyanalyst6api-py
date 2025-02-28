@@ -1088,7 +1088,7 @@ class DataSet:
         """
         massive = [0, 1, 2, 3, 4, 5]
         if action not in massive or how_search not in massive[:3]:
-            raise ValueError("action can accept numbers from 1 to 5, how_search from 0 to 2")
+            raise ValueError("action can accept numbers from 0 to 5, how_search from 0 to 2")
         request_body = {
             'wrapperGuid': self.guid,
             'columnId': col_id,
