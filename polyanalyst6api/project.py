@@ -134,12 +134,14 @@ class Project:
         """
         self.api.post('project/import', json={'fileName': abs_path_file, 'folderPath': folder_path, 'conflictResolveMethod': conflict_method})
 
-    def project_import_status(self, prj_uuid: str) -> List[Dict[str, Any]]:
+    def project_import_status(self, import_id: str) -> List[Dict[str, Any]]:
         """Checking the status of the import operation
         
         :return: project import status
+
+        param import_id: ID of the export operation
         """
-        return self.api.get('project/import/status', params={'importId': prj_uuid})
+        return self.api.get('project/import/status', params={'importId': import_id})
     
     def project_export(self, file_name: str, file_format: str, ids: list, compression_level: int = 5, multi: bool = False, 
                        keep_slice_statistics: bool = False, keep_backups: bool = False, keep_macros_and_vars: bool = False, 
@@ -190,15 +192,14 @@ class Project:
         """
         return self.api.get('project/export/status', params={'exportId': self.uuid})
         
-    def project_config_set(self, prj_uuid: str, actions: list) -> None:
+    def project_config_set(self, actions: list) -> None:
         """This operation updates the project configuration 
         Note that appropriate project rights are needed to perform the operation
         
-        param prj_uuid: ID of the project
         param actions: parameters to be changed
         """
         request_body = {
-            "prjUUID": prj_uuid,
+            "prjUUID": self.uuid,
             "actions": actions
         }
 
@@ -253,15 +254,14 @@ class Project:
         }
         return self.api.get('project/dependencies', json=payload)
     
-    def get_project_config(self, prj_uuid: str, prefix: str = "") -> List[Dict]:
+    def get_project_config(self, prefix: str = "") -> List[Dict]:
         """This operation returns a list of the project settings
         
         :return: list of the project configuration
 
-        :param prj_uuid: ID of the project
         :param prefix: The parameter allows to get only a part of the project configuration
         """
-        return self.api.get('project/config', params={'prjUUID': prj_uuid, 'prefix': prefix})
+        return self.api.get('project/config', params={'prjUUID': self.uuid, 'prefix': prefix})
      
     def spaces(self) -> List[Dict]:
         """This operation returns a list of project spaces.
