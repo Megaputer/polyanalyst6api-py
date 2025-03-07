@@ -125,23 +125,6 @@ class Project:
         param description: sets a new description
         """
         self.api.post('project/folder/rename', json={'folderPath': folder_path, 'name': new_name, 'description': description})
-
-    def project_import(self, abs_path_file: str, folder_path: str, conflict_method: str) -> None:
-        """This operation allows users to import a project onto the server
-
-        param abs_path_file: The fileName parameter is used to specify a path to a project file
-        param folder_path: The folderPath parameter denotes a folder where a project is being imported into
-        """
-        self.api.post('project/import', json={'fileName': abs_path_file, 'folderPath': folder_path, 'conflictResolveMethod': conflict_method})
-
-    def project_import_status(self, import_id: str) -> List[Dict[str, Any]]:
-        """Checking the status of the import operation
-        
-        :return: project import status
-
-        param import_id: ID of the export operation
-        """
-        return self.api.get('project/import/status', params={'importId': import_id})
     
     def project_export(self, file_name: str, file_format: str, ids: list, compression_level: int = 5, multi: bool = False, 
                        keep_slice_statistics: bool = False, keep_backups: bool = False, keep_macros_and_vars: bool = False, 
@@ -262,13 +245,6 @@ class Project:
         :param prefix: The parameter allows to get only a part of the project configuration
         """
         return self.api.get('project/config', params={'prjUUID': self.uuid, 'prefix': prefix})
-     
-    def spaces(self) -> List[Dict]:
-        """This operation returns a list of project spaces.
-        
-        :return: project spaces
-        """
-        return self.api.get('project/spaces')
     
     def rename(self, new_name: Optional[str] = None, new_description: Optional[str] = None) -> None:
         """
@@ -291,13 +267,6 @@ class Project:
             payload['description'] = new_description
     
         self.api.post('project/rename', json=payload)
-
-    def get_project_list(self) -> List[Dict[str, Any]]:
-        """This operation returns a list of projects of the server
-        
-        :return: list of projects
-        """
-        return self.api.get('projects')
 
     def abort(self) -> None:
         """Aborts the execution of all nodes in the project."""
