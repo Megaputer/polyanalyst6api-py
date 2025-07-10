@@ -1,3 +1,10 @@
+0.35.3 (2025-07-10)
+===================
+
+### Bugfixes
+
+- Added new status to the list of statuses in import_project method
+
 0.35.2 (2024-12-11)
 ===================
 
