@@ -258,7 +258,7 @@ class API:
             time.sleep(1)
             status = self.get_project_import_status(import_id)
             # status has only empty state key when the server rebooted during the project import: T32492#776729
-            if status.get('state') in ('Error', 'Imported'):
+            if status.get('state') in ('Error', 'Imported', 'Cancelled'):
                 return status
 
     def project(self, uuid: str) -> Project:
