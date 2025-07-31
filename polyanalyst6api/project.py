@@ -84,6 +84,190 @@ class Project:
         """Initiates saving of all changes that have been made in the project."""
         self.api.post('project/save', json={'prjUUID': self.uuid})
 
+    def get_save_status(self, save_id: int) -> Dict[str, Any]:
+        """Get the status of project save
+        
+        :param save_id: the save identifier
+        
+        :return: project save status
+        """
+        return self.api.get('project/save/status', params={'asyncOperationId': save_id})
+
+    def folder_list(self) -> List[Dict]:
+        """Gets the list of folders
+        
+        :return: list of folders
+        """
+        return self.api.get('project/folders')
+    
+    def create_folder(self, name: str, folder_path: str = "", description: str = "") -> None:
+        """This operation creates a folder in the Project manager
+        
+        param name: folderName is a name of the folder to create
+        param folder_path: path to a parent folder
+        param description: the description field is used to set a folder description
+        """ 
+        self.api.post('project/folder/create', json={'folderName': name, 'parentPath': folder_path, "description": description})
+
+    def delete_folder(self, folder_path: str, recursive: bool = False) -> None:
+        """This operation deletes a folder from the Project manager
+        
+        param folder_path: path to a user is folder
+        param recursive: flag to delete subfolders and projects inside the folder.
+        """
+        self.api.post('project/folder/delete', json={'folderPath': folder_path, 'recursive': recursive})
+
+    def rename_folder(self, folder_path: str, new_name: str, description: str = "") -> None:
+        """This operation renames a folder in the Project manager and sets a description for the folder
+        
+        param folder_path: path to a user is folder
+        param new_name: sets a new name
+        param description: sets a new description
+        """
+        self.api.post('project/folder/rename', json={'folderPath': folder_path, 'name': new_name, 'description': description})
+    
+    def project_export(self, file_name: str, file_format: str, ids: list, compression_level: int = 5, multi: bool = False, 
+                       keep_slice_statistics: bool = False, keep_backups: bool = False, keep_macros_and_vars: bool = False, 
+                       overwrite_existing: bool = False) -> None:
+        """This operation allows users to export a project from the server
+
+        param file_name: name of the project
+        param file_format: format to export
+        param ids: IDs of the project
+        param compression_level: level of compression
+        param multi: flag to show there are several projects to export
+        param keep_slice_statistics: flag to keep slice usage statistics
+        param keep_backups: flag to keep backup versions
+        param keep_macros_and_vars: flag to keep user and server macros and variables
+        param overwrite_existing: flag to overwrite the existing file
+
+        :raises ValueError if there are no arguments "file_name", "file_format", "ids"
+        :raises ValueError if ids is not a list or invalid "file_format"
+        """
+        if not file_name or not file_format or not ids:
+            raise ValueError("file_name, file_format and ids parameters are required")
+    
+        if not isinstance(ids, list):
+            raise ValueError("ids must be an array of strings")
+    
+        valid_formats = ['pa6', 'ps6', 'paar6', 'psar6', 'pagridar6']
+        if file_format not in valid_formats:
+            raise ValueError("Invalid file_format. Must be one of: pa6, ps6, paar6, psar6, pagridar6")
+    
+        request_body = {
+            "fileName": file_name,
+            "fileFormat": file_format,
+            "ids": ids,
+            "compressionLevel": compression_level,
+            "multi": multi,
+            "keepSliceStatistics": keep_slice_statistics,
+            "keepBackups": keep_backups,
+            "keepMacrosAndVars": keep_macros_and_vars,
+            "overwriteExisting": overwrite_existing
+        }
+    
+        self.api.post('project/export', json=request_body)
+
+    def project_export_status(self):
+        """Checking the status of the export operation
+        
+        :return: A status of the export operation will be returned
+        """
+        return self.api.get('project/export/status', params={'exportId': self.uuid})
+        
+    def project_config_set(self, actions: list) -> None:
+        """This operation updates the project configuration 
+        Note that appropriate project rights are needed to perform the operation
+        
+        param actions: parameters to be changed
+        """
+        request_body = {
+            "prjUUID": self.uuid,
+            "actions": actions
+        }
+
+        self.api.post('project/config/update', json=request_body)
+
+    def duplicate(self, name: str, folder_path: str = "", spaceId: str = None):
+        """This operation allows users to duplicate a project. 
+        The operation is available only for project owners and administrators and can not be undone.
+        
+        :param name: sets the name for the project copy
+        :param folder_path: parameter is a folder in which a project duplicate must be created
+        """
+        if not folder_path:
+            folder_path = ""
+
+        request_body = {
+            "prjUUID": self.uuid,
+            "name": name,
+            "folderPath": folder_path,
+            "spaceId": spaceId
+        }
+
+        request_body = {k: v for k, v in request_body.items() if v is not None}
+        self.api.post('project/duplicate', json=request_body)
+
+    def get_duplicating_status(self, duplicate_id: int) -> Dict[str, Any]:
+        """Get the status of project duplicate
+        
+        :param duplicate_id: the duplicate identifier
+
+        :return: project duplicate status
+        """
+        return self.api.get('project/duplicate/status', params={'asyncOperationId': duplicate_id})
+
+    def move(self, folder_path: str) -> None:
+        """This operation moves a project to a specified folder"""
+        if folder_path == "":
+            folder_path = "/" 
+        payload = {
+            'ids': [self.uuid],
+            'folderPath': folder_path
+        } 
+        self.api.post('project/move', json=payload)
+
+    def dependencies(self) -> Dict:
+        """This operation returns a list of project dependencies.
+        
+        :return: list of project dependencies
+        """
+        payload = {
+            'ids': [self.uuid]
+        }
+        return self.api.get('project/dependencies', json=payload)
+    
+    def get_project_config(self, prefix: str = "") -> List[Dict]:
+        """This operation returns a list of the project settings
+        
+        :return: list of the project configuration
+
+        :param prefix: The parameter allows to get only a part of the project configuration
+        """
+        return self.api.get('project/config', params={'prjUUID': self.uuid, 'prefix': prefix})
+    
+    def rename(self, new_name: Optional[str] = None, new_description: Optional[str] = None) -> None:
+        """
+        :param new_name: sets a new project name
+        :param new_description: sets a new project description
+
+        :raises: ValueError if no parameter is set
+
+        This operation allows users to rename a project and to give it a new description. 
+        The operation is available only for project owners and administrators and can not be undone.
+        """
+        if not new_name and not new_description:
+            raise ValueError("Must be specify one of the 'name' or 'description' parameters'")
+    
+        payload = {'prjUUID': self.uuid}
+    
+        if new_name:
+            payload['name'] = new_name
+        if new_description:
+            payload['description'] = new_description
+    
+        self.api.post('project/rename', json=payload)
+
     def abort(self) -> None:
         """Aborts the execution of all nodes in the project."""
         self.api.post('project/global-abort', json={'prjUUID': self.uuid})
@@ -285,7 +469,6 @@ class Project:
         """
         return self.api.get('project/info', params={'prjUUID': self.uuid})
         
-
     def unload(self, force_unload: bool = False) -> None:
         """
         Unload the project from the memory.
@@ -801,3 +984,113 @@ class DataSet:
                 'col': col,
             },
         )['text']
+
+    @retry_on_invalid_guid
+    def statistics_tab(self, col: int) -> List:
+        """This operation returns data on the statistics of the dataset
+        
+        param col: ID of the column to get statistics for
+        """
+        return self._api.post('dataset/statistics', json={'wrapperGuid': self.guid, 'columnId': col})
+    
+    @retry_on_invalid_guid
+    def distinct(self, col_id: int, col_name: str = "", col_type: str = "") -> List:
+        """This operation returns the GUID of the wrapper table of unique records of the dataset
+        
+        param col_id: ID of the column for which you need to get a table wrapper of unique records
+        param col_name: name of the column
+        param col_type: type of the column
+        """
+        return self._api.post('dataset/distinct', json={'wrapperGuid': self.guid, 'columnId': col_id, 'columnName': col_name, 'columnType': col_type})
+
+    @retry_on_invalid_guid
+    def search(self, col_id: int, col_name: str = "", col_type: str = "", search_from: int = 0, search_how: int = 0, str_value: str = "", 
+               double_value: float = 0, match_case: bool = False, search_up: bool = False,
+               use_regex: bool = False, unique_id: str = "", use_pdl: bool = False) -> List:
+        """This operation searches for values in the selected dataset
+        
+        
+        """
+        request_body = {
+            'wrapperGuid': self.guid, 
+            'doubleValue': double_value, 
+            'strValue': str_value,
+            'columnId': col_id,
+            'searchFrom': search_from,
+            'searchUp': search_up,
+            'columnName': col_name,
+            'columnType': col_type,
+            'uniqueId': unique_id,
+            'searchHow': search_how,
+            'matchCase': match_case,
+            'useRegEx': use_regex,
+            'usePDL': use_pdl
+        }
+        return self._api.post('dataset/search', json=request_body)
+    
+    @retry_on_invalid_guid
+    def sort_dataset(self, col: list) -> List:
+        """This operation sorts the values of a dataset
+        
+        param col: array of column parameters
+        """
+        return self._api.post('dataset/sort', json={'wrapperGuid': self.guid, 'columns': col})
+    
+    @retry_on_invalid_guid
+    def filter_dataset(self, action: int, how_search: int, col_id: int = 0, value: int = 0,
+                       str_value: str = "", match_case: bool = False, use_regex: bool = False, use_pdl: bool = False, col_name: str = "",
+                       col_type: str = "", day: int = 0, month: int = 0, year: int = 0) -> List:
+        """This operation filters a dataset by specified values
+        
+        param col_id: ID of the column to filter
+        param action: The way to filter a dataset
+        param value: Value to filter a dataset
+        param how_search: The way to search a value
+        param match_case: Flag to enable case-sensitive filtration
+        param use_regex: Flat to use regular expressions to filter
+        param use_pdl: Flag to use PDL to filter
+        param col_name: Name of the column to filter
+        param col_type: Type of the column to filter
+        param day: Day value to filter when working with the date/time column
+        param month: Month value to filter when working with the date/time column
+        param year: Year value to filter when working with the date/time column
+        """
+        massive = [0, 1, 2, 3, 4, 5]
+        if action not in massive or how_search not in massive[:3]:
+            raise ValueError("action can accept numbers from 0 to 5, how_search from 0 to 2")
+        request_body = {
+            'wrapperGuid': self.guid,
+            'columnId': col_id,
+            'action': action,
+            'value': value,
+            'strValue': str_value,
+            'howsearch': how_search,
+            'matchCase': match_case,
+            'useRegEx': use_regex,
+            'usePDL': use_pdl,
+            'columnName': col_name,
+            'columnType': col_type,
+            'day': day,
+            'month': month,
+            'year': year
+        }
+        return self._api.post('dataset/filter', json=request_body)
+    
+    @retry_on_invalid_guid
+    def get_binary(self, key: str, file_name: str = "content"):
+        """This operation returns the binary content of the dataset
+        
+        param key: ID of the column containing binary data
+        param file_name: name of the file to be returned
+        """
+        return self._api.get('dataset/get-binary-content', params={'wrapperGuid': self.guid, 'key': key, 'fileName': file_name})
+
+    @retry_on_invalid_guid
+    def dataset_export(self, type: str, file_name: str) -> List:
+        """This operation allows you to export a dataset to a file
+        
+        param type: a file type you want to export your data to ("csv", "xls", "html", "xml", "xlsx", "json")
+        param file_name: name of the file
+        """
+        return self._api.post("dataset/export", json={'wrapperGuid': self.guid, 'type': type, 'fileName': file_name})
+    
