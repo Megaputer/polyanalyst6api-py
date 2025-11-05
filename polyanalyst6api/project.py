@@ -514,7 +514,7 @@ class Project:
            Use :meth:`Project.get_execution_stats` instead.
         """
         warnings.warn(
-            'Project.get_execution_statistics() is deprecated, use' 'Project.get_execution_stats() instead.',
+            'Project.get_execution_statistics() is deprecated, use Project.get_execution_stats() instead.',
             DeprecationWarning,
             stacklevel=2,
         )
