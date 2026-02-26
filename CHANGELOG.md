@@ -1,3 +1,11 @@
+0.36.0 (2026-02-26)
+===================
+
+### Features
+
+- Added ability to download file attachments in dataset (T41821)
+
+
 0.35.3 (2025-07-10)
 ===================
 
