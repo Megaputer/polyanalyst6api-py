@@ -714,12 +714,18 @@ class DataSet:
 
         return self._api.get('dataset/preview', params=params)
 
-    def iter_rows(self, start: int = 0, stop: Optional[int] = None) -> Iterator[Dict[str, JSON_VAL]]:
+    def iter_rows(
+            self,
+            start: int = 0,
+            stop: Optional[int] = None,
+            fetch_files: bool = False
+        ) -> Iterator[Dict[str, JSON_VAL]]:
         """
         Iterate over rows in dataset.
 
-        :param start:
-        :param stop:
+        :param start: starting row index. 0 by default (the first row)
+        :param stop: ending index. None by default, which means iterates to the last row
+        :param fetch_files: whatever to download file attachments as bytes. False by default
 
         :raises: ValueError if `start` or `stop` is out of datasets' row range
 
@@ -742,8 +748,9 @@ class DataSet:
         if not 0 <= start <= stop <= max_row:
             raise ValueError(f'start and stop arguments must be within dataset row range: (0, {max_row})')
 
-        rows = self._values(stop)['table']
+        values = self._values(stop)
         get_text = self._cell_text
+        get_file = self._binary_content
 
         class RowIterator:
             def __init__(self):
@@ -760,10 +767,10 @@ class DataSet:
                 columns = info.get('columnsInfo') or info['columns']
                 for column in columns:
                     if column['flags'].get('getTextAlways'):
-                        result[column['title']] = get_text(self.idx, column['id'])
+                        _value = get_text(self.idx, column['id'])
                     # elif column['type'] == 'DateTime':  # todo convert to python datetime?
                     else:
-                        _value = rows[self.idx][column['id']]
+                        _value = values['table'][self.idx][column['id']]
                         if _value == 1e100:
                             _value = None
                         elif _value == 8e100:
@@ -771,7 +778,10 @@ class DataSet:
                         elif _value == -8e100:
                             _value = -math.inf
 
-                        result[column['title']] = _value
+                    if fetch_files and str(column['id']) in values['binaryContent']:
+                        _value = get_file(values['textIDs'][str(column['id'])][str(self.idx)], '_')
+
+                    result[column['title']] = _value
 
                 self.idx += 1
                 return result
@@ -801,3 +811,15 @@ class DataSet:
                 'col': col,
             },
         )['text']
+
+    @retry_on_invalid_guid
+    def _binary_content(self, key: str, filename: str) -> bytes:
+        return self._api.request(
+            'dataset/get-binary-content',
+            method='GET',
+            params={
+                'wrapperGuid': self.guid,
+                'key': key,
+                'fileName': filename,
+            },
+        )[0].content
