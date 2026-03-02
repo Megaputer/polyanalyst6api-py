@@ -14,7 +14,7 @@ Using `polyanalyst6api` you can access and edit projects, publications, files an
 ```shell
 pip install -u polyanalyst6api
 ```
-> Python 3.7 or later is required.
+> Python 3.9 or later is required.
 
 ## Documentation
 
