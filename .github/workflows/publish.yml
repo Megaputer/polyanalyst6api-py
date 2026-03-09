@@ -1,4 +1,4 @@
-name: Release package and documentation
+name: Publish to PyPI
 
 on:
   push:
