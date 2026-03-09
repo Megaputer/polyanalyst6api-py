@@ -1,0 +1,24 @@
+name: Release package and documentation
+
+on:
+  push:
+    tags:
+      - 0.*[0-9].*[0-9]
+
+env:
+  PY_VER: '3.14'
+
+jobs:
+  publish:
+    name: Publish distribution to PyPI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PY_VER }}
+      - run: |
+          pip install poetry
+          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+          poetry version ${{ github.ref_name }}
+          poetry publish --build
