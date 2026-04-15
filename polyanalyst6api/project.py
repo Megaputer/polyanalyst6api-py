@@ -304,7 +304,7 @@ class Project:
         if force_unload:
             data['forceUnload'] = True
 
-        for n in range(10):
+        for n in range(12):  # server's 180 seconds well within those 205
             try:
                 self.api.post('project/unload', json=data)
                 break
