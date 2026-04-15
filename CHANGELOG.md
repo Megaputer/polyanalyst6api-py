@@ -1,3 +1,11 @@
+0.37.0 (2026-04-15)
+===================
+
+### Features
+
+- Increased timeout in project.unload function
+
+
 0.36.0 (2026-02-26)
 ===================
 
