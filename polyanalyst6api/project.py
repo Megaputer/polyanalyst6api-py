@@ -304,6 +304,8 @@ class Project:
         if force_unload:
             data['forceUnload'] = True
 
+        _timeout, self.api.timeout = self.api.timeout, 200
+
         for n in range(12):  # server's 180 seconds well within those 205
             try:
                 self.api.post('project/unload', json=data)
@@ -315,9 +317,12 @@ class Project:
                     warnings.warn(str(e))
                     break
                 else:
+                    self.api.timeout = _timeout
                     raise
         else:
+            self.api.timeout = _timeout
             raise PABusy
+        self.api.timeout = _timeout
 
     def repair(self) -> None:
         """Initiate the project repairing operation."""
