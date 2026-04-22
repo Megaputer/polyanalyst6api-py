@@ -19,7 +19,6 @@ keywords = ["megaputer", "polyanalyst", "polyanalyst6api", "api"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Topic :: Software Development :: Libraries",
     "Topic :: Internet :: WWW/HTTP",
     "Operating System :: OS Independent",
