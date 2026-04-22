@@ -19,8 +19,9 @@ keywords = ["megaputer", "polyanalyst", "polyanalyst6api", "api"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-    "Topic :: Internet",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Internet :: WWW/HTTP",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
@@ -40,9 +41,9 @@ docs = [
 ]
 
 [project.urls]
-documentation = "https://polyanalyst6api-py.rtfd.io/"
-repository = "https://github.com/Megaputer/polyanalyst6api-py"
-changelog = "https://github.com/Megaputer/polyanalyst6api-py/blob/master/CHANGELOG.md"
+Documentation = "https://polyanalyst6api-py.rtfd.io/"
+Source = "https://github.com/Megaputer/polyanalyst6api-py"
+Changelog = "https://github.com/Megaputer/polyanalyst6api-py/blob/master/CHANGELOG.md"
 
 [tool.ruff]
 line-length = 119
