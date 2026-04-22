@@ -1,32 +1,53 @@
-[tool.poetry]
+[build-system]
+requires = ["setuptools >= 82.0.1", "setuptools-scm[simple]>=9.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
 name = "polyanalyst6api"
-version = "0.37.1"
-description = "polyanalyst6api is a PolyAnalyst API client for Python."
-authors = ["yatmanov <yatmanov@megaputer.ru>"]
-license = "MIT"
+dependencies = [
+    "requests >= 2.32.2, < 3.0.0",
+    "pytus == 0.2.1"
+]
+requires-python = ">= 3.9"
+authors = [
+    {name = "yatmanov", email = "yatmanov@megaputer.ru"}
+]
+description = "polyanalyst6api is a PolyAnalyst API client for Python"
 readme = "README.md"
-
-repository = "https://github.com/Megaputer/polyanalyst6api-py"
-documentation = "https://polyanalyst6api-py.rtfd.io/"
-
+license = "MIT"
 keywords = ["megaputer", "polyanalyst", "polyanalyst6api", "api"]
-
 classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Internet",
-    "Topic :: Software Development :: Libraries :: Python Modules"
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "License-Expression: MIT",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+test = ["pytest >= 7.4.0"]
+docs = [
+    "sphinx >= 7.0.1; python_version >= '3.11'",
+    "sphinx-autodoc-typehints >= 1.23.3; python_version >= '3.11'"
 ]
 
-[tool.poetry.urls]
-"Changelog" = "https://github.com/Megaputer/polyanalyst6api-py/blob/master/CHANGELOG.md"
+[project.urls]
+documentation = "https://polyanalyst6api-py.rtfd.io/"
+repository = "https://github.com/Megaputer/polyanalyst6api-py"
+changelog = "https://github.com/Megaputer/polyanalyst6api-py/blob/master/CHANGELOG.md"
 
-[tool.poetry.dependencies]
-python = "^3.9"
-requests = "^2.32"
-pytus = "^0.2.1"
+[tool.ruff]
+line-length = 119
+target-version = "py39"
 
-[tool.poetry.group.test.dependencies]
-pytest = "^7.4.0"
-
-[tool.poetry.group.docs.dependencies]
-sphinx = {version = "^7.0.1", python = "3.11"}
-sphinx-autodoc-typehints = {version = "^1.23.3", python = "3.11"}
+[tool.ruff.format]
+quote-style = "single"
