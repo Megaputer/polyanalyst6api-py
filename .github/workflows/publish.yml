@@ -5,6 +5,7 @@ on: push
 jobs:
   build:
     name: Build distribution
+    if: false
     runs-on: ubuntu-latest
 
     steps:
