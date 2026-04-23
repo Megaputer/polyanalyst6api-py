@@ -33,7 +33,7 @@ classifiers = [
 dynamic = ["version"]
 
 [project.optional-dependencies]
-test = ["pytest >= 7.4.0"]
+test = ["pytest == 8.4.2"]
 docs = [
     "sphinx >= 7.0.1; python_version >= '3.11'",
     "sphinx-autodoc-typehints >= 1.23.3; python_version >= '3.11'"
