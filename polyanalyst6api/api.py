@@ -10,20 +10,21 @@ import os
 import pathlib
 import time
 import warnings
-from typing import Any, Dict, List, Tuple, Union, Optional
-from urllib.parse import urljoin, urlparse, parse_qs
+from importlib.metadata import version
+from typing import Any, Dict, List, Optional, Tuple, Union
+from urllib.parse import parse_qs, urljoin, urlparse
 
 import requests
 import urllib3
 from requests.adapters import HTTPAdapter
 
-from . import __version__
 from .drive import Drive
 from .project import Parameters, Project
 from .report import Report
 from .exceptions import APIException, ClientException, _WrapperNotFound, PABusy
 
-__all__ = ['API']
+__all__ = ['API', '__version__']
+__version__ = version('polyanalyst6api')
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 warnings.simplefilter('always', UserWarning)  # without this set_parameters will show warnings only once
