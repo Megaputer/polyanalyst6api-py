@@ -1,12 +1,11 @@
-from typing import Dict, List, Union, Any
+from __future__ import annotations
 
-
-__all__ = ['Report']
+from typing import Any
 
 # type hints
-Publication = Dict[str, Union[str, int]]
-Component = Dict[str, Union[str, int, List[int]]]
-SliceStatistics = Dict[str, Dict[str, Union[str, Any]]]
+Publication = dict[str, str | int]
+Component = dict[str, str | int | list[int]]
+SliceStatistics = dict[str, dict[str, str | Any]]
 
 
 class Report:
@@ -25,11 +24,11 @@ class Report:
         self.api = api
         self.uuid = uuid
 
-    def publications(self) -> List[Publication]:
+    def publications(self) -> list[Publication]:
         """Return publications list info."""
         return self.api.get('report/publications', params={'reportUUID': self.uuid})
 
-    def components(self) -> List[Component]:
+    def components(self) -> list[Component]:
         """Return components list info."""
         return self.api.get('report/components', params={'reportUUID': self.uuid})
 
@@ -47,4 +46,4 @@ class Report:
 
         :param slice_stats: Slice statistics
         """
-        self.api.post('report/slice-statistics/import',  params={'reportUUID': self.uuid}, json=slice_stats)
+        self.api.post('report/slice-statistics/import', params={'reportUUID': self.uuid}, json=slice_stats)

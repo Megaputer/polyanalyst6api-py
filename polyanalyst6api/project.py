@@ -4,24 +4,25 @@ polyanalyst6api.project
 
 This module contains functionality for access to PolyAnalyst Analytical Client API.
 """
+
+from __future__ import annotations
+
 import datetime
 import functools
 import math
 import os
 import time
 import warnings
-from urllib.parse import urlparse, parse_qs
-from typing import Any, Dict, List, Union, Optional, Tuple, Iterator
+from typing import Any, Iterator
+from urllib.parse import parse_qs, urlparse
 
-from .exceptions import APIException, ClientException, _WrapperNotFound, PABusy
-
-__all__ = ['Project', 'Parameters', 'DataSet']
+from .exceptions import APIException, ClientException, PABusy, _WrapperNotFound
 
 # type hints
-Node = Dict[str, Union[str, int]]
-Nodes = Dict[str, Dict[str, Union[int, str]]]
-_DataSet = List[Dict[str, Any]]
-JSON_VAL = Union[bool, str, int, float, None]
+Node = dict[str, str | int]
+Nodes = dict[str, dict[str, int | str]]
+_DataSet = list[dict[str, Any]]
+JSON_VAL = bool | str | int | float | None
 
 
 class Project:
@@ -40,23 +41,23 @@ class Project:
     def __init__(self, api, uuid: str):
         self.api = api
         self.uuid = uuid
-        self._node_list: List[Node] = self.get_node_list() # automatically loads a project
+        self._node_list: list[Node] = self.get_node_list()  # automatically loads a project
 
-    def get_node_list(self) -> List[Node]:
+    def get_node_list(self) -> list[Node]:
         """Returns a list of project nodes.
 
         .. versionadded:: 0.15.0
         """
         return self.api.get('project/nodes', params={'prjUUID': self.uuid})['nodes']
 
-    def get_report_list(self) -> List[Dict[str, str]]:
-        """Returns a list of project reports. 
+    def get_report_list(self) -> list[dict[str, str]]:
+        """Returns a list of project reports.
 
         .. versionadded:: 0.30.0
         """
         return self.api.get('project/reports', params={'prjUUID': self.uuid})
 
-    def get_execution_stats(self, skip_hidden: Optional[bool] = None) -> List[Node]:
+    def get_execution_stats(self, skip_hidden: bool | None = None) -> list[Node]:
         """Returns nodes execution statistics.
 
         :param skip_hidden: Return statistics only of nodes in the project (i.e.
@@ -72,7 +73,7 @@ class Project:
             params['skipHiddenNodes'] = 'true' if skip_hidden else 'false'
         return self.api.get('project/execution-statistics', params=params)['nodes']
 
-    def get_tasks(self) -> List[Dict[str, Any]]:
+    def get_tasks(self) -> list[dict[str, Any]]:
         """Returns task list info."""
         json = self.api.get('project/tasks', params={'prjUUID': self.uuid})
         # convert timestamp in milliseconds to python datetime
@@ -89,8 +90,11 @@ class Project:
         self.api.post('project/global-abort', json={'prjUUID': self.uuid})
 
     def execute(
-            self, *args: Union[str, Dict[str, str]], wait: bool = False, ignore_first_n_pabusy: int = 0
-    ) -> Optional[int]:
+        self,
+        *args: str | dict[str, str],
+        wait: bool = False,
+        ignore_first_n_pabusy: int = 0,
+    ) -> int | None:
         """
         Initiates execution of nodes and returns execution wave identifier.
 
@@ -143,7 +147,7 @@ class Project:
         location = resp.headers.get('location')
         query = urlparse(location).query
         try:
-            wave_id = int(parse_qs(query).get('executionWave')[0])
+            wave_id = int(parse_qs(query)['executionWave'][0])
         except TypeError:
             wave_id = None
 
@@ -165,7 +169,7 @@ class Project:
 
         return wave_id
 
-    def execute_to(self, node: Union[str, Dict[str, str]], wait: bool = False) -> Optional[int]:
+    def execute_to(self, node: str | dict[str, str], wait: bool = False) -> int | None:
         """
         Execute a sequence of nodes to the given node.
 
@@ -187,7 +191,7 @@ class Project:
         )
         location = resp.headers.get('location')
         query = urlparse(location).query
-        wave_id = int(parse_qs(query).get('executionWave')[0])
+        wave_id = int(parse_qs(query)['executionWave'][0])
 
         if not wait:
             return wave_id
@@ -210,7 +214,7 @@ class Project:
         )
         return bool(data['result'])
 
-    def dataset(self, node: Union[str, Dict[str, str]]):
+    def dataset(self, node: str | dict[str, str]):
         """Get dataset wrapper object.
 
         :param node: node name or dict with name and type of the node
@@ -226,9 +230,9 @@ class Project:
 
         .. versionadded:: 0.18.0
         """
-        return Parameters(self, self._find_node(name)['id'])
+        return Parameters(self, str(self._find_node(name)['id']))
 
-    def _get_load_status(self, load_id: int) -> Dict[str, Any]:
+    def _get_load_status(self, load_id: int) -> dict[str, Any]:
         """Get the status of project load.
 
         :param load_id: the load identifier
@@ -241,7 +245,7 @@ class Project:
 
         return self.api.get('project/load/status', params={'asyncOperationId': load_id})
 
-    def load(self, wait: bool = False) -> Union[str, Dict[str, Any]]:
+    def load(self, wait: bool = False) -> str | dict[str, Any]:
         """Load project to the memory.
 
         :param wait: wait until the project loading is completed. Defaults to ``False``.
@@ -261,11 +265,12 @@ class Project:
 
         while True:
             time.sleep(1)
-            status = self._get_load_status(load_id)
-            if status.get('status') not in ('Processing'):
-                if status.get('status') in ('Error'):
-                    raise ClientException(f"Failed to load project: {status.get('message')}")
-                return status
+            _json = self._get_load_status(load_id)
+            status = resp.get('status')
+            if status != 'Processing':
+                if status == 'Error':
+                    raise ClientException(f'Failed to load project: {_json.get("message")}')
+                return _json
 
     def status(self):
         """Get project status.
@@ -277,14 +282,13 @@ class Project:
         .. versionadded:: 0.31
         """
         return self.api.get('project/status', params={'prjUUID': self.uuid})
-    
+
     def info(self):
         """This operation returns information about a project.
-        
+
         :return: project information
         """
         return self.api.get('project/info', params={'prjUUID': self.uuid})
-        
 
     def unload(self, force_unload: bool = False) -> None:
         """
@@ -300,7 +304,7 @@ class Project:
         .. versionchanged:: 0.30.0
            Added `force_unload` parameter, which when used allows server to unload a project even with running nodes
         """
-        data = {'prjUUID': self.uuid}
+        data: dict[str, Any] = {'prjUUID': self.uuid}
         if force_unload:
             data['forceUnload'] = True
 
@@ -344,7 +348,7 @@ class Project:
     def _update_node_list(self) -> None:
         self._node_list = self.get_node_list()
 
-    def _find_node(self, node_: Union[str, Dict[str, str]]) -> Node:
+    def _find_node(self, node_: str | dict[str, str]) -> Node:
         if isinstance(node_, str):
             name_, type_ = node_, None
         else:
@@ -356,7 +360,7 @@ class Project:
 
         raise APIException(f"Node not found: name='{name_}', type='{type_}'", status_code=500)
 
-    def wait_for_completion(self, node: Union[str, Dict[str, str]], wave_id: Optional[int] = None) -> bool:
+    def wait_for_completion(self, node: str | dict[str, str], wave_id: int | None = None) -> bool:
         """
         Waits for the node in a sequence of nodes to complete. Returns `True` if
         node have completed successfully and `False` otherwise.
@@ -398,8 +402,8 @@ class Project:
             time.sleep(1)
 
     def export(
-        self, file_path: Union[str, os.PathLike], options: Optional[Dict] = None, wait: bool = False
-    ) -> Union[str, Dict[str, Any]]:
+        self, file_path: str | os.PathLike, options: dict | None = None, wait: bool = False
+    ) -> str | dict[str, Any]:
         """
         Export project to a server file system.
 
@@ -448,7 +452,14 @@ class Project:
         options['ids'] = options.get('ids', [self.uuid])
 
         cmpr = options.get('compressionLevel')
-        compression_levels = {'store': 0, 'fastest': 1, 'fast': 3, 'normal': 5, 'maximum': 7, 'ultra': 9}
+        compression_levels = {
+            'store': 0,
+            'fastest': 1,
+            'fast': 3,
+            'normal': 5,
+            'maximum': 7,
+            'ultra': 9,
+        }
         if cmpr:
             try:
                 options['compressionLevel'] = compression_levels[cmpr.lower()]
@@ -481,7 +492,7 @@ class Project:
             if status.get('state') in ('Exported', 'Error'):
                 return status
 
-    def get_export_status(self, export_id: str) -> Dict[str, Any]:
+    def get_export_status(self, export_id: str) -> dict[str, Any]:
         """Get the status of project export
 
         :param export_id: the export identifier
@@ -509,7 +520,7 @@ class Project:
         )
         return {node.pop('name'): node for node in json['nodes']}
 
-    def get_execution_statistics(self) -> Tuple[Nodes, Dict[str, int]]:
+    def get_execution_statistics(self) -> tuple[Nodes, dict[str, int]]:
         """Returns the execution statistics for nodes in the project.
 
         Similar to :meth:`Project.get_nodes` but nodes contains extra information
@@ -527,7 +538,7 @@ class Project:
         nodes = {node.pop('name'): node for node in json['nodes']}
         return nodes, json['nodesStatistics']
 
-    def preview(self, node: Union[str, Dict[str, str]]) -> _DataSet:
+    def preview(self, node: str | dict[str, str]) -> _DataSet:
         """Returns first 1000 rows of data from ``node``, texts and strings are
         cutoff after 250 symbols.
 
@@ -547,7 +558,7 @@ class Project:
         self,
         node: str,
         node_type: str,
-        parameters: Dict[str, Any],
+        parameters: dict[str, Any],
         declare_unsync: bool = True,
         hard_update: bool = True,
     ) -> None:
@@ -576,7 +587,7 @@ class Project:
 
 
 class Parameters:
-    def __init__(self, prj: Project, _id: Optional[str]):
+    def __init__(self, prj: Project, _id: str | None):
         self._prj = prj
         self._api = prj.api
         self.id = _id
@@ -588,12 +599,12 @@ class Parameters:
     def set(
         self,
         node_type: str,
-        parameters: Union[Dict[str, str], List[Dict[str, str]]],
-        strategies: Optional[List[int]] = None,
+        parameters: dict[str, str] | list[dict[str, str]],
+        strategies: list[int] | None = None,
         declare_unsync: bool = True,
         hard_update: bool = True,
         wait: bool = True,
-    ) -> Optional[List[str]]:
+    ) -> list[str] | None:
         """
         Sets `node_type` parameters and strategies for the Parameters node.
 
@@ -631,7 +642,7 @@ class Parameters:
 
         query = urlparse(resp.headers.get('location')).query
         try:
-            wave_id = int(parse_qs(query).get('executionWave')[0])
+            wave_id = int(parse_qs(query)['executionWave'][0])
         except TypeError:
             pass
         else:
@@ -641,7 +652,7 @@ class Parameters:
 
         return _warnings
 
-    def clear(self, *node_types: List[str], declare_unsync: bool = True) -> Optional[List[str]]:
+    def clear(self, *node_types: list[str], declare_unsync: bool = True) -> list[str] | None:
         """
         Clears parameters and strategies of `node_types` for the Parameters node.
         If `node_types` is empty it clears parameters and strategies of all nodes.
@@ -682,12 +693,12 @@ class DataSet:
         self._update_guid()  # temporary fix until server starts to return proper error response
 
     @retry_on_invalid_guid
-    def get_info(self) -> Dict[str, Any]:
+    def get_info(self) -> dict[str, Any]:
         """Get information about dataset."""
         return self._api.get('dataset/info', params={'wrapperGuid': self.guid})
 
     @retry_on_invalid_guid
-    def get_progress(self) -> Dict[str, Union[int, str]]:
+    def get_progress(self) -> dict[str, int | str]:
         """Get dataset progress."""
         return self._api.get('dataset/progress', params={'wrapperGuid': self.guid})
 
@@ -720,11 +731,8 @@ class DataSet:
         return self._api.get('dataset/preview', params=params)
 
     def iter_rows(
-            self,
-            start: int = 0,
-            stop: Optional[int] = None,
-            fetch_files: bool = False
-        ) -> Iterator[Dict[str, JSON_VAL]]:
+        self, start: int = 0, stop: int | None = None, fetch_files: bool = False
+    ) -> Iterator[dict[str, JSON_VAL]]:
         """
         Iterate over rows in dataset.
 
@@ -746,14 +754,13 @@ class DataSet:
         """
         info = self.get_info()
         max_row = info['rowCount']
-        if stop is None:
-            stop = max_row
+        _stop: int = stop or max_row
 
         # предполагается что если stop определен то пользователь в курсе количества строк в датасете
-        if not 0 <= start <= stop <= max_row:
+        if not 0 <= start <= _stop <= max_row:
             raise ValueError(f'start and stop arguments must be within dataset row range: (0, {max_row})')
 
-        values = self._values(stop)
+        values = self._values(_stop)
         get_text = self._cell_text
         get_file = self._binary_content
 
@@ -765,7 +772,7 @@ class DataSet:
                 return self
 
             def __next__(self):
-                if self.idx >= stop:
+                if self.idx >= _stop:
                     raise StopIteration
 
                 result = {}
@@ -783,8 +790,9 @@ class DataSet:
                         elif _value == -8e100:
                             _value = -math.inf
 
-                    if fetch_files and str(column['id']) in values['binaryContent']:
-                        _value = get_file(values['textIDs'][str(column['id'])][str(self.idx)], '_')
+                    colId = str(column['id'])
+                    if fetch_files and colId in values['binaryContent']:
+                        _value = get_file(values['textIDs'][colId][str(self.idx)], '_')
 
                     result[column['title']] = _value
 
@@ -800,7 +808,7 @@ class DataSet:
         )['wrapperGuid']
 
     @retry_on_invalid_guid
-    def _values(self, row_count: int) -> Dict[str, Union[List, Dict]]:
+    def _values(self, row_count: int) -> dict[str, list | dict]:
         return self._api.get(
             'dataset/values',
             json={'wrapperGuid': self.guid, 'rowCount': row_count},

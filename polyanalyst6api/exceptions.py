@@ -5,7 +5,7 @@ polyanalyst6api.exceptions
 This module contains polyanalyst6api specific Exception classes.
 """
 
-__all__ = ['PAException', 'ClientException', 'APIException', 'PABusy']
+from __future__ import annotations
 
 
 class PAException(Exception):
@@ -20,7 +20,7 @@ class APIException(PAException):
     :param status_code: The http status code
     """
 
-    def __init__(self, msg: str, endpoint: str = None, status_code: int = None):
+    def __init__(self, msg: str, endpoint: str | None = None, status_code: int | None = None):
         self.message = msg
         self.endpoint = endpoint
         self.status_code = status_code

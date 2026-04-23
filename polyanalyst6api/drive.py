@@ -4,27 +4,27 @@ polyanalyst6api.drive
 
 This module contains functionality for access to PolyAnalyst Drive API.
 """
+
+from __future__ import annotations
+
 import os
 import pathlib
 import warnings
+from typing import IO
 from urllib.parse import urljoin
-from typing import Optional, Union, IO, List
 
 import pytus
-from pytus.main import _get_offset, _get_file_size
 import requests
+from pytus.main import _get_file_size, _get_offset
 
 from .exceptions import APIException, ClientException
-
-
-__all__ = ['Drive']
 
 
 class Drive:
     def __init__(self, api):
         self._api = api
 
-    def upload(self, source: Union[str, os.PathLike], dest: str = '', recursive: bool = True) -> None:
+    def upload(self, source: str | os.PathLike, dest: str = '', recursive: bool = True) -> None:
         """
         Upload file or folder to PolyAnalyst server.
 
@@ -64,19 +64,19 @@ class Drive:
 
         _upload(source, dest)
 
-    def list(self, path: str = '/', mask: str = '|*.*') -> List:
+    def list(self, path: str = '/', mask: str = '|*.*') -> list:
         """
         Get a list of files and subdirectories in the PolyAnalyst's user directory.
 
         :param path: a relative path from user's home folder
-        :param mask: a file name and mask divided by ``|``. For example, ``|*.*`` - get all(by default), or ``|.ps6|README.txt``
+        :param mask: a filename and mask divided by ``|``. For example, ``|*.*`` - get all(by default), or ``|.ps6|README.txt``
         :return: a list of dictionaries with 'name', 'lastModified' and 'size'(only for files) values
 
         .. versionadded:: 0.36.0
         """
         return self._api.get('folder/list', json={'path': os.fspath(path), 'mask': mask})['items']
 
-    def create_folder(self, name: str, path: Union[str, os.PathLike] = '') -> None:
+    def create_folder(self, name: str, path: str | os.PathLike = '') -> None:
         """
         Create a new folder inside the PolyAnalyst's user directory.
 
@@ -85,7 +85,7 @@ class Drive:
         """
         self._api.post('folder/create', json={'path': os.fspath(path), 'name': name})
 
-    def delete_folder(self, name: str, path: Union[str, os.PathLike] = '') -> None:
+    def delete_folder(self, name: str, path: str | os.PathLike = '') -> None:
         """
         Delete the folder in the PolyAnalyst's user directory.
 
@@ -94,7 +94,7 @@ class Drive:
         """
         self._api.post('folder/delete', json={'path': os.fspath(path), 'name': name})
 
-    def delete_file(self, name: str, path: Union[str, os.PathLike] = '') -> None:
+    def delete_file(self, name: str, path: str | os.PathLike = '') -> None:
         """
         Delete the file in the PolyAnalyst's user directory.
 
@@ -103,7 +103,7 @@ class Drive:
         """
         self._api.post('file/delete', json={'path': os.fspath(path), 'name': name})
 
-    def download_file(self, name: str, path: Union[str, os.PathLike] = '', dest: Optional[IO] = None) -> bytes:
+    def download_file(self, name: str, path: str | os.PathLike = '', dest: IO | None = None) -> bytes | None:
         """
         Download the binary content of the file to memory or stream to local file.
 
@@ -135,7 +135,7 @@ class Drive:
         except AttributeError as exc:
             raise ClientException('`dest` argument should be file or file-like object') from exc
 
-    def upload_file(self, file: IO, name: Optional[str] = None, path: Union[str, os.PathLike] = '') -> None:
+    def upload_file(self, file: IO, name: str | None = None, path: str | os.PathLike = '') -> None:
         """
         Upload the file to the PolyAnalyst's user directory.
 
@@ -159,7 +159,7 @@ class Drive:
             if file.tell():
                 warnings.warn(
                     "The file object's current position is not at the beginning of the file."
-                    "This will result in uploading only the part of the file!"
+                    'This will result in uploading only the part of the file!'
                 )
 
             file_name = name or os.path.basename(file.name)

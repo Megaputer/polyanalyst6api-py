@@ -4,26 +4,27 @@ polyanalyst6api.api
 
 This module contains functionality for access to PolyAnalyst API.
 """
-import configparser
+
+from __future__ import annotations
+
 import contextlib
 import os
-import pathlib
 import time
 import warnings
 from importlib.metadata import version
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 from urllib.parse import parse_qs, urljoin, urlparse
 
 import requests
 import urllib3
+import urllib3.util
 from requests.adapters import HTTPAdapter
 
 from .drive import Drive
+from .exceptions import APIException, ClientException, PABusy, _WrapperNotFound
 from .project import Parameters, Project
 from .report import Report
-from .exceptions import APIException, ClientException, _WrapperNotFound, PABusy
 
-__all__ = ['API', '__version__']
 __version__ = version('polyanalyst6api')
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -67,42 +68,19 @@ class API:
 
     def __init__(
         self,
-        url: Optional[str] = None,
-        username: Optional[str] = None,
-        password: Optional[str] = None,
-        ldap_server: Optional[str] = None,
+        url: str | None = None,
+        username: str | None = None,
+        password: str | None = None,
+        ldap_server: str | None = None,
         *,
-        token: Optional[str] = None,
+        token: str | None = None,
         **kwargs,
     ):
-        if not any([url, username, password, ldap_server]):
-            warnings.warn(
-                'Either the PolyAnalyst URL or credentials are not provided.'
-                'Getting missing data from the credentials file, use of which is deprecated and planned for removal',
-                DeprecationWarning,
-                2,
-            )
-            try:
-                cfg_path = pathlib.Path.home() / '.polyanalyst6api' / 'config'
-                parser = configparser.ConfigParser(allow_no_value=True)
-                with open(cfg_path, encoding='utf8') as f:
-                    parser.read_file(f)
-                default = dict(parser['DEFAULT'])
-
-                url = default['url']
-                username = default['username']
-                password = default['password']
-                ldap_server = default.get(ldap_server)
-            except FileNotFoundError:
-                raise ClientException(f"The credentials file doesn't exist. Nor credentials passed as arguments")
-            except KeyError as exc:
-                raise ClientException(f"The credentials file doesn't contain required key: {exc}")
-
         if not url:
             raise ClientException('The PolyAnalyst URL is empty')
 
         if token and username:
-            raise ClientException('Can\'t use both Token-Based and Username & Password authentications')
+            raise ClientException("Can't use both Token-Based and Username & Password authentications")
 
         self.base_url = urljoin(url, '/polyanalyst/api/')
         self.url = urljoin(self.base_url, 'v1.0/')
@@ -131,11 +109,11 @@ class API:
         self.sid = None  # session identity
         self.drive = Drive(self)
 
-    def get_versions(self) -> List[str]:
+    def get_versions(self) -> list[str]:
         """Returns api versions supported by PolyAnalyst server."""
         return self.request(urljoin(self.base_url, 'versions'), method='get')[1]
 
-    def get_server_info(self) -> Optional[Dict[str, Union[int, str, Dict[str, str]]]]:
+    def get_server_info(self) -> dict[str, int | str | dict[str, str]] | None:
         """Returns general server information including build number, version and commit hashes."""
         return self.request(urljoin(self.url, 'server/info'), method='get')[1]
 
@@ -158,7 +136,7 @@ class API:
         try:
             self.sid = resp.cookies['sid']
         except KeyError:
-            self._s.headers['Authorization'] = f"Bearer {resp.headers['x-session-id']}"
+            self._s.headers['Authorization'] = f'Bearer {resp.headers["x-session-id"]}'
 
     def logout(self) -> None:
         """Logs out current user from PolyAnalyst"""
@@ -171,7 +149,7 @@ class API:
         """
         self.post('scheduler/run-task', json={'taskId': id})
 
-    def get_project_import_status(self, import_id: str) -> Dict:
+    def get_project_import_status(self, import_id: str) -> dict:
         """Get the status of project import. The status contains UUIDs of projects after import is completed.
 
         :param import_id: the import identifier
@@ -180,7 +158,7 @@ class API:
         """
         return self.get('project/import/status', params={'importId': import_id})
 
-    def get_projects_list(self) -> List[Optional[Dict[str, Union[str, int, bool]]]]:
+    def get_projects_list(self) -> list[dict[str, str | int | bool] | None]:
         """Get a list of projects.
 
         :raises: APIException if version of PolyAnalyst older than 2815
@@ -189,7 +167,7 @@ class API:
         """
         return self.get('projects')
 
-    def _get_project_spaces(self) -> List[Optional[Dict[str, Union[str, int, bool]]]]:
+    def _get_project_spaces(self) -> list[dict[str, str | int | bool] | None]:
         """Get a list of project spaces.
 
         :raises: APIException if version of PolyAnalyst older than 2817
@@ -200,12 +178,12 @@ class API:
 
     def import_project(
         self,
-        file_path: Union[str, os.PathLike],
+        file_path: str | os.PathLike,
         project_location: str = '',
-        project_space: Optional[str] = None,
+        project_space: str | None = None,
         on_conflict: str = 'Cancel',
-        wait: bool = False
-        ) -> Union[str, Dict]:
+        wait: bool = False,
+    ) -> str | dict:
         """
         Import project from file on server file system.
 
@@ -226,28 +204,25 @@ class API:
                 Added parameter `project_space` to select project physical location
         """
         json_data = {
-                    'fileName': os.fspath(file_path),
-                    'folderPath': project_location,
-                    'conflictResolveMethod': on_conflict
-                }
+            'fileName': os.fspath(file_path),
+            'folderPath': project_location,
+            'conflictResolveMethod': on_conflict,
+        }
 
         if project_space not in (None, ''):
             prj_spaces = self._get_project_spaces()
             location_id = None
             for space in prj_spaces:
+                assert space is not None
                 if space['name'] == project_space:
                     location_id = space['id']
 
             if location_id is None:
-                raise ClientException(f'The project space {repr(project_space)} isn\'t exist or disabled')
+                raise ClientException(f"The project space {repr(project_space)} isn't exist or disabled")
 
             json_data['spaceId'] = location_id
 
-        resp, _ = self.request(
-            'project/import',
-            method='post',
-            json=json_data
-        )
+        resp, _ = self.request('project/import', method='post', json=json_data)
         location = resp.headers.get('location')
         qs = parse_qs(urlparse(location).query)
         import_id = qs['importId'][0]
@@ -294,7 +269,7 @@ class API:
         """
         return self.request(endpoint, method='post', **kwargs)[1]
 
-    def request(self, url: str, method: str, **kwargs) -> Tuple[requests.Response, Any]:
+    def request(self, url: str, method: str, **kwargs) -> tuple[requests.Response, Any]:
         """Sends ``method`` request to ``endpoint`` and returns tuple of
         :class:`requests.Response` and json-encoded content of a response.
 
@@ -313,7 +288,7 @@ class API:
             return self._handle_response(resp)
 
     @staticmethod
-    def _handle_response(response: requests.Response) -> Tuple[requests.Response, Any]:
+    def _handle_response(response: requests.Response) -> tuple[requests.Response, Any]:
         try:
             json = response.json()
         except ValueError:
@@ -361,7 +336,7 @@ class API:
         warnings.warn('"fs" attribute has been renamed "drive"', DeprecationWarning, 2)
         return self.drive
 
-    def get_parameters(self) -> List[Dict[str, Union[str, List]]]:
+    def get_parameters(self) -> list[dict[str, str | list]]:
         """
         Returns list of nodes with parameters supported by ``Parameters`` node.
 
