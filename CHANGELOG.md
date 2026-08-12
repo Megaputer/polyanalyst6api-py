@@ -1,3 +1,11 @@
+0.38.0 (2026-08-12)
+===================
+
+### Features
+
+- Drop support for Python 3.9 as it has reached EOL
+- Update dependencies
+
 0.37.1 (2026-04-16)
 ===================
 

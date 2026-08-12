@@ -5,10 +5,10 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "polyanalyst6api"
 dependencies = [
-    "requests >= 2.32.2, < 3.0.0",
+    "requests >= 2.34.2, < 3.0.0",
     "pytus == 0.2.1"
 ]
-requires-python = ">= 3.9"
+requires-python = ">= 3.10"
 authors = [
     {name = "yatmanov", email = "yatmanov@megaputer.ru"}
 ]
@@ -23,7 +23,6 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -46,7 +45,7 @@ Changelog = "https://github.com/Megaputer/polyanalyst6api-py/blob/master/CHANGEL
 
 [tool.ruff]
 line-length = 119
-target-version = "py39"
+target-version = "py310"
 
 [tool.ruff.format]
 quote-style = "single"
